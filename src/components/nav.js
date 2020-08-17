@@ -10,12 +10,17 @@ import Dropdown from "react-bootstrap/Dropdown";
 //Icon Imports
 import Icon from "@material-ui/core/Icon";
 
+//Navigatin imports
+import { useHistory } from "react-router-dom";
+
 export default function NavBarComponent() {
     const [show, setShow] = useState(false);
     const [userType, setUserType] = useState('TIPO DE USUARIO')
+    const history = useHistory();
 
-
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    history.push('/createOrder')
+    setShow(false)};
   const handleShow = () => setShow(true);
 
   return (

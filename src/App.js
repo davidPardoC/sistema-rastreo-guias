@@ -1,11 +1,18 @@
-import React from 'react';
-import Home from './screens/home'
-function App() {
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
+import Home from "./screens/home";
+import CreateOrder from "./screens/create-order";
+export default function App() {
   return (
-    <div>
-      <Home/>
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/createOrder" component={CreateOrder} />
+        <Route path="/" component={Home} />
+      </Switch>
+    </Router>
   );
 }
-
-export default App;
