@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { Modal, Button, Form, Dropdown, Row, Col } from "react-bootstrap";
-import { Container } from "@material-ui/core";
 export default function ModalAddOrder(props) {
   const [tipoRemitente, setTipoRemitente] = useState("TIPO");
   const [tipoDestinatario, setTipoDestinatario] = useState("TIPO");

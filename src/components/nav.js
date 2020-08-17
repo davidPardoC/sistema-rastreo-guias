@@ -19,7 +19,6 @@ export default function NavBarComponent() {
     const history = useHistory();
 
   const handleClose = () => {
-    history.push('/createOrder')
     setShow(false)};
   const handleShow = () => setShow(true);
 
@@ -64,7 +63,7 @@ export default function NavBarComponent() {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={()=>{history.push('/createOrder')}}>
             INICIAR SESIÓN
           </Button>
         </Modal.Footer>

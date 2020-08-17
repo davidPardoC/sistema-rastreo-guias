@@ -10,7 +10,6 @@ export default function CreateOrder() {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   const renderGuides = () => {
     return guides.map((task) => <div>XD</div>);
