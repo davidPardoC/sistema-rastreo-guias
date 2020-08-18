@@ -13,7 +13,10 @@ import Icon from "@material-ui/core/Icon";
 //Navigatin imports
 import { useHistory } from "react-router-dom";
 
-export default function NavBarComponent() {
+//Firebase Imports 
+import { useFirebaseApp } from 'reactfire';
+
+export default function NavBarComponent(props) {
     const [show, setShow] = useState(false);
     const [userType, setUserType] = useState('TIPO DE USUARIO')
     const history = useHistory();
@@ -21,6 +24,8 @@ export default function NavBarComponent() {
   const handleClose = () => {
     setShow(false)};
   const handleShow = () => setShow(true);
+
+  const firebase = useFirebaseApp();
 
   return (
     <>
