@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Icon from "@material-ui/core/Icon";
 import Container from "react-bootstrap/Container";
-import { Row, Col, FormControl } from "react-bootstrap";
+import { Row, Col, FormControl, Card } from "react-bootstrap";
 import ModalAddOrder from "../components/modal-add-order";
 
 export default function CreateOrder() {
@@ -12,7 +12,7 @@ export default function CreateOrder() {
   const handleClose = () => setShow(false);
 
   const renderGuides = () => {
-    return guides.map((task) => <div>XD</div>);
+    return guides.map((task) => <Card style={{marginTop:'1rem'}}><Card.Body style={{display:'flex', flexDirection:'row', justifyContent:'space-around'}}>RN12345678932145EC  <Button>Ver Detalle</Button></Card.Body></Card>);
   };
 
   const addGuide = () => {
