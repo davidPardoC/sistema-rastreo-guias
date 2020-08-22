@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 
 //Bottstrap import
 import Navbar from "react-bootstrap/Navbar";
@@ -12,21 +12,12 @@ import Icon from "@material-ui/core/Icon";
 
 //Navigatin imports
 import { useHistory } from "react-router-dom";
-
-//Firebase Imports
-import { useFirebaseApp, useFirestoreCollection} from "reactfire";
-import 'firebase/firestore';
+import { Row,Col, Container } from "react-bootstrap";
 
 export default function NavBarComponent(props) {
   const [show, setShow] = useState(false);
   const [userType, setUserType] = useState("TIPO DE USUARIO");
   const history = useHistory();
-
-  //firebase
-  const firebaseApp = useFirebaseApp();
-  const ref = firebaseApp.firestore().collection('guias');
-  const users = useFirestoreCollection(ref).docs.map(d => ({id: d.id}) );
-  console.log(users)
 
   const handleClose = () => {
     setShow(false);
@@ -35,7 +26,7 @@ export default function NavBarComponent(props) {
   return (
     <>
       <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="#home">Guías</Navbar.Brand>
+        <Navbar.Brand href="#home">RapifasCourier</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
@@ -82,20 +73,36 @@ export default function NavBarComponent(props) {
                 >
                   ADMINISTRADOR
                 </Dropdown.Item>
+                <Dropdown.Item
+                  href="#"
+                  onSelect={() => {
+                    setUserType("SUCURSAL");
+                  }}
+                >
+                  SUCURSAL
+                </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="primary"
-            onClick={() => {
-              history.push("/createOrder");
-            }}
-          >
-            INICIAR SESIÓN
-          </Button>
-        </Modal.Footer>
+        <Container style={{padding:'1rem'}}>
+            <Row>
+              <Col>
+              <Button
+                  ml={2}
+                  variant="primary"
+                  onClick={() => {
+                    history.push("/createOrder");
+                  }}
+                >
+                  INICIAR SESIÓN
+                </Button>
+              </Col>
+              <Col>
+              <Button variant="outline-primary" onClick={()=>{handleClose(); history.push('/register')}}>REGISTRARSE</Button>
+              </Col>
+            </Row>
+          </Container>
       </Modal>
     </>
   );

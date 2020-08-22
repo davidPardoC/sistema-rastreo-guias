@@ -1,14 +1,12 @@
-import React, { Suspense } from "react";
+import React,{useEffect} from "react";
 import NavBarComponent from "../components/nav";
-//FIrebase imports
-import { FirebaseAppProvider } from "reactfire";
-import firebaseConfig from "../assets/firebase-config";
+import {db} from '../assets/firebase'
 export default function Home() {
+  useEffect(() => {
+  }, [])
+
+  
   return (
-    <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-      <Suspense fallback={<p>Cargando</p>}>
         <NavBarComponent />
-      </Suspense>
-    </FirebaseAppProvider>
   );
 }
