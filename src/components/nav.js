@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 
 //Bottstrap import
 import Navbar from "react-bootstrap/Navbar";
@@ -13,20 +13,25 @@ import Icon from "@material-ui/core/Icon";
 //Navigatin imports
 import { useHistory } from "react-router-dom";
 
-//Firebase Imports 
-import { useFirebaseApp } from 'reactfire';
+//Firebase Imports
+import { useFirebaseApp, useFirestoreCollection} from "reactfire";
+import 'firebase/firestore';
 
 export default function NavBarComponent(props) {
-    const [show, setShow] = useState(false);
-    const [userType, setUserType] = useState('TIPO DE USUARIO')
-    const history = useHistory();
+  const [show, setShow] = useState(false);
+  const [userType, setUserType] = useState("TIPO DE USUARIO");
+  const history = useHistory();
+
+  //firebase
+  const firebaseApp = useFirebaseApp();
+  const ref = firebaseApp.firestore().collection('guias');
+  const users = useFirestoreCollection(ref).docs.map(d => ({id: d.id}) );
+  console.log(users)
 
   const handleClose = () => {
-    setShow(false)};
+    setShow(false);
+  };
   const handleShow = () => setShow(true);
-
-  const firebase = useFirebaseApp();
-
   return (
     <>
       <Navbar bg="light" expand="lg">
@@ -61,14 +66,33 @@ export default function NavBarComponent(props) {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item href="#" onSelect={()=>{setUserType('CLIENTE')}}>CLIENTE</Dropdown.Item>
-                <Dropdown.Item href="#" onSelect={()=>{setUserType('ADMINISTRADOR')}}>ADMINISTRADOR</Dropdown.Item>
+                <Dropdown.Item
+                  href="#"
+                  onSelect={() => {
+                    setUserType("CLIENTE");
+                  }}
+                >
+                  CLIENTE
+                </Dropdown.Item>
+                <Dropdown.Item
+                  href="#"
+                  onSelect={() => {
+                    setUserType("ADMINISTRADOR");
+                  }}
+                >
+                  ADMINISTRADOR
+                </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={()=>{history.push('/createOrder')}}>
+          <Button
+            variant="primary"
+            onClick={() => {
+              history.push("/createOrder");
+            }}
+          >
             INICIAR SESIÓN
           </Button>
         </Modal.Footer>
