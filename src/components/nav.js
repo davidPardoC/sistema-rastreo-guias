@@ -12,7 +12,7 @@ import Icon from "@material-ui/core/Icon";
 
 //Navigatin imports
 import { useHistory } from "react-router-dom";
-import { Row,Col, Container } from "react-bootstrap";
+import { Row, Col, Container } from "react-bootstrap";
 
 export default function NavBarComponent(props) {
   const [show, setShow] = useState(false);
@@ -23,20 +23,40 @@ export default function NavBarComponent(props) {
     setShow(false);
   };
   const handleShow = () => setShow(true);
+
+  //navegacion
+  const navigate = () => {
+    setShow(false);
+    history.push(`/${userType}`);
+  };
+
   return (
     <>
       <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="#home">RapifasCourier</Navbar.Brand>
+      <Navbar.Brand href="#home">
+      <img
+        alt=""
+        src={require('../assets/images/logo.svg')}
+        width="50"
+        height="30"
+        className="d-inline-block align-top"
+      />{' '}
+      RapifasCourier
+    </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link href="#home">INICIO</Nav.Link>
+            <Nav.Link href="#home">MISION Y VISION</Nav.Link>
           </Nav>
+
           <Button style={{ display: "flex" }} onClick={handleShow}>
             <Icon>supervisor_account</Icon>INGRESAR
           </Button>
         </Navbar.Collapse>
       </Navbar>
+
+      {/*Modal*/}
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -60,7 +80,7 @@ export default function NavBarComponent(props) {
                 <Dropdown.Item
                   href="#"
                   onSelect={() => {
-                    setUserType("CLIENTE");
+                    setUserType("client");
                   }}
                 >
                   CLIENTE
@@ -68,7 +88,7 @@ export default function NavBarComponent(props) {
                 <Dropdown.Item
                   href="#"
                   onSelect={() => {
-                    setUserType("ADMINISTRADOR");
+                    setUserType("admin");
                   }}
                 >
                   ADMINISTRADOR
@@ -76,7 +96,7 @@ export default function NavBarComponent(props) {
                 <Dropdown.Item
                   href="#"
                   onSelect={() => {
-                    setUserType("SUCURSAL");
+                    setUserType("sucursal");
                   }}
                 >
                   SUCURSAL
@@ -85,24 +105,26 @@ export default function NavBarComponent(props) {
             </Dropdown>
           </Form>
         </Modal.Body>
-        <Container style={{padding:'1rem'}}>
-            <Row>
-              <Col>
+        <Container style={{ padding: "1rem" }}>
+          <Row>
+            <Col>
+              <Button ml={2} variant="primary" onClick={navigate}>
+                INICIAR SESIÓN
+              </Button>
+            </Col>
+            <Col>
               <Button
-                  ml={2}
-                  variant="primary"
-                  onClick={() => {
-                    history.push("/createOrder");
-                  }}
-                >
-                  INICIAR SESIÓN
-                </Button>
-              </Col>
-              <Col>
-              <Button variant="outline-primary" onClick={()=>{handleClose(); history.push('/register')}}>REGISTRARSE</Button>
-              </Col>
-            </Row>
-          </Container>
+                variant="outline-primary"
+                onClick={() => {
+                  handleClose();
+                  history.push("/register");
+                }}
+              >
+                REGISTRARSE
+              </Button>
+            </Col>
+          </Row>
+        </Container>
       </Modal>
     </>
   );
