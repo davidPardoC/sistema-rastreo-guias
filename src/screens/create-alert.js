@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Icon from "@material-ui/core/Icon";
 import {
   Row,
@@ -7,15 +7,51 @@ import {
   Button,
   Container,
   ListGroup,
+  Alert,
 } from "react-bootstrap";
 import ModalAddOrder from "../components/modal-add-order";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { db } from "../assets/firebase";
+import { List } from "@material-ui/core";
 
 export default function CreateAlert() {
   //state
-  const [guides, setGuides] = useState([]);
   const [show, setShow] = useState(false);
+  const [guideToFind, setGuideToFind] = useState("");
+  const [guideFound, setGuideFound] = useState({});
 
+  //hooks
+
+  const searchGuia = () => {
+    db.collection("guias")
+      .doc(guideToFind)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          setGuideFound(doc.data());
+          console.log(doc.data());
+        }else{
+          setGuideFound(false)
+        }
+      });
+  };
+
+  const checkFound = () => {
+    if (Object.keys(guideFound).length !== 0) {
+      return (
+        <ListGroup.Item className='d-flex justify-content-between'>
+          {guideFound.cliente}
+          <Button>
+            <Icon>edit</Icon>
+          </Button>
+        </ListGroup.Item>
+      );
+    } 
+    if(!guideFound){
+      return (
+        <Alert variant='danger'>Guia no encontrada</Alert>
+      )
+    }
+  };
   //cerrar modal
   const handleClose = () => setShow(false);
 
@@ -41,31 +77,19 @@ export default function CreateAlert() {
               type="text"
               placeholder="BUSCAR GUÍA"
               className="mr-sm-2"
+              onChange={(e) => {
+                setGuideToFind(e.target.value);
+              }}
             />
-            <Button variant="outline-success">BUSCAR</Button>
+            <Button variant="outline-success" onClick={searchGuia}>
+              BUSCAR
+            </Button>
           </div>
         </Col>
       </Row>
       <Row>
         <Col>
-          <ListGroup className="mt-5">
-            <ListGroup.Item
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              RN00000000EC
-              <Button
-                onClick={() => {
-                  setShow(true);
-                }}
-              >
-                Ver Detalles
-              </Button>
-            </ListGroup.Item>
-          </ListGroup>
+          <ListGroup className="mt-5">{checkFound()}</ListGroup>
         </Col>
       </Row>
     </Container>

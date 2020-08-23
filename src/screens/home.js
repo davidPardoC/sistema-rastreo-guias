@@ -1,7 +1,15 @@
 import React from "react";
 import NavBarComponent from "../components/nav";
 import { db } from "../assets/firebase";
-import { Container, Row, Form, Col, FormControl, Button } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Form,
+  Col,
+  FormControl,
+  Button,
+  ListGroup,
+} from "react-bootstrap";
 export default function Home() {
   return (
     <>
@@ -15,21 +23,31 @@ export default function Home() {
             width="100%"
           />
         </Row>
-        <Row>
-          <Col>
-          <div style={{display:'flex', width:'100%'}}>
-          <Form>
-              <FormControl
-                type="text"
-                placeholder="BUSCAR GUÍA"
-                className="mr-sm-2"
-              />
-            </Form>
-            <Button variant="outline-success">BUSCAR</Button>
-          </div>
-            
-          </Col>
-        </Row>
+        <footer>
+          <ListGroup className="mt-5">
+            <ListGroup.Item>
+              <Row>
+                <Col>
+                  <div
+                    style={{ display: "flex", alignItems: "center" }}
+                    className="d-flex justify-content-end"
+                  >
+                    <Form className="ml-3">
+                      <FormControl
+                        type="text"
+                        placeholder="Ingresar número de guía"
+                        className="mr-sm-2"
+                      />
+                    </Form>
+                    <Button variant="outline-success" className="ml-2">
+                      RASTREAR GUÍA
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+            </ListGroup.Item>
+          </ListGroup>
+        </footer>
       </Container>
     </>
   );
