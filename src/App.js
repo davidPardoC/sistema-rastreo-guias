@@ -4,11 +4,13 @@ import Home from "./screens/home";
 import AdminView from "./views/adminView";
 import ClientView from "./views/clienteView"
 import SucursalView from './views/sucursalView';
+import Register from './screens/register'
 export default function App() {
 
   return (
     <Router>
       <Switch>
+      <Route path="/register" component={Register} />
         <Route path="/sucursal" component={SucursalView} />
         <Route path="/client" component={ClientView} />
         <Route path="/admin" component={AdminView} />

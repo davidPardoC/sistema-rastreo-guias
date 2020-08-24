@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 //Bottstrap import
 import Navbar from "react-bootstrap/Navbar";
@@ -12,42 +12,88 @@ import Icon from "@material-ui/core/Icon";
 
 //Navigatin imports
 import { useHistory } from "react-router-dom";
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Col, Container, Alert } from "react-bootstrap";
 
-export default function NavBarComponent(props) {
+//Firebase Imports
+import { auth, db } from "../assets/firebase";
+
+export default function NavBarComponent() {
+
+  //Alerta Credenciales
+  const [alert, setAlert] = useState(false);
+  //estado Modal
   const [show, setShow] = useState(false);
-  const [userType, setUserType] = useState("TIPO DE USUARIO");
+  //inputs SignIn
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  //signIn button
+  const [signInButton, setSignInButton] = useState(true)
+
+  //Inicializacion Navegacion
   const history = useHistory();
 
+  //Checck Inputs
+  useEffect(() => {
+    CheckInputs();
+  }, [email])
+  useEffect(() => {
+    CheckInputs();
+  }, [password])
+
+  const CheckInputs = () =>{
+    if(email  &&  password ){
+      setSignInButton(false)
+    }else{
+      setSignInButton(true)
+    }
+  }
+  //Modal
   const handleClose = () => {
     setShow(false);
   };
   const handleShow = () => setShow(true);
 
-  //navegacion
-  const navigate = () => {
-    setShow(false);
-    history.push(`/${userType}`);
+  //signIN
+  const signIn = () => {
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((e) => {
+        console.log(e.user.uid)
+        localStorage.setItem('userToken',e.user.uid)
+        db.collection('users').where('uid','==',e.user.uid).get().then((collection)=>{
+          collection.forEach(
+            (doc) => {
+              if(doc.data().admin){
+                history.push('/admin')
+              }else{
+                history.push('/client')
+              }
+            }
+          )
+        })
+      })
+      .catch(()=>{
+        setAlert(true)
+      });
   };
-
   return (
     <>
       <Navbar bg="light" expand="lg">
-      <Navbar.Brand href="#home">
-      <img
-        alt=""
-        src={require('../assets/images/logo.svg')}
-        width="50"
-        height="30"
-        className="d-inline-block align-top"
-      />{' '}
-      RapifasCourier
-    </Navbar.Brand>
+        <Navbar.Brand href="/">
+          <img
+            alt=""
+            src={require("../assets/images/logo.svg")}
+            width="50"
+            height="30"
+            className="d-inline-block align-top"
+          />{" "}
+          Rapifas Courier
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="#home">INICIO</Nav.Link>
-            <Nav.Link href="#home">MISION Y VISION</Nav.Link>
+            <Nav.Link href="/">INICIO</Nav.Link>
+            <Nav.Link href="/register">MISION Y VISION</Nav.Link>
           </Nav>
 
           <Button style={{ display: "flex" }} onClick={handleShow}>
@@ -65,50 +111,30 @@ export default function NavBarComponent(props) {
         <Modal.Body>
           <Form>
             <Form.Group>
-              <Form.Control placeholder="Usuario" />
+              <Form.Control
+                type="email"
+                placeholder="Email"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+              />
             </Form.Group>
             <Form.Group>
-              <Form.Control type="password" placeholder="Password" />
+              <Form.Control
+                type="password"
+                placeholder="Contraseña"
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+              />
             </Form.Group>
-
-            <Dropdown>
-              <Dropdown.Toggle variant="success" id="dropdown-basic">
-                {userType}
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu>
-                <Dropdown.Item
-                  href="#"
-                  onSelect={() => {
-                    setUserType("client");
-                  }}
-                >
-                  CLIENTE
-                </Dropdown.Item>
-                <Dropdown.Item
-                  href="#"
-                  onSelect={() => {
-                    setUserType("admin");
-                  }}
-                >
-                  ADMINISTRADOR
-                </Dropdown.Item>
-                <Dropdown.Item
-                  href="#"
-                  onSelect={() => {
-                    setUserType("sucursal");
-                  }}
-                >
-                  SUCURSAL
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
           </Form>
+          {alert && <Alert variant="danger">Credenciales Incorrectas</Alert>}
         </Modal.Body>
         <Container style={{ padding: "1rem" }}>
           <Row>
             <Col>
-              <Button ml={2} variant="primary" onClick={navigate}>
+              <Button ml={2} variant="primary" onClick={signIn} disabled={signInButton}>
                 INICIAR SESIÓN
               </Button>
             </Col>
