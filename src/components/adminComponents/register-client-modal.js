@@ -24,13 +24,15 @@ export default function RegisterClientModal() {
   const history = useHistory();
   const [provinciasArray, setprovincias] = useState(provincias);
   const [cantones, setCantones] = useState([]);
-  const [selectedProvice, setSelectedProvince] = useState({provincia:"Provincia"});
-  const [selectedCanton, setSelectedCanton] = useState({nombre:'Canton'});
-
-
+  const [selectedProvice, setSelectedProvince] = useState({
+    provincia: "Provincia",
+  });
+  const [selectedCanton, setSelectedCanton] = useState({ nombre: "Canton" });
+  const [tipoId, settipoId] = useState("TIPO DE IDENTIFICACIÓN");
+  const tiposIdArray = ["C.I", "RUC", "RUP", "RISE"];
   const fillCantones = (index) => {
-    setCantones(provinciasArray[index].cantones)
-  }
+    setCantones(provinciasArray[index].cantones);
+  };
 
   //Habilita el boton de registro
   useEffect(() => {
@@ -73,7 +75,8 @@ export default function RegisterClientModal() {
           admin: false,
           uid: res.user.uid,
           provincia: selectedProvice.provincia,
-          canton: selectedCanton.canton
+          canton: selectedCanton.nombre,
+          tipoId: tipoId,
         });
         history.push("/");
       })
@@ -81,6 +84,9 @@ export default function RegisterClientModal() {
         alert(err);
       });
   };
+
+  //Buscar Usuario
+  const SearchUser = () => {};
   return (
     <>
       <Container>
@@ -97,6 +103,37 @@ export default function RegisterClientModal() {
               }}
             />
           </Form.Group>
+
+          <Row>
+            <Col>
+              <Form.Group controlId="id">
+                <Form.Control
+                  type="text"
+                  placeholder="CI"
+                  onChange={(e) => {
+                    setUserToRegister({
+                      ...usertoRegister,
+                      id: e.target.value,
+                    });
+                  }}
+                />
+              </Form.Group>
+            </Col>
+            <Col>
+              <DropdownButton id="tipoId" title={tipoId}>
+                {tiposIdArray.map((tipo) => (
+                  <Dropdown.Item
+                    onSelect={() => {
+                      settipoId(tipo);
+                    }}
+                  >
+                    {tipo}
+                  </Dropdown.Item>
+                ))}
+              </DropdownButton>
+            </Col>
+          </Row>
+
           <Form.Group controlId="nombre">
             <Form.Control
               type="text"
@@ -138,9 +175,16 @@ export default function RegisterClientModal() {
             <Col>
               <DropdownButton id="Provincia" title={selectedProvice.provincia}>
                 {provinciasArray.map((provincia) => (
-                  <Dropdown.Item key={provincia.key}
-                  onSelect={()=>{setSelectedProvince(provincia); fillCantones(provincia.key)}}
-                  onClick={()=>{setSelectedCanton({nombre:'Canton'})}}>
+                  <Dropdown.Item
+                    key={provincia.key}
+                    onSelect={() => {
+                      setSelectedProvince(provincia);
+                      fillCantones(provincia.key);
+                    }}
+                    onClick={() => {
+                      setSelectedCanton({ nombre: "Canton" });
+                    }}
+                  >
                     {provincia.provincia}
                   </Dropdown.Item>
                 ))}
@@ -149,13 +193,56 @@ export default function RegisterClientModal() {
             <Col>
               <DropdownButton id="Canton" title={selectedCanton.nombre}>
                 {cantones.map((canton) => (
-                  <Dropdown.Item key={canton.key} onSelect={()=>{setSelectedCanton(canton)}}>
+                  <Dropdown.Item
+                    key={canton.key}
+                    onSelect={() => {
+                      setSelectedCanton(canton);
+                    }}
+                  >
                     {canton.nombre}
                   </Dropdown.Item>
                 ))}
               </DropdownButton>
             </Col>
+            <Col>
+              <Form.Group controlId="parroquia">
+                <Form.Control
+                  type="text"
+                  placeholder="Parroquia"
+                  onChange={(e) => {
+                    setUserToRegister({
+                      ...usertoRegister,
+                      parroquia: e.target.value,
+                    });
+                  }}
+                />
+              </Form.Group>
+            </Col>
           </Row>
+          <Form.Group controlId="direccion">
+            <Form.Control
+              type="text"
+              placeholder="Dirección"
+              onChange={(e) => {
+                setUserToRegister({
+                  ...usertoRegister,
+                  direccion: e.target.value,
+                });
+              }}
+            />
+          </Form.Group>
+          <Form.Group controlId="referencia">
+            <Form.Control
+              type="text"
+              placeholder="Referencia"
+              onChange={(e) => {
+                setUserToRegister({
+                  ...usertoRegister,
+                  referencia: e.target.value,
+                });
+              }}
+            />
+          </Form.Group>
           <Form.Group controlId="email">
             <Form.Control
               type="email"
