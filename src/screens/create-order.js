@@ -44,6 +44,7 @@ export default function CreateOrder() {
           </div>
         </Col>
       </Row>
+      <hr className='mt-5'></hr>
     </Container>
   );
 }

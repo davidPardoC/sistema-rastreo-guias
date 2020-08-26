@@ -93,7 +93,7 @@ export default function NavBarComponent() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link href="/">INICIO</Nav.Link>
-            <Nav.Link href="/register">MISION Y VISION</Nav.Link>
+            <Nav.Link href="/mision-vision">MISION Y VISION</Nav.Link>
           </Nav>
 
           <Button style={{ display: "flex" }} onClick={handleShow}>
