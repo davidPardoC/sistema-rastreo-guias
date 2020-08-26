@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3189.039" height="1040.335" viewBox="0 0 3189.039 1040.335">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #ffc857;
+      }
+
+      .cls-2 {
+        fill: #e6b95c;
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-4 {
+        fill: #227c9d;
+        font-size: 316px;
+      }
+
+      .cls-4, .cls-5 {
+        font-family: Montserrat-ExtraBoldItalic, Montserrat;
+        font-weight: 800;
+        letter-spacing: -0.003em;
+      }
+
+      .cls-4, .cls-5, .cls-8 {
+        font-style: italic;
+      }
+
+      .cls-5 {
+        fill: #384f77;
+        font-size: 317px;
+      }
+
+      .cls-6 {
+        fill: #e0b45a;
+      }
+
+      .cls-7 {
+        fill: #1a5b72;
+      }
+
+      .cls-8 {
+        fill: #161032;
+        font-size: 106px;
+        font-family: Montserrat-SemiBoldItalic, Montserrat;
+        font-weight: 600;
+        letter-spacing: -0.03em;
+      }
+    </style>
+  </defs>
+  <g id="Group_107" data-name="Group 107" transform="translate(-698.72 -1381.665)">
+    <g id="Group_106" data-name="Group 106" transform="translate(698.72 1381.665)">
+      <g id="Group_52" data-name="Group 52" transform="translate(0 0)">
+        <g id="Group_46" data-name="Group 46" transform="translate(0 0)">
+          <g id="OBJECTS" transform="translate(0 0)">
+            <g id="Group_45" data-name="Group 45">
+              <g id="Group_44" data-name="Group 44">
+                <g id="Group_37" data-name="Group 37">
+                  <path id="Path_28" data-name="Path 28" class="cls-1" d="M2810.8,944.88s564.815-102.173,470.293-155.844c-134.713-76.493-824.119,48.294-1266.471,123.5C1715.416,963.4,942.668,1149.905,546.791,897c-180.17-115.117-186.4-348.18-35.988-479.935C917.09,61.186,1617.8,256.009,1617.8,256.009s-130.828-56.794-373.783-77.93c-338.043-29.407-566.5,28.659-732.8,87.492C4.15,444.957,3.949,826.743,319.954,1027.227c440.347,279.368,1141.867,126.554,1748.04-26.47,366.961-92.636,1012.343-259.02,1121.871-189.181C3237.712,842.081,2810.8,944.88,2810.8,944.88Z" transform="translate(-102.72 -163.999)"/>
+                  <path id="Path_29" data-name="Path 29" class="cls-2" d="M2804.223,950.474s523.6-98.512,429.075-152.182c-134.713-76.493-962.789,112.4-1419.254,213.6C1521.133,1076.842,651.473,1217.256,335.67,919.15c-232.948-219.9-128.121-459.656,65.721-563.71,668.392-358.792,1214.638-98.649,1214.638-98.649s-129.061-55.91-372.015-77.045c-338.043-29.407-566.5,28.659-732.8,87.492C4.15,446.624,3.949,828.41,319.954,1028.894c440.347,279.369,1141.867,126.554,1748.04-26.47,366.961-92.636,1017.02-262,1126.548-192.162C3242.389,840.766,2804.223,950.474,2804.223,950.474Z" transform="translate(-102.72 -165.665)"/>
+                  <path id="Path_33" data-name="Path 33" class="cls-3" d="M785.195,179.287S390.936,226.661,247.978,382.52c-133.53,145.592-42.646,341.091-42.646,341.091S64.215,606.782,154.446,434.479C289.325,176.912,785.195,179.287,785.195,179.287Z" transform="translate(98.32 -133.649)"/>
+                </g>
+              </g>
+              <path id="Path_54" data-name="Path 54" class="cls-1" d="M-106.97,12.9c-.973-1.944,542.433,48.686,542.433,110.651s-170.71,147.675-170.71,146.412,115.108-69.283,115.108-131.248S-106,14.842-106.97,12.9Z" transform="translate(1649.414 -7.127)"/>
+            </g>
+          </g>
+        </g>
+        <text id="Rapifas" class="cls-4" transform="translate(479.28 556.335)"><tspan x="0" y="0">Rapifas</tspan></text>
+        <text id="Courier" class="cls-5" transform="translate(1776.28 557.335)"><tspan x="0" y="0">Courier</tspan></text>
+      </g>
+      <g id="Group_73" data-name="Group 73" transform="translate(1460.128 53.007)">
+        <path id="Subtraction_6" data-name="Subtraction 6" class="cls-6" d="M414.407,179.576,0,88.724,155.406,0l.167.036,108.573,98.72L528.832,80.8l.128.028L414.407,179.576Z" transform="translate(0 9.182)"/>
+        <path id="Path_58" data-name="Path 58" class="cls-7" d="M118.828,386.818l259.059-9.659L14.5,299.546Z" transform="translate(160.719 -299.546)"/>
+      </g>
+      <text id="Fácil_Rápido_y_Seguro." data-name="Fácil, Rápido y Seguro." class="cls-8" transform="translate(2001.28 1013.335)"><tspan x="0" y="0">Fácil, Rápido y Seguro.</tspan></text>
+    </g>
+  </g>
+</svg>
