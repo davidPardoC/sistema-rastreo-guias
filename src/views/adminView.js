@@ -23,7 +23,6 @@ export default function AdminView() {
       .get()
       .then((collection) => {
         collection.forEach((doc) => {
-          console.log(doc.data());
           if (doc.data().admin === false) {
             history.push("/");
           } else {

@@ -28,7 +28,6 @@ export default function CreateAlert() {
       .then((doc) => {
         if (doc.exists) {
           setGuideFound(doc.data());
-          console.log(doc.data());
         }else{
           setGuideFound(false)
         }

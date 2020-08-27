@@ -9,11 +9,14 @@ import {
   DropdownButton,
   Dropdown,
 } from "react-bootstrap";
-import { auth } from "../../assets/firebase";
-import { db } from "../../assets/firebase";
-import { useHistory } from "react-router-dom";
+import { db, auth, functions } from "../../assets/firebase";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import provincias from "../../assets/provinciasv2";
-export default function RegisterClientModal() {
+export default function RegisterClientModal(props) {
+
+
+  //imports
+  const macth = useRouteMatch();
   //passwords
   const [password, setPassword] = useState("");
   const [passwordConf, setPasswordConf] = useState("");
@@ -28,8 +31,10 @@ export default function RegisterClientModal() {
     provincia: "Provincia",
   });
   const [selectedCanton, setSelectedCanton] = useState({ nombre: "Canton" });
-  const [tipoId, settipoId] = useState("TIPO DE IDENTIFICACIÓN");
-  const tiposIdArray = ["C.I", "RUC", "RUP", "RISE"];
+  const [tipoId, settipoId] = useState("IDENTIFICACIÓN");
+  const tiposIdArray = [{nombre: "C.I", key:0}, {nombre:"RUC", key:1},{nombre: "RUP", key:2}, {nombre:"RISE", key:3}];
+  const [id, setid] = useState('')
+  
   const fillCantones = (index) => {
     setCantones(provinciasArray[index].cantones);
   };
@@ -62,15 +67,21 @@ export default function RegisterClientModal() {
     }
   };
 
+  //TestClodFuntion
+  const RegisterUserRole = () => {
+    const addUser = functions.httpsCallable('addUser');
+    addUser({email:'rapifast@admin.com', password:'adminadmin', admin:true});
+    console.log(auth.currentUser)
+  }
   //Registrar nuevo usuario
   const RegisterUser = () => {
-    auth
-      .createUserWithEmailAndPassword(
+    const addUser = functions.httpsCallable('addUser');
+    auth.createUserWithEmailAndPassword(
         usertoRegister.email,
         usertoRegister.password
       )
       .then((res) => {
-        db.collection("users").add({
+        db.collection("users").doc(id).set({
           ...usertoRegister,
           admin: false,
           uid: res.user.uid,
@@ -78,15 +89,16 @@ export default function RegisterClientModal() {
           canton: selectedCanton.nombre,
           tipoId: tipoId,
         });
-        history.push("/");
       })
       .catch((err) => {
         alert(err);
       });
+    console.log(auth.currentUser)
+    props.hide()
   };
 
-  //Buscar Usuario
-  const SearchUser = () => {};
+  
+
   return (
     <>
       <Container>
@@ -109,12 +121,9 @@ export default function RegisterClientModal() {
               <Form.Group controlId="id">
                 <Form.Control
                   type="text"
-                  placeholder="CI"
+                  placeholder={tipoId}
                   onChange={(e) => {
-                    setUserToRegister({
-                      ...usertoRegister,
-                      id: e.target.value,
-                    });
+                    setid(e.target.value)
                   }}
                 />
               </Form.Group>
@@ -124,10 +133,11 @@ export default function RegisterClientModal() {
                 {tiposIdArray.map((tipo) => (
                   <Dropdown.Item
                     onSelect={() => {
-                      settipoId(tipo);
+                      settipoId(tipo.nombre);
                     }}
+                    key={tipo.key}
                   >
-                    {tipo}
+                    {tipo.nombre}
                   </Dropdown.Item>
                 ))}
               </DropdownButton>
@@ -283,7 +293,7 @@ export default function RegisterClientModal() {
             <Button
               variant="primary"
               disabled={buttonRegister}
-              onClick={RegisterUser}
+              onClick={RegisterUserRole}
               className="mb-3"
             >
               REGISTRAR

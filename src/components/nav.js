@@ -58,7 +58,7 @@ export default function NavBarComponent() {
     auth
       .signInWithEmailAndPassword(email, password)
       .then((e) => {
-        console.log(e.user.uid)
+        console.log(e.user)
         localStorage.setItem('userToken',e.user.uid)
         db.collection('users').where('uid','==',e.user.uid).get().then((collection)=>{
           collection.forEach(
@@ -72,7 +72,8 @@ export default function NavBarComponent() {
           )
         })
       })
-      .catch(()=>{
+      .catch((e)=>{
+        console.log(e)
         setAlert(true)
       });
   };
@@ -136,17 +137,6 @@ export default function NavBarComponent() {
             <Col>
               <Button ml={2} variant="primary" onClick={signIn} disabled={signInButton}>
                 INICIAR SESIÓN
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                variant="outline-primary"
-                onClick={() => {
-                  handleClose();
-                  history.push("/register");
-                }}
-              >
-                REGISTRARSE
               </Button>
             </Col>
           </Row>
