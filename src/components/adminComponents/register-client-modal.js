@@ -5,16 +5,11 @@ import {
   Button,
   Row,
   Alert,
-  Col,
-  DropdownButton,
-  Dropdown,
+  Col
 } from "react-bootstrap";
-import { db, auth, functions } from "../../assets/firebase";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import provincias from "../../assets/provinciasv2";
+import { db, functions } from "../../assets/firebase";
+import { useRouteMatch } from "react-router-dom";
 export default function RegisterClientModal(props) {
-
-
   //imports
   const macth = useRouteMatch();
   //passwords
@@ -24,20 +19,10 @@ export default function RegisterClientModal(props) {
   const [buttonRegister, setButtonRegister] = useState(true);
   //datos para registro
   const [usertoRegister, setUserToRegister] = useState({});
-  const history = useHistory();
-  const [provinciasArray, setprovincias] = useState(provincias);
-  const [cantones, setCantones] = useState([]);
-  const [selectedProvice, setSelectedProvince] = useState({
-    provincia: "Provincia",
-  });
-  const [selectedCanton, setSelectedCanton] = useState({ nombre: "Canton" });
-  const [tipoId, settipoId] = useState("IDENTIFICACIÓN");
-  const tiposIdArray = [{nombre: "C.I", key:0}, {nombre:"RUC", key:1},{nombre: "RUP", key:2}, {nombre:"RISE", key:3}];
-  const [id, setid] = useState('')
+
   
-  const fillCantones = (index) => {
-    setCantones(provinciasArray[index].cantones);
-  };
+  const [tipoId, settipoId] = useState("C.I");
+  
 
   //Habilita el boton de registro
   useEffect(() => {
@@ -67,37 +52,27 @@ export default function RegisterClientModal(props) {
     }
   };
 
-  //TestClodFuntion
-  const RegisterUserRole = () => {
-    const addUser = functions.httpsCallable('addUser');
-    addUser({email:'rapifast@admin.com', password:'adminadmin', admin:true});
-    console.log(auth.currentUser)
-  }
-  //Registrar nuevo usuario
+  //Registrar nuevo usuario con Custom Claim
   const RegisterUser = () => {
-    const addUser = functions.httpsCallable('addUser');
-    auth.createUserWithEmailAndPassword(
-        usertoRegister.email,
-        usertoRegister.password
-      )
-      .then((res) => {
-        db.collection("users").doc(id).set({
-          ...usertoRegister,
-          admin: false,
-          uid: res.user.uid,
-          provincia: selectedProvice.provincia,
-          canton: selectedCanton.nombre,
-          tipoId: tipoId,
-        });
+    const addUser = functions.httpsCallable("addUser");
+    addUser({
+      email: usertoRegister.email,
+      password: usertoRegister.password,
+      role: "client",
+    })
+      .then((data) => {
+          db.collection('users').doc(usertoRegister.id).set({
+            ...usertoRegister,
+            tipoId: tipoId,
+            uid:data.data.uid
+          }).catch((err)=>{alert(err)})
+      
       })
-      .catch((err) => {
-        alert(err);
+      .catch((e) => {
+        alert(e);
       });
-    console.log(auth.currentUser)
     props.hide()
   };
-
-  
 
   return (
     <>
@@ -123,24 +98,24 @@ export default function RegisterClientModal(props) {
                   type="text"
                   placeholder={tipoId}
                   onChange={(e) => {
-                    setid(e.target.value)
+                    setUserToRegister(
+                      {
+                        ...usertoRegister,
+                        id:e.target.value
+                      }
+                    )
                   }}
                 />
               </Form.Group>
             </Col>
             <Col>
-              <DropdownButton id="tipoId" title={tipoId}>
-                {tiposIdArray.map((tipo) => (
-                  <Dropdown.Item
-                    onSelect={() => {
-                      settipoId(tipo.nombre);
-                    }}
-                    key={tipo.key}
-                  >
-                    {tipo.nombre}
-                  </Dropdown.Item>
-                ))}
-              </DropdownButton>
+             <select style={{border:'solid 1px black', padding:'0.5rem' , borderRadius:'1rem'}} onChange={(e)=>settipoId(e.target.value)}>
+                <option>TIPO</option>
+               <option value='RUC'>RUC</option>
+               <option value='CI'>CI</option>
+               <option value='RUP'>RUP</option>
+               <option value='RISE'>RISE</option>
+             </select>
             </Col>
           </Row>
 
@@ -183,36 +158,32 @@ export default function RegisterClientModal(props) {
           </Form.Group>
           <Row className="mb-3">
             <Col>
-              <DropdownButton id="Provincia" title={selectedProvice.provincia}>
-                {provinciasArray.map((provincia) => (
-                  <Dropdown.Item
-                    key={provincia.key}
-                    onSelect={() => {
-                      setSelectedProvince(provincia);
-                      fillCantones(provincia.key);
-                    }}
-                    onClick={() => {
-                      setSelectedCanton({ nombre: "Canton" });
-                    }}
-                  >
-                    {provincia.provincia}
-                  </Dropdown.Item>
-                ))}
-              </DropdownButton>
+            <Form.Group controlId="provincia">
+                <Form.Control
+                  type="text"
+                  placeholder="Provincia"
+                  onChange={(e) => {
+                    setUserToRegister({
+                      ...usertoRegister,
+                      provincia: e.target.value,
+                    });
+                  }}
+                />
+              </Form.Group>
             </Col>
             <Col>
-              <DropdownButton id="Canton" title={selectedCanton.nombre}>
-                {cantones.map((canton) => (
-                  <Dropdown.Item
-                    key={canton.key}
-                    onSelect={() => {
-                      setSelectedCanton(canton);
-                    }}
-                  >
-                    {canton.nombre}
-                  </Dropdown.Item>
-                ))}
-              </DropdownButton>
+            <Form.Group controlId="canton">
+                <Form.Control
+                  type="text"
+                  placeholder="Canton"
+                  onChange={(e) => {
+                    setUserToRegister({
+                      ...usertoRegister,
+                      canton: e.target.value,
+                    });
+                  }}
+                />
+              </Form.Group>
             </Col>
             <Col>
               <Form.Group controlId="parroquia">
@@ -293,7 +264,7 @@ export default function RegisterClientModal(props) {
             <Button
               variant="primary"
               disabled={buttonRegister}
-              onClick={RegisterUserRole}
+              onClick={RegisterUser}
               className="mb-3"
             >
               REGISTRAR

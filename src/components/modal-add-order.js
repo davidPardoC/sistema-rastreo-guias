@@ -1,8 +1,29 @@
-import React, {  useState } from "react";
-import { Modal, Button, Form, Dropdown, Row, Col } from "react-bootstrap";
+import React, { useState } from "react";
+import {
+  Modal,
+  Button,
+  Form,
+  Dropdown,
+  Row,
+  Col,
+  ListGroup,
+} from "react-bootstrap";
 export default function ModalAddOrder(props) {
-  const [tipoRemitente, setTipoRemitente] = useState("TIPO");
-  const [tipoDestinatario, setTipoDestinatario] = useState("TIPO");
+  //datos destinatario
+  const [ci, setci] = useState()
+  const [tipoId, settipoId] = useState()
+  const [provincia, setprovincia] = useState()
+  const [canton, setcanton] = useState()
+  const [parroquia, setparroquia] = useState()
+  const [direccion, setdireccion] = useState()
+  const [email, setemail] = useState()
+  const [referencia, setreferencia] = useState()
+  const [telefono, settelefono] = useState()
+  const [nroItems, setnroItems] = useState()
+  const [peso, setpeso] = useState()
+  const [descripcion, setdescripcion] = useState()
+  
+
   return (
     <Modal show={props.show} onHide={props.close} backdrop="static" size="lg">
       <Modal.Header closeButton>
@@ -12,178 +33,92 @@ export default function ModalAddOrder(props) {
         <Row>
           <Col>
             <h3>Remitente</h3>
-            <Form>
-              <Form.Group>
-                <div style={{ display: "flex" }}>
-                  <Form.Control type="text" placeholder="C.I Remitente" />
-                  <Dropdown style={{ marginLeft: "1rem" }}>
-                    <Dropdown.Toggle variant="success" id="dropdown-basic">
-                      {tipoRemitente}
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                      <Dropdown.Item
-                        onSelect={() => {
-                          setTipoRemitente("RUC");
-                        }}
-                      >
-                        RUC
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onSelect={() => {
-                          setTipoRemitente("CEDULA");
-                        }}
-                      >
-                        CEDULA
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </div>
-              </Form.Group>
-              <Form.Group>
-                <div style={{ display: "flex" }}>
-                  <Form.Control type="text" placeholder="Nombres" />
-                  <Form.Control
-                    style={{ marginLeft: "1rem" }}
-                    type="text"
-                    placeholder="Apellidos"
-                  />
-                </div>
-              </Form.Group>
-              <Form.Group>
-                <Form.Control type="text" placeholder="Dirección" />
-              </Form.Group>
-
-              <div style={{ display: "flex" }}>
-                <Form.Group>
-                  <Form.Control type="text" placeholder="Peso en Gramos" />
-                </Form.Group>
-                <Form.Group style={{marginLeft:'1rem'}}>
-                  <Form.Control
-                    type="number"
-                    placeholder="Valor declarado (USD)"
-                  />
-                </Form.Group>
-              </div>
-
-              <div style={{ display: "flex" }}>
-                <Form.Group>
-                  <Form.Control type="text" placeholder="Provincia" />
-                </Form.Group>
-                <Form.Group style={{marginLeft:'1rem'}}>
-                  <Form.Control
-                    type="text"
-                    placeholder="Canton"
-                  />
-                </Form.Group>
-                <Form.Group style={{marginLeft:'1rem'}}>
-                  <Form.Control
-                    type="text"
-                    placeholder="Parroquia"
-                  />
-                </Form.Group>
-              </div>
-              <Form.Group>
-                <Form.Control type="text" placeholder="Email" />
-              </Form.Group>
-              <Form.Group>
-                <Form.Control type="text" placeholder="Descripción" />
-              </Form.Group>
-              <Form.Group>
-                <Form.Control type="text" placeholder="Referencia" />
-              </Form.Group>
-              <Form.Group>
-                <Form.Control type="text" placeholder="Teléfono" />
-              </Form.Group>
-            </Form>
+            <ListGroup>
+              <ListGroup.Item>
+                {`${props.cliente.nombre} ${props.cliente.apellido}`}
+              </ListGroup.Item>
+              <ListGroup.Item>
+                {`${props.cliente.tipoId}: ${props.cliente.id}`}
+              </ListGroup.Item>
+              <ListGroup.Item>
+                {`Direccion: ${props.cliente.direccion}`}
+              </ListGroup.Item>
+              <ListGroup.Item>
+                {`Provincia: ${props.cliente.provincia}`}
+              </ListGroup.Item>
+              <ListGroup.Item>
+                {`Canton: ${props.cliente.canton}`}
+              </ListGroup.Item>
+              <ListGroup.Item>
+                {`Parroquia: ${props.cliente.parroquia}`}
+              </ListGroup.Item>
+              <ListGroup.Item>{`Email: ${props.cliente.email}`}</ListGroup.Item>
+              <ListGroup.Item>
+                {`Telefono: ${props.cliente.telefono}`}
+              </ListGroup.Item>
+            </ListGroup>
           </Col>
 
           <Col>
             <h3>Destinatario</h3>
-            <Form>
-              <Form.Group>
-                <div style={{ display: "flex" }}>
-                  <Form.Control type="text" placeholder="C.I Destinatario" />
-                  <Dropdown style={{ marginLeft: "1rem" }}>
-                    <Dropdown.Toggle variant="success" id="dropdown-basic">
-                      {tipoDestinatario}
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                      <Dropdown.Item
-                        onSelect={() => {
-                          setTipoDestinatario("RUC");
-                        }}
-                      >
-                        RUC
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onSelect={() => {
-                          setTipoDestinatario("CEDULA");
-                        }}
-                      >
-                        CEDULA
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </div>
-              </Form.Group>
-
-              <Form.Group>
-                <div style={{ display: "flex" }}>
-                  <Form.Control type="text" placeholder="Nombres" />
-                  <Form.Control
-                    style={{ marginLeft: "1rem" }}
-                    type="text"
-                    placeholder="Apellidos"
-                  />
-                </div>
-              </Form.Group>
-
-              <Form.Group>
-                <Form.Control type="text" placeholder="Dirección" />
-              </Form.Group>
-              <div style={{ display: "flex" }}>
+            <Row>
+              <Col>
                 <Form.Group>
-                  <Form.Control type="text" placeholder="Peso en Gramos" />
+                  <Form.Control placeholder="CI Remitente" />
                 </Form.Group>
-                <Form.Group style={{marginLeft:'1rem'}}>
-                  <Form.Control
-                    type="number"
-                    placeholder="Valor declarado (USD)"
-                  />
-                </Form.Group>
-              </div>
-              <div style={{ display: "flex" }}>
+              </Col>
+
+              <Col>
+                <select>
+                  <option>RUC</option>
+                  <option>RUP</option>
+                  <option>CI</option>
+                  <option>RISE</option>
+                </select>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
                 <Form.Group>
-                  <Form.Control type="text" placeholder="Provincia" />
+                  <Form.Control placeholder="Provincia" />
                 </Form.Group>
-                <Form.Group style={{marginLeft:'1rem'}}>
-                  <Form.Control
-                    type="text"
-                    placeholder="Canton"
-                  />
+              </Col>
+              <Col>
+                <Form.Group>
+                  <Form.Control placeholder="Canton" />
                 </Form.Group>
-                <Form.Group style={{marginLeft:'1rem'}}>
-                  <Form.Control
-                    type="text"
-                    placeholder="Parroquia"
-                  />
+              </Col>
+              <Col>
+                <Form.Group>
+                  <Form.Control placeholder="Parroquia" />
                 </Form.Group>
-              </div>
-              <Form.Group>
-                <Form.Control type="text" placeholder="Email" />
-              </Form.Group>
-              <Form.Group>
-                <Form.Control type="text" placeholder="Descripción" />
-              </Form.Group>
-              <Form.Group>
-                <Form.Control type="text" placeholder="Referencia" />
-              </Form.Group>
-              <Form.Group>
-                <Form.Control type="text" placeholder="Teléfono" />
-              </Form.Group>
-            </Form>
+              </Col>
+            </Row>
+            <Form.Group>
+                  <Form.Control placeholder="Dirección" />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Control placeholder="Email" />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Control placeholder="Referencia" />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Control placeholder="Telefono" />
+                </Form.Group>
+                <hr></hr>
+                <Form.Group>
+                  <Form.Control placeholder="Nro Items" type='number'/>
+                </Form.Group>
+                <Form.Group>
+                  <Form.Control placeholder="Peso (Gramos)" type='number' />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Control placeholder="Valor declarado (USD)" type='number' />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Control placeholder="Descripcion" />
+                </Form.Group>
           </Col>
         </Row>
       </Modal.Body>

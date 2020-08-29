@@ -18,35 +18,56 @@ import { Row, Col, Container, Alert } from "react-bootstrap";
 import { auth, db } from "../assets/firebase";
 
 export default function NavBarComponent() {
-
   //Alerta Credenciales
   const [alert, setAlert] = useState(false);
   //estado Modal
   const [show, setShow] = useState(false);
   //inputs SignIn
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   //signIn button
-  const [signInButton, setSignInButton] = useState(true)
+  const [signInButton, setSignInButton] = useState(true);
 
   //Inicializacion Navegacion
   const history = useHistory();
 
+  //init
+  useEffect(() => {
+    auth.onAuthStateChanged((user)=>{
+      if(user){
+        user.getIdTokenResult().then((tokenResult)=>{
+          if(tokenResult.claims.role==='admin'){
+            history.push('/admin')
+          }else{
+            if(tokenResult.claims.role==='client'){
+              history.push('/client')
+            }else{
+              if(tokenResult.claims.role==='sucursal'){
+                history.push('/sucursal')
+              }
+            }
+          }
+        })
+      }else{
+        
+      }
+    })
+  }, []);
   //Checck Inputs
   useEffect(() => {
     CheckInputs();
-  }, [email])
+  }, [email]);
   useEffect(() => {
     CheckInputs();
-  }, [password])
+  }, [password]);
 
-  const CheckInputs = () =>{
-    if(email  &&  password ){
-      setSignInButton(false)
-    }else{
-      setSignInButton(true)
+  const CheckInputs = () => {
+    if (email && password) {
+      setSignInButton(false);
+    } else {
+      setSignInButton(true);
     }
-  }
+  };
   //Modal
   const handleClose = () => {
     setShow(false);
@@ -55,27 +76,7 @@ export default function NavBarComponent() {
 
   //signIN
   const signIn = () => {
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then((e) => {
-        console.log(e.user)
-        localStorage.setItem('userToken',e.user.uid)
-        db.collection('users').where('uid','==',e.user.uid).get().then((collection)=>{
-          collection.forEach(
-            (doc) => {
-              if(doc.data().admin){
-                history.push('/admin')
-              }else{
-                history.push('/client')
-              }
-            }
-          )
-        })
-      })
-      .catch((e)=>{
-        console.log(e)
-        setAlert(true)
-      });
+    auth.signInWithEmailAndPassword(email, password);
   };
   return (
     <>
@@ -135,7 +136,12 @@ export default function NavBarComponent() {
         <Container style={{ padding: "1rem" }}>
           <Row>
             <Col>
-              <Button ml={2} variant="primary" onClick={signIn} disabled={signInButton}>
+              <Button
+                ml={2}
+                variant="primary"
+                onClick={signIn}
+                disabled={signInButton}
+              >
                 INICIAR SESIÓN
               </Button>
             </Col>

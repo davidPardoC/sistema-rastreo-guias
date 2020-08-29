@@ -11,25 +11,28 @@ import AdminClients from "../screens/adminScreens/adminClient";
 import { Switch, Route, useRouteMatch, useHistory } from "react-router-dom";
 
 //Firebase Import
-import { db } from "../assets/firebase";
+import { auth} from "../assets/firebase";
 
 export default function AdminView() {
   const [router, setRouter] = useState(false);
   const history = useHistory();
   useEffect(() => {
-    var userToken = localStorage.getItem("userToken");
-    db.collection("users")
-      .where("uid", "==", userToken)
-      .get()
-      .then((collection) => {
-        collection.forEach((doc) => {
-          if (doc.data().admin === false) {
-            history.push("/");
-          } else {
-            setRouter(true);
+    auth.onAuthStateChanged((user)=>{
+      if(user){
+        user.getIdTokenResult().then(
+          (tokenResult)=>{
+            if(tokenResult.claims.role=='admin'){
+              setRouter(true)
+            }else{
+              history.push('/')
+            }
           }
-        });
-      });
+        )
+        
+      }else{
+        history.push('/')
+      }
+    })
   }, []);
   const match = useRouteMatch();
   return (

@@ -10,13 +10,15 @@ import {
   Alert,
 } from "react-bootstrap";
 import { Icon } from "@material-ui/core";
-import { db, auth } from "../../assets/firebase";
+import { db, auth, functions } from "../../assets/firebase";
 
 //Components
 import RegisterClientModal from "../../components/adminComponents/register-client-modal";
+import EditClientModal from "../../components/adminComponents/edit-cliente-modal";
 
 export default function AdminClients() {
   const [modalRegistroCliente, setmodalRegistroCliente] = useState(false);
+  const [modalEditCliente, setmodalEditCliente] = useState(false);
 
   const [userToFind, setuserToFind] = useState("");
   const [userFound, setuserFound] = useState({});
@@ -24,6 +26,10 @@ export default function AdminClients() {
 
   const closeModalRegister = () => {
     setmodalRegistroCliente(false);
+  };
+
+  const closeModalEdit = () => {
+    setmodalEditCliente(false);
   };
 
   //Buscar Usuario
@@ -43,10 +49,16 @@ export default function AdminClients() {
       })
       .catch();
   };
-//Borrar Usuario 
-const deleteUser = () => {
-  console.log(auth.currentUser)
-}
+  //Borrar Usuario
+  const deleteUser = () => {
+    const deleteUser = functions.httpsCallable('deleteUser');
+    deleteUser({uid:userFound.uid}).then((res)=>{
+      console.log(res)
+      db.collection('users').doc(userFound.id).delete().then(()=>{
+        setuserFound({})
+      })
+    })
+  };
 
   const checkFound = () => {
     if (Object.keys(userFound).length !== 0) {
@@ -55,7 +67,7 @@ const deleteUser = () => {
           <ListGroup.Item className="d-flex justify-content-between">
             {`${userFound.nombre} ${userFound.apellido}`}
             <div>
-              <Button onClick={()=>{}}>
+              <Button onClick={() => {setmodalEditCliente(true)}}>
                 <Icon>edit</Icon>
               </Button>
               <Button variant="danger" className="ml-3" onClick={deleteUser}>
@@ -72,12 +84,23 @@ const deleteUser = () => {
   };
   return (
     <Container className="mt-3">
+
+      {/*Modal Registro*/}
       <Modal show={modalRegistroCliente} onHide={closeModalRegister}>
         <Modal.Header closeButton>
           <Modal.Title>Registro Cliente</Modal.Title>
         </Modal.Header>
         <RegisterClientModal hide={closeModalRegister} />
       </Modal>
+
+      {/*Modal Edit*/}
+      <Modal show={modalEditCliente} onHide={closeModalEdit} >
+        <Modal.Header closeButton>
+          <Modal.Title>Editar Cliente</Modal.Title>
+        </Modal.Header>
+        <EditClientModal hide={closeModalEdit} cliente={userFound}/>
+      </Modal>
+
       <Row>
         <Col sm={6}>
           <Button

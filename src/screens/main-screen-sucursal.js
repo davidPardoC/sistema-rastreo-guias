@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Icon from "@material-ui/core/Icon";
 import Container from "react-bootstrap/Container";
-import { Row, Col, FormControl } from "react-bootstrap";
+import { Row, Col, FormControl,Dropdown } from "react-bootstrap";
 import ModalAddOrder from "../components/modal-add-order";
 import { useHistory, Link, useRouteMatch } from "react-router-dom";
+import { db, auth } from "../assets/firebase";
 export default function MainSucursal(props) {
   //state
   const [guides, setGuides] = useState([]);
@@ -35,6 +36,17 @@ export default function MainSucursal(props) {
               className="mr-sm-2"
             />
             <Button variant="outline-success">BUSCAR</Button>
+            <Dropdown className='ml-2 d-flex align-items-center'>
+              <Dropdown.Toggle>
+                <Icon>settings</Icon>
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={()=>{auth.signOut(); history.push('/')}}>
+                  Cerras Sesión
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
         </Col>
       </Row>

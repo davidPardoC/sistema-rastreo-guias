@@ -8,18 +8,34 @@ import {
   Container,
   ListGroup,
   Alert,
+  Dropdown,
 } from "react-bootstrap";
 import ModalAddOrder from "../components/modal-add-order";
-import { db } from "../assets/firebase";
-import { List } from "@material-ui/core";
+import { db, auth } from "../assets/firebase";
+import {useHistory} from 'react-router-dom'
 
 export default function CreateAlert() {
+  const history = useHistory();
   //state
   const [show, setShow] = useState(false);
   const [guideToFind, setGuideToFind] = useState("");
   const [guideFound, setGuideFound] = useState({});
+  const [cliente, setCliente] = useState({})
 
-  //hooks
+  //cargarUsuario
+  useEffect(() => {
+    auth.onAuthStateChanged((user)=>{
+      if(user){
+        db.collection('users').where('uid','==',user.uid).get().then((users)=>{
+          users.forEach(
+            (user)=>{
+              setCliente({id:user.id, ...user.data()})
+            }
+          )
+        })
+      }
+    })
+  }, [])
 
   const searchGuia = () => {
     db.collection("guias")
@@ -56,7 +72,7 @@ export default function CreateAlert() {
 
   return (
     <Container style={{ marginTop: "2rem" }}>
-      <ModalAddOrder show={show} close={handleClose} />
+      <ModalAddOrder show={show} close={handleClose} cliente={cliente}/>
       <Row>
         <Col sm={6}>
           <Button
@@ -83,6 +99,17 @@ export default function CreateAlert() {
             <Button variant="outline-success" onClick={searchGuia}>
               BUSCAR
             </Button>
+            <Dropdown className='ml-2 d-flex align-items-center'>
+              <Dropdown.Toggle>
+                <Icon>settings</Icon>
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={()=>{auth.signOut(); history.push('/')}}>
+                  Cerras Sesión
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
         </Col>
       </Row>
