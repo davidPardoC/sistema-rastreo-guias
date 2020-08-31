@@ -8,10 +8,9 @@ import {
   Col
 } from "react-bootstrap";
 import { db, functions } from "../../assets/firebase";
-import { useRouteMatch } from "react-router-dom";
+
 export default function RegisterClientModal(props) {
-  //imports
-  const macth = useRouteMatch();
+
   //passwords
   const [password, setPassword] = useState("");
   const [passwordConf, setPasswordConf] = useState("");
@@ -35,7 +34,7 @@ export default function RegisterClientModal(props) {
         setButtonRegister(false);
       }
     }
-  }, [passwordConf]);
+  }, [passwordConf, password]);
 
   //compara los campos de las Contraseñas
   const comparePasswords = () => {

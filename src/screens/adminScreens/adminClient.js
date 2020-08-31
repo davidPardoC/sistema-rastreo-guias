@@ -10,7 +10,7 @@ import {
   Alert,
 } from "react-bootstrap";
 import { Icon } from "@material-ui/core";
-import { db, auth, functions } from "../../assets/firebase";
+import { db,  functions } from "../../assets/firebase";
 
 //Components
 import RegisterClientModal from "../../components/adminComponents/register-client-modal";
@@ -133,7 +133,7 @@ export default function AdminClients() {
       <Row className="d-flex justify-content-center">
         {showLoading && (
           <Col className="d-flex justify-content-center">
-            <img src={require("../../assets/images/loading.gif")} />
+            <img src={require("../../assets/images/loading.gif")} alt='Loading'/>
           </Col>
         )}
       </Row>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Container,
   Row,
@@ -12,11 +12,10 @@ import {
 import Icon from "@material-ui/core/Icon";
 import RegisterSucursal from "../../components/adminComponents/register-sucursal";
 import EditSucursal from '../../components/adminComponents/edit-sucursal'
-import { db, functions } from "../../assets/firebase";
+import { db } from "../../assets/firebase";
 export default function AdminSucursales() {
   const [showNuevaSucursal, setShowNuevaSucursal] = useState(false);
   const [showEditSucursal, setShowEditSucursal] = useState(false)
-  const [showConfirmarBorrar, setShowConfirmarBorrar] = useState(false);
   const [sucursalToFind, setSucursalToFind] = useState("");
   const [sucursalFound, setSucursalFound] = useState({})
   const [showLoading, setshowLoading] = useState(false);
@@ -103,7 +102,7 @@ export default function AdminSucursales() {
         <Row className="d-flex justify-content-center">
         {showLoading && (
           <Col className="d-flex justify-content-center">
-            <img src={require("../../assets/images/loading.gif")} />
+            <img src={require("../../assets/images/loading.gif")} alt='Loading'/>
           </Col>
         )}
         

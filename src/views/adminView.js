@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 
 //componentes
-import CreateOrder from "../screens/create-order";
+import MainScreenAdmin from "../screens/adminScreens/main-screen-admin";
 import AdminSettings from "../screens/adminScreens/settingsAdmin";
 import AdminSucursales from "../screens/adminScreens/adminSucursales";
 import AdminClients from "../screens/adminScreens/adminClient";
@@ -19,9 +19,10 @@ export default function AdminView() {
   useEffect(() => {
     auth.onAuthStateChanged((user)=>{
       if(user){
+        console.log(user)
         user.getIdTokenResult().then(
           (tokenResult)=>{
-            if(tokenResult.claims.role=='admin'){
+            if(tokenResult.claims.role==='admin'){
               setRouter(true)
             }else{
               history.push('/')
@@ -33,13 +34,13 @@ export default function AdminView() {
         history.push('/')
       }
     })
-  }, []);
+  });
   const match = useRouteMatch();
   return (
     <div>
       {router && (
         <Container>
-          <CreateOrder />
+          <MainScreenAdmin />
           <Switch>
             <Route
               path={`${match.path}/settings/adminClients`}

@@ -6,13 +6,10 @@ import {
   Row,
   Alert,
   Col,
-  DropdownButton,
-  Dropdown,
 } from "react-bootstrap";
-import { db, auth, functions } from "../../assets/firebase";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import provincias from "../../assets/provinciasv2";
-import { FormGroup } from "@material-ui/core";
+import { db, functions } from "../../assets/firebase";
+
+
 export default function EditSucursal(props) {
   const [agenciado, setAgenciado] = useState(props.sucursal.agenciado);
   const [id, setid] = useState(props.sucursal.id);

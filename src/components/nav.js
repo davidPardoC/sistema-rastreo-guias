@@ -6,7 +6,6 @@ import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import Dropdown from "react-bootstrap/Dropdown";
 //Icon Imports
 import Icon from "@material-ui/core/Icon";
 
@@ -15,7 +14,7 @@ import { useHistory } from "react-router-dom";
 import { Row, Col, Container, Alert } from "react-bootstrap";
 
 //Firebase Imports
-import { auth, db } from "../assets/firebase";
+import { auth } from "../assets/firebase";
 
 export default function NavBarComponent() {
   //Alerta Credenciales
@@ -33,33 +32,25 @@ export default function NavBarComponent() {
 
   //init
   useEffect(() => {
-    auth.onAuthStateChanged((user)=>{
-      if(user){
-        user.getIdTokenResult().then((tokenResult)=>{
-          if(tokenResult.claims.role==='admin'){
-            history.push('/admin')
-          }else{
-            if(tokenResult.claims.role==='client'){
-              history.push('/client')
-            }else{
-              if(tokenResult.claims.role==='sucursal'){
-                history.push('/sucursal')
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        user.getIdTokenResult().then((tokenResult) => {
+          if (tokenResult.claims.role === "admin") {
+            history.push("/admin");
+          } else {
+            if (tokenResult.claims.role === "client") {
+              history.push("/client");
+            } else {
+              if (tokenResult.claims.role === "sucursal") {
+                history.push("/sucursal");
               }
             }
           }
-        })
-      }else{
-        
+        });
+      } else {
       }
-    })
-  }, []);
-  //Checck Inputs
-  useEffect(() => {
-    CheckInputs();
-  }, [email]);
-  useEffect(() => {
-    CheckInputs();
-  }, [password]);
+    });
+  });
 
   const CheckInputs = () => {
     if (email && password) {
@@ -68,6 +59,8 @@ export default function NavBarComponent() {
       setSignInButton(true);
     }
   };
+  //Checck Inputs
+  useEffect(CheckInputs, [email, password]);
   //Modal
   const handleClose = () => {
     setShow(false);
@@ -76,7 +69,13 @@ export default function NavBarComponent() {
 
   //signIN
   const signIn = () => {
-    auth.signInWithEmailAndPassword(email, password);
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {})
+      .catch((e) => {
+        console.log(e);
+        setAlert(true);
+      });
   };
   return (
     <>

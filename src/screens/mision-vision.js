@@ -1,6 +1,5 @@
 import React from "react";
 import NavBarComponent from "../components/nav";
-import { db } from "../assets/firebase";
 import './styles/home.css'
 import {
   Container,

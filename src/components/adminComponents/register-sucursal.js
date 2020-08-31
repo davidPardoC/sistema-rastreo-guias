@@ -5,14 +5,9 @@ import {
   Button,
   Row,
   Alert,
-  Col,
-  DropdownButton,
-  Dropdown,
+  Col
 } from "react-bootstrap";
-import { db, auth, functions } from "../../assets/firebase";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import provincias from "../../assets/provinciasv2";
-import { FormGroup } from "@material-ui/core";
+import { db, functions } from "../../assets/firebase";
 export default function RegisterSucursal(props) {
   const [agenciado, setAgenciado] = useState('');
   const [id, setid] = useState('');

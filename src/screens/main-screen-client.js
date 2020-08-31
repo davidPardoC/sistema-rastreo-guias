@@ -10,17 +10,23 @@ import {
   Alert,
   Dropdown,
 } from "react-bootstrap";
-import ModalAddOrder from "../components/modal-add-order";
+import ModalPreAlert from "../components/clientComponets/modal-prealert";
+import ModalViewStates from '../components/clientComponets/modal-view-state'
 import { db, auth } from "../assets/firebase";
 import {useHistory} from 'react-router-dom'
 
-export default function CreateAlert() {
+export default function MainScreensCustomer() {
   const history = useHistory();
   //state
   const [show, setShow] = useState(false);
+  const [showGuideInfo, setshowGuideInfo] = useState(false)
   const [guideToFind, setGuideToFind] = useState("");
   const [guideFound, setGuideFound] = useState({});
   const [cliente, setCliente] = useState({})
+  const [showLoading, setshowLoading] = useState(false);
+  const [guideToPass, setguideToPass] = useState({destinatario:{nombre:''}, contenido:{descripcion:''}})
+  const [currentGuideStates, setcurrentGuideStates] = useState([])
+
 
   //cargarUsuario
   useEffect(() => {
@@ -38,14 +44,26 @@ export default function CreateAlert() {
   }, [])
 
   const searchGuia = () => {
+    var array = []
+    setshowLoading(true);
     db.collection("guias")
       .doc(guideToFind)
       .get()
       .then((doc) => {
         if (doc.exists) {
-          setGuideFound(doc.data());
+          db.collection('guias').doc(doc.id).collection('estados').get().then((docs)=>{
+            docs.forEach((doc)=>{
+              array.push(doc.data())
+              
+            })
+            setcurrentGuideStates(array)
+          })
+          setGuideFound(doc.data())
+          setguideToPass(doc.data())
+          setshowLoading(false);
         }else{
           setGuideFound(false)
+          setshowLoading(false);
         }
       });
   };
@@ -54,9 +72,9 @@ export default function CreateAlert() {
     if (Object.keys(guideFound).length !== 0) {
       return (
         <ListGroup.Item className='d-flex justify-content-between'>
-          {guideFound.cliente}
-          <Button>
-            <Icon>edit</Icon>
+         { `Destinatario:  ${guideFound.destinatario.nombre} ${guideFound.destinatario.apellido}`}
+          <Button onClick={()=>{setshowGuideInfo(true)}}>
+            <Icon>visibility</Icon>
           </Button>
         </ListGroup.Item>
       );
@@ -69,10 +87,13 @@ export default function CreateAlert() {
   };
   //cerrar modal
   const handleClose = () => setShow(false);
+  const closeInfoModal = () => setshowGuideInfo(false);
 
   return (
     <Container style={{ marginTop: "2rem" }}>
-      <ModalAddOrder show={show} close={handleClose} cliente={cliente}/>
+      {/*Modales*/}
+      <ModalViewStates show={showGuideInfo} close={closeInfoModal} guide={guideToPass} states={currentGuideStates}/>
+      <ModalPreAlert show={show} close={handleClose} cliente={cliente}/>
       <Row>
         <Col sm={6}>
           <Button
@@ -106,12 +127,19 @@ export default function CreateAlert() {
 
               <Dropdown.Menu>
                 <Dropdown.Item onClick={()=>{auth.signOut(); history.push('/')}}>
-                  Cerras Sesión
+                  Cerrar Sesión
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>
         </Col>
+      </Row>
+      <Row>
+      {showLoading && (
+          <Col className="d-flex justify-content-center">
+            <img src={require("../assets/images/loading.gif")} alt='Loading'/>
+          </Col>
+        )}
       </Row>
       <Row>
         <Col>

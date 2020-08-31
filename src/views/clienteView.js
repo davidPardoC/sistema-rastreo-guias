@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import { Container } from "react-bootstrap";
-import CreateAlert from "../screens/main-screen-client";
+import MainScreensCustomer from "../screens/main-screen-client";
 import { auth} from "../assets/firebase";
 import {useHistory} from 'react-router-dom'
 export default function ClientView() {
+
     const history = useHistory()
+
   useEffect(() => {
     auth.onAuthStateChanged((user)=>{
         if(user){
@@ -17,10 +19,11 @@ export default function ClientView() {
             history.push('/')
         }
     })
-  }, []);
+  });
+
   return (
     <Container>
-      <CreateAlert />
+      <MainScreensCustomer />
     </Container>
   );
 }
