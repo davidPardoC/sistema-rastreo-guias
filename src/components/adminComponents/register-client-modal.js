@@ -94,7 +94,7 @@ export default function RegisterClientModal(props) {
             <Col>
               <Form.Group controlId="id">
                 <Form.Control
-                  type="text"
+                  type="number"
                   placeholder={tipoId}
                   onChange={(e) => {
                     setUserToRegister(

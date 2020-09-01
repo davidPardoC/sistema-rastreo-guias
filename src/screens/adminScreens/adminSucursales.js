@@ -114,7 +114,7 @@ export default function AdminSucursales() {
         {/*Modal nueva sucursa*/}
         <Modal show={showNuevaSucursal} onHide={closeModalRegister}>
           <Modal.Header closeButton>
-            <Modal.Title>Registro Cliente</Modal.Title>
+            <Modal.Title>Registro Sucursal</Modal.Title>
           </Modal.Header>
           <RegisterSucursal hide={closeModalRegister} />
         </Modal>

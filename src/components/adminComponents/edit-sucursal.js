@@ -1,58 +1,60 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Form,
-  Button,
-  Row,
-  Alert,
-  Col,
-} from "react-bootstrap";
+import { Container, Form, Button, Row, Alert, Col } from "react-bootstrap";
 import { db, functions } from "../../assets/firebase";
-
+import Icon from "@material-ui/core/Icon";
 
 export default function EditSucursal(props) {
+  const [passwordType, setPasswordType] = useState('password')
   const [agenciado, setAgenciado] = useState(props.sucursal.agenciado);
   const [id, setid] = useState(props.sucursal.id);
   const [tipoId, settipoId] = useState(props.sucursal.tipoId);
   const [nombre, setNombre] = useState(props.sucursal.nombreResponsable);
   const [apellido, setApellido] = useState(props.sucursal.apellidoResponsable);
-  const [telefonoCelular, setTelefonoCelular] = useState(props.sucursal.telefonoCelular);
+  const [telefonoCelular, setTelefonoCelular] = useState(
+    props.sucursal.telefonoCelular
+  );
   const [telefonoFijo, setTelefonoFijo] = useState(props.sucursal.telefonoFijo);
   const [provincia, setProvincia] = useState(props.sucursal.provincia);
   const [canton, setCanton] = useState(props.sucursal.canton);
   const [parroquia, setParroquia] = useState(props.sucursal.parroquia);
-  const [direccion, setdireccion] = useState(props.sucursal.direccion)
-  const [referencia, setreferencia] = useState(props.sucursal.referencia)
-  const [email, setemail] = useState(props.sucursal.email)
-  const [password, setpassword] = useState(props.sucursal.password)
-  const [confPassword, setConfPassword] = useState(props.sucursal.password)
+  const [direccion, setdireccion] = useState(props.sucursal.direccion);
+  const [referencia, setreferencia] = useState(props.sucursal.referencia);
+  const [email, setemail] = useState(props.sucursal.email);
+  const [password, setpassword] = useState(props.sucursal.password);
+  const [confPassword, setConfPassword] = useState(props.sucursal.password);
   const [buttonRegister, setButtonRegister] = useState(true);
 
-  const updateSucursal = ()=>{
-    const updateUser = functions.httpsCallable('updateUser');
-    updateUser({uid:props.sucursal.uid, email:email, password:password}).then((res)=>{
-        console.log(res)
-        db.collection('sucursales').doc(id).set(
-            {
-                agenciado:agenciado,
-                id:id,
-                tipoId:tipoId,
-                nombreResponsable:nombre,
-                apellidoResponsable:apellido,
-                telefonoFijo:telefonoFijo,
-                telefonoCelular:telefonoCelular,
-                provincia:provincia,
-                canton:canton,
-                parroquia:parroquia,
-                direccion:direccion,
-                referencia:referencia,
-                email:email,
-                password:password
-            }
-        ).then().catch((error)=>{alert(error)})
-    }).catch((error)=>(alert(error)))
-    props.hide()
-  }
+  const updateSucursal = () => {
+    const updateUser = functions.httpsCallable("updateUser");
+    updateUser({ uid: props.sucursal.uid, email: email, password: password })
+      .then((res) => {
+        console.log(res);
+        db.collection("sucursales")
+          .doc(id)
+          .set({
+            agenciado: agenciado,
+            id: id,
+            tipoId: tipoId,
+            nombreResponsable: nombre,
+            apellidoResponsable: apellido,
+            telefonoFijo: telefonoFijo,
+            telefonoCelular: telefonoCelular,
+            provincia: provincia,
+            canton: canton,
+            parroquia: parroquia,
+            direccion: direccion,
+            referencia: referencia,
+            email: email,
+            password: password,
+          })
+          .then()
+          .catch((error) => {
+            alert(error);
+          });
+      })
+      .catch((error) => alert(error));
+    props.hide();
+  };
 
   //Habilita el boton de registro
   useEffect(() => {
@@ -65,8 +67,7 @@ export default function EditSucursal(props) {
         setButtonRegister(false);
       }
     }
-  }, [confPassword,  password]);
-  
+  }, [confPassword, password]);
 
   const comparePasswords = () => {
     if (password === confPassword) {
@@ -81,6 +82,13 @@ export default function EditSucursal(props) {
       }
     }
   };
+  const changePasswordType = ()=>{
+    if(passwordType === 'password'){
+      setPasswordType('text')
+    }else{
+      setPasswordType('password')
+    }
+  }
   return (
     <>
       <Container>
@@ -195,58 +203,72 @@ export default function EditSucursal(props) {
           </Col>
         </Row>
         <Form.Group>
-              <Form.Control
-                placeholder="Dirección"
-                value={direccion}
-                onChange={(e) => {
-                  setdireccion(e.target.value);
-                }}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Control
-                placeholder="Referencia"
-                value={referencia}
-                onChange={(e) => {
-                  setreferencia(e.target.value);
-                }}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Control
-                placeholder="Correo Electrónico"
-                value={email}
-                onChange={(e) => {
-                  setemail(e.target.value);
-                }}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Control
-              type='password'
-                placeholder="Contraseña"
-                value={password}
-                onChange={(e) => {
-                  setpassword(e.target.value);
-                }}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Control
-              type='password'
-                placeholder="Confirmar Contraseña"
-                value={confPassword}
-                onChange={(e) => {
-                  setConfPassword(e.target.value);
-                }}
-              />
-            </Form.Group>
-            {comparePasswords()}
-            <div className='d-flex justify-content-center'>
-            <Button variant='outline-primary  mb-4' onClick={props.hide}>CANCELAR</Button>
-            <Button className='ml-3 mb-4' onClick={updateSucursal} disabled={buttonRegister}>GUARDAR</Button>
-            </div>
-            
+          <Form.Control
+            placeholder="Dirección"
+            value={direccion}
+            onChange={(e) => {
+              setdireccion(e.target.value);
+            }}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Control
+            placeholder="Referencia"
+            value={referencia}
+            onChange={(e) => {
+              setreferencia(e.target.value);
+            }}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Control
+            placeholder="Correo Electrónico"
+            value={email}
+            onChange={(e) => {
+              setemail(e.target.value);
+            }}
+          />
+        </Form.Group>
+
+        <Form.Group>
+          <div className="d-flex align-items-center">
+            <Form.Control
+              type={passwordType}
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => {
+                setpassword(e.target.value);
+              }}
+            />
+            <Button className="d-flex align-items-center ml-1" onClick={changePasswordType}>
+              <Icon>visibility</Icon>
+            </Button>
+          </div>
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Control
+            type="password"
+            placeholder="Confirmar Contraseña"
+            value={confPassword}
+            onChange={(e) => {
+              setConfPassword(e.target.value);
+            }}
+          />
+        </Form.Group>
+        {comparePasswords()}
+        <div className="d-flex justify-content-center">
+          <Button variant="outline-primary  mb-4" onClick={props.hide}>
+            CANCELAR
+          </Button>
+          <Button
+            className="ml-3 mb-4"
+            onClick={updateSucursal}
+            disabled={buttonRegister}
+          >
+            GUARDAR
+          </Button>
+        </div>
       </Container>
     </>
   );

@@ -50,7 +50,7 @@ export default function NavBarComponent() {
       } else {
       }
     });
-  });
+  },[]);
 
   const CheckInputs = () => {
     if (email && password) {

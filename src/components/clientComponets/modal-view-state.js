@@ -1,8 +1,23 @@
 import React, {useState, useEffect} from "react";
 import { Modal, Row, Col, Table } from "react-bootstrap";
+import {db} from '../../assets/firebase'
 
 export default function ModalViewStates(props) {
-  console.log(props.states)
+  const [states, setstates] = useState([])
+
+  const getStates =  () =>{
+    db.collection('guias').doc(`${props.guide.id}`).collection('estados').onSnapshot((snapshot)=>{
+      var aux = []
+      snapshot.forEach((doc)=>{
+        aux.push({id:doc.id, ...doc.data()})
+      })
+      setstates(aux)
+    })
+  }
+  useEffect(()=>{
+    getStates()
+  },[props.show]);
+  
   return (
     <Modal show={props.show} onHide={props.close} backdrop="static" size="lg">
       <Modal.Header closeButton>
@@ -11,18 +26,22 @@ export default function ModalViewStates(props) {
       <Modal.Body>
         <Row>
           <Col>
-            <Table striped bordered hover>
+            <Table striped bordered hover key={0}>
               <tbody>
-                <tr>
+                <tr key={1}>
                   <td>
-                    Nombres y apellidos:
-                    {` ${props.guide.destinatario.nombre}  ${props.guide.destinatario.apellido}`}{" "}
+                    <strong>Nombres:</strong>
+                    {`  ${props.guide.destinatario.nombre}`}
+                  </td>
+                  <td>
+                 <strong>Apellidos:</strong> 
+{ `  ${props.guide.destinatario.apellido}`}
                   </td>
                 </tr>
-                <tr>
+                <tr key={2}>
                   <td>CI:{`${props.guide.destinatario.ci}`}</td>
                 </tr>
-                <tr>
+                <tr key={3}>
                   <td>{`Descripcion: ${props.guide.contenido.descripcion}`}</td>
                   <td>
                     {`Valor declarado: USD ${props.guide.contenido.valor}`}
@@ -39,16 +58,15 @@ export default function ModalViewStates(props) {
                   <th>Estado</th>
                 </tr>
               </thead>
-              <tbody>
-              {
-                props.states.map((e)=>(
-                  <tr>
-                    <td>{new Date(e.date.seconds*1000).toISOString().substr(0, 19)}</td>
-                    <td>{e.descripcion}</td>
-                  </tr>
-                ))
-              }
-              
+              <tbody>  
+                {
+                  states.map((state)=>(
+                    <tr key={state.id}>
+                      <td>{new Date(state.date.seconds*1000).toDateString()}</td>
+                      <td>{state.descripcion}</td>
+                    </tr>
+                  ))
+                }          
               </tbody>
             </Table>
           </Col>
