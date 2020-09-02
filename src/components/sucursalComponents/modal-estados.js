@@ -5,6 +5,8 @@ import { db } from "../../assets/firebase";
 import Icon from "@material-ui/core/Icon";
 export default function ModalEstados(props) {
   const [states, setStates] = useState([]);
+  const [showStateIput, setShowStateInput]=useState(false)
+  const [descripcion, setDescripcion] = useState('')
   const getStates = () => {
     db.collection("guias")
       .doc(`${props.guide.id}`)
@@ -20,10 +22,20 @@ export default function ModalEstados(props) {
   useEffect(() => {
     getStates();
   }, [props.show]);
+
+  const updateState= ()=>{
+    db.collection('guias').doc(`${props.guide.id}`).collection('estados').add({
+      descripcion:descripcion,
+      date: new Date()
+    }).then(()=>{
+      setDescripcion('')
+      setShowStateInput(false)
+    })
+  }
   return (
     <Modal show={props.show} onHide={props.close} size="lg">
       <Modal.Header closeButton>
-        <h3>Estados</h3>
+        <h3>Estados   {props.guide.id}</h3>
       </Modal.Header>
       <Modal.Body>
         <Table striped bordered hover>
@@ -42,9 +54,9 @@ export default function ModalEstados(props) {
             ))}
           </tbody>
         </Table>
-        <Button variant='success'>Agregar Estado</Button>
+        <Button variant='success' onClick={()=>{setShowStateInput(!showStateIput)}}>Agregar Estado</Button>
         {
-            true && (<div className='d-flex align-items-center'><FormControl placeholder='Estado' className='mt-2'/><Button className='ml-2 d-flex align-items-center'><Icon>check</Icon></Button></div>)
+            showStateIput && (<div className='d-flex align-items-center'><FormControl placeholder='Estado' className='mt-2' value={descripcion} onChange={(e)=>{setDescripcion(e.target.value)}}/><Button className='ml-2 d-flex align-items-center' onClick={updateState}><Icon>check</Icon></Button></div>)
         }
       </Modal.Body>
     </Modal>

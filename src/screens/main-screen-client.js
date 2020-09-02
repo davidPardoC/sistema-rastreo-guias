@@ -29,23 +29,27 @@ export default function MainScreensCustomer() {
     destinatario: { nombre: "" },
     contenido: { descripcion: "" },
   });
-  const [currentGuideStates, setcurrentGuideStates] = useState([]);
+
   const [guides, setguides] = useState([]);
 
   const getUserGuides = async () => {
-    db.collection("guias")
+    console.log(cliente)
+    db.collection("guias").where('remitente.id', '==', `${cliente.id}`)
       .onSnapshot((querySnapshot) => {
         var aux = []
         querySnapshot.forEach((doc) => {
-          
+
           aux.push({ id: doc.id, ...doc.data() });
         });
         setguides(aux)
       });
   };
+
   useEffect(() => {
-    getUserGuides();
-  },[]);
+    getUserGuides()
+  }, [cliente])
+
+
   useEffect(() => {
     if (guideToFind === "") {
       setshowAlert(false);
@@ -60,9 +64,9 @@ export default function MainScreensCustomer() {
           .get()
           .then((users) => {
             users.forEach((user) => {
-              setCliente({ id: user.id, ...user.data() });
+              setCliente({ id: user.id, ...user.data() })
             });
-          });
+          })
       }
     });
   }, []);
@@ -147,9 +151,6 @@ export default function MainScreensCustomer() {
                   className="d-flex justify-content-between"
                   key={guide.id}
                 >
-                  <Col sm={6}>
-                    {`Destinatario:  ${guide.destinatario.nombre} ${guide.destinatario.apellido}`}
-                  </Col>
                   <Col sm={4}>{`Guía: ${guide.id}`}</Col>
 
                   <Button
@@ -171,9 +172,6 @@ export default function MainScreensCustomer() {
                   className="d-flex justify-content-between"
                   key={guide.id}
                 >
-                  <Col sm={6}>
-                    {`Destinatario:  ${guide.destinatario.nombre} ${guide.destinatario.apellido}`}
-                  </Col>
                   <Col sm={4}>{`Guía: ${guide.id}`}</Col>
 
                   <Button

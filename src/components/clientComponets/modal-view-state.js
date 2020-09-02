@@ -30,21 +30,28 @@ export default function ModalViewStates(props) {
               <tbody>
                 <tr key={1}>
                   <td>
-                    <strong>Nombres:</strong>
-                    {`  ${props.guide.destinatario.nombre}`}
+                    Nombres
+                   
                   </td>
                   <td>
-                 <strong>Apellidos:</strong> 
+                  {`  ${props.guide.destinatario.nombre}`}
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Apellidos</strong></td>
+                 <td>
 { `  ${props.guide.destinatario.apellido}`}
                   </td>
                 </tr>
                 <tr key={2}>
-                  <td>CI:{`${props.guide.destinatario.ci}`}</td>
+                  <td>CI</td>
+                  <td>{`${props.guide.destinatario.ci}`}</td>
                 </tr>
+               
                 <tr key={3}>
                   <td>{`Descripcion: ${props.guide.contenido.descripcion}`}</td>
                   <td>
-                    {`Valor declarado: USD ${props.guide.contenido.valor}`}
+                    {`Valor declarado: USD ${props.guide.contenido.valorDeclarado}`}
                   </td>
                   <td>{`Peso: ${props.guide.contenido.peso}g`}</td>
                 </tr>

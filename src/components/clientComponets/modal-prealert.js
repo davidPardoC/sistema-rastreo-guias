@@ -29,7 +29,7 @@ export default function ModalPreAlert(props) {
           .doc(`RN${doc.data().count}EC`)
           .set({
             remitente: props.cliente,
-            destinatario: {
+            destinatario:{
               ci: ci,
               nombre:nombre,
               apellido:apellido,
@@ -41,13 +41,13 @@ export default function ModalPreAlert(props) {
               email: email,
               referencia: referencia,
               telefono: telefono,
+            },
+            contenido:{
               nroItems: nroItems,
-            },
-            contenido: {
               peso: peso,
-              valor: valor,
+              valorDeclarado: valor,
               descripcion: descripcion,
-            },
+            }
           })
           .then((e) => {
             db.collection("guias")

@@ -9,10 +9,11 @@ import {
   Dropdown,
   ListGroup,
   Alert,
+  Modal
 } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { auth, db } from "../assets/firebase";
-import ModalEditGuide from '../components/sucursalComponents/modal-edit-guia'
+import EditGuide from '../components/sucursalComponents/modal-edit-guia'
 import ModalEstados from '../components/sucursalComponents/modal-estados'
 export default function MainSucursal(props) {
   const [showLoading, setshowLoading] = useState(false);
@@ -20,6 +21,7 @@ export default function MainSucursal(props) {
   const [guideFound, setguideFound] = useState({});
   const [showEditGuide, setshowEditGuide] = useState(false)
   const [showUpdateStates, setshowUpdateStates] = useState(false)
+  const [guideToPass, setGuideToPass] = useState({})
 
   //inicializacion de importaciones
   const history = useHistory();
@@ -49,10 +51,10 @@ export default function MainSucursal(props) {
           <ListGroup.Item className="d-flex justify-content-between">
             {guideFound.id}
             <div>
-              <Button onClick={()=>{setshowEditGuide(true)}}>
+              <Button onClick={() => { setshowEditGuide(true); setGuideToPass(guideFound) }}>
                 <Icon>visibility</Icon>
               </Button>
-              <Button variant="primary" className="ml-1" onClick={()=>{
+              <Button variant="primary" className="ml-1" onClick={() => {
                 setshowUpdateStates(true)
               }}>
                 <Icon>update</Icon>
@@ -70,23 +72,27 @@ export default function MainSucursal(props) {
     }
   };
 
-  const closeEditGuide = ()=>{
+  const closeEditGuide = () => {
     setshowEditGuide(false)
   }
-  
-  const closUpdateEstados = () =>{
+
+  const closUpdateEstados = () => {
     setshowUpdateStates(false)
   }
   return (
     <Container style={{ marginTop: "2rem" }}>
-      <ModalEstados show={showUpdateStates} close={closUpdateEstados} guide={guideFound}/>
-      <ModalEditGuide show={showEditGuide} close={closeEditGuide} guide={guideFound}/>
+      <ModalEstados show={showUpdateStates} close={closUpdateEstados} guide={guideFound} />
+      <Modal show={showEditGuide} onHide={closeEditGuide} size="lg">
+        <Modal.Body>
+          <EditGuide guide={guideToPass} />
+        </Modal.Body>
+      </Modal>
       <Row>
         <Col sm={6}>
           <Button
             variant="primary"
             style={{ display: "flex" }}
-            onClick={() => {}}
+            onClick={() => { }}
           >
             NUEVO PAQUETE <Icon style={{ marginLeft: "1rem" }}>add_circle</Icon>
           </Button>
