@@ -33,7 +33,6 @@ export default function MainScreensCustomer() {
   const [guides, setguides] = useState([]);
 
   const getUserGuides = async () => {
-    console.log(cliente)
     db.collection("guias").where('remitente.id', '==', `${cliente.id}`)
       .onSnapshot((querySnapshot) => {
         var aux = []

@@ -51,7 +51,7 @@ export default function MainSucursal(props) {
           <ListGroup.Item className="d-flex justify-content-between">
             {guideFound.id}
             <div>
-              <Button onClick={() => { setshowEditGuide(true); setGuideToPass(guideFound) }}>
+              <Button onClick={() => { setshowEditGuide(true); setGuideToPass(guideFound); console.log(guideFound) }}>
                 <Icon>visibility</Icon>
               </Button>
               <Button variant="primary" className="ml-1" onClick={() => {
@@ -81,10 +81,13 @@ export default function MainSucursal(props) {
   }
   return (
     <Container style={{ marginTop: "2rem" }}>
+      {/** Modal para agregar los estados */}
       <ModalEstados show={showUpdateStates} close={closUpdateEstados} guide={guideFound} />
+
+      {/*Modal [ara editar la informacion de la guia */}
       <Modal show={showEditGuide} onHide={closeEditGuide} size="lg">
         <Modal.Body>
-          <EditGuide guide={guideToPass} />
+          <EditGuide guide={guideToPass} close={closeEditGuide} refresh={searchGuide}/>
         </Modal.Body>
       </Modal>
       <Row>

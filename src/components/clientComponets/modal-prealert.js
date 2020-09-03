@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Row, Col, ListGroup } from "react-bootstrap";
 import { db } from "../../assets/firebase";
 export default function ModalPreAlert(props) {
@@ -16,9 +16,20 @@ export default function ModalPreAlert(props) {
   const [referencia, setreferencia] = useState();
   const [telefono, settelefono] = useState();
   const [nroItems, setnroItems] = useState();
-  const [peso, setpeso] = useState();
+  const [peso, setpeso] = useState(0);
   const [valor, setvalor] = useState();
   const [descripcion, setdescripcion] = useState();
+
+  //cliente 
+  const [cliente, setcliente] = useState(props.cliente);
+
+  useEffect(() => {
+   setcliente(props.cliente)
+   delete cliente.password
+   delete cliente.uid
+   console.log(cliente)
+   
+  }, [props]);
 
   const registerGuide = () => {
     db.collection("stats")
@@ -28,7 +39,7 @@ export default function ModalPreAlert(props) {
         db.collection("guias")
           .doc(`RN${doc.data().count}EC`)
           .set({
-            remitente: props.cliente,
+            remitente: cliente,
             destinatario:{
               ci: ci,
               nombre:nombre,
