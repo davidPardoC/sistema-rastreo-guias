@@ -26,9 +26,7 @@ export default function ModalPreAlert(props) {
   useEffect(() => {
    setcliente(props.cliente)
    delete cliente.password
-   delete cliente.uid
-   console.log(cliente)
-   
+   delete cliente.uid   
   }, [props]);
 
   const registerGuide = () => {
@@ -55,12 +53,13 @@ export default function ModalPreAlert(props) {
             },
             contenido:{
               nroItems: nroItems,
-              peso: peso,
+              peso: 0,
               valorDeclarado: valor,
               descripcion: descripcion,
             }
           })
-          .then((e) => {
+          .then((res) => {
+            props.returnGuideId(`RN${doc.data().count}EC`)
             db.collection("guias")
               .doc(`RN${doc.data().count}EC`)
               .collection("estados")
@@ -68,7 +67,6 @@ export default function ModalPreAlert(props) {
                 descripcion: "prealertado",
                 date: new Date()
               });
-
               db.collection('stats').doc('guiasRecords').set({
                 count:doc.data().count+1
               })
@@ -230,15 +228,7 @@ export default function ModalPreAlert(props) {
                 }}
               />
             </Form.Group>
-            <Form.Group>
-              <Form.Control
-                placeholder="Peso (Gramos)"
-                type="number"
-                onChange={(e) => {
-                  setpeso(e.target.value);
-                }}
-              />
-            </Form.Group>
+
             <Form.Group>
               <Form.Control
                 placeholder="Valor declarado (USD)"

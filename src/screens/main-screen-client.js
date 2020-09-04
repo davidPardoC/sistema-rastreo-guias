@@ -9,7 +9,9 @@ import {
   ListGroup,
   Alert,
   Dropdown,
+  Modal,
 } from "react-bootstrap";
+import GuideInfo from '../components/clientComponets/modal-guide-info'
 import ModalPreAlert from "../components/clientComponets/modal-prealert";
 import ModalViewStates from "../components/clientComponets/modal-view-state";
 import { db, auth } from "../assets/firebase";
@@ -31,6 +33,8 @@ export default function MainScreensCustomer() {
   });
 
   const [guides, setguides] = useState([]);
+  const [lastAddedGuide, setlastAddedGuide] = useState('');
+  const [showLatestGuideModal, setshowLatestGuideModal] = useState(false);
 
   const getUserGuides = async () => {
     db.collection("guias").where('remitente.id', '==', `${cliente.id}`)
@@ -83,8 +87,16 @@ export default function MainScreensCustomer() {
   };
 
   //cerrar modal
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false)
+    setshowLatestGuideModal(true)
+  };
   const closeInfoModal = () => setshowGuideInfo(false);
+  const closeLatestGuideInfoModal = () =>{
+    setshowLatestGuideModal(false)
+  }
+
+
 
   return (
     <Container style={{ marginTop: "2rem" }}>
@@ -94,7 +106,14 @@ export default function MainScreensCustomer() {
         close={closeInfoModal}
         guide={guideToPass}
       />
-      <ModalPreAlert show={show} close={handleClose} cliente={cliente} />
+      {/**Modal pre alerta */}
+      <ModalPreAlert show={show} close={handleClose} cliente={cliente} returnGuideId={setlastAddedGuide}/>
+      {/**Modal Info Latest Guide */}
+      <Modal show={showLatestGuideModal} onHide={closeLatestGuideInfoModal} size="lg">
+        <Modal.Body >
+        <GuideInfo guide={lastAddedGuide}/>
+        </Modal.Body>
+      </Modal>
       <Row>
         <Col sm={6}>
           <Button
