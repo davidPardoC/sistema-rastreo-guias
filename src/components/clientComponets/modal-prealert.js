@@ -1,32 +1,42 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button, Form, Row, Col, ListGroup } from "react-bootstrap";
+import {
+  Modal,
+  Button,
+  Form,
+  Row,
+  Col,
+  ListGroup,
+  Alert,
+} from "react-bootstrap";
 import { db } from "../../assets/firebase";
 export default function ModalPreAlert(props) {
-
   //datos destinatario
   const [ci, setci] = useState();
-  const [nombre, setnombre] = useState()
-  const [apellido, setapellido] = useState()
+  const [nombre, setnombre] = useState("");
+  const [apellido, setapellido] = useState("");
   const [tipoId, settipoId] = useState("CI");
-  const [provincia, setprovincia] = useState();
-  const [canton, setcanton] = useState();
-  const [parroquia, setparroquia] = useState();
-  const [direccion, setdireccion] = useState();
-  const [email, setemail] = useState();
-  const [referencia, setreferencia] = useState();
-  const [telefono, settelefono] = useState();
-  const [nroItems, setnroItems] = useState();
+  const [provincia, setprovincia] = useState("");
+  const [canton, setcanton] = useState("");
+  const [parroquia, setparroquia] = useState("");
+  const [direccion, setdireccion] = useState("");
+  const [email, setemail] = useState("");
+  const [referencia, setreferencia] = useState("");
+  const [telefono, settelefono] = useState("");
+  const [nroItems, setnroItems] = useState("");
   const [peso, setpeso] = useState(0);
-  const [valor, setvalor] = useState();
-  const [descripcion, setdescripcion] = useState();
+  const [valor, setvalor] = useState("");
+  const [descripcion, setdescripcion] = useState("");
 
-  //cliente 
+  //cliente
   const [cliente, setcliente] = useState(props.cliente);
 
+  //Boton Registro
+  const [btnRegisterGuide, setbtnRegisterGuide] = useState(true);
+  const [showAlertEmail, setshowAlertEmail] = useState(false);
   useEffect(() => {
-   setcliente(props.cliente)
-   delete cliente.password
-   delete cliente.uid   
+    setcliente(props.cliente);
+    delete cliente.password;
+    delete cliente.uid;
   }, [props]);
 
   const registerGuide = () => {
@@ -35,13 +45,13 @@ export default function ModalPreAlert(props) {
       .get()
       .then((doc) => {
         db.collection("guias")
-          .doc(`RN${doc.data().count}EC`)
+          .doc(`RF${doc.data().count}EC`)
           .set({
             remitente: cliente,
-            destinatario:{
+            destinatario: {
               ci: ci,
-              nombre:nombre,
-              apellido:apellido,
+              nombre: nombre,
+              apellido: apellido,
               tipoId: tipoId,
               provincia: provincia,
               canton: canton,
@@ -51,31 +61,85 @@ export default function ModalPreAlert(props) {
               referencia: referencia,
               telefono: telefono,
             },
-            contenido:{
+            contenido: {
               nroItems: nroItems,
               peso: 0,
               valorDeclarado: valor,
               descripcion: descripcion,
-            }
+            },
           })
           .then((res) => {
-            props.returnGuideId(`RN${doc.data().count}EC`)
+            props.returnGuideId(`RF${doc.data().count}EC`);
             db.collection("guias")
-              .doc(`RN${doc.data().count}EC`)
+              .doc(`RF${doc.data().count}EC`)
               .collection("estados")
               .add({
                 descripcion: "prealertado",
-                date: new Date()
+                date: new Date(),
               });
-              db.collection('stats').doc('guiasRecords').set({
-                count:doc.data().count+1
-              })
+            db.collection("stats")
+              .doc("guiasRecords")
+              .set({
+                count: doc.data().count + 1,
+              });
           });
       });
     props.close();
   };
+
+  const checkDestinataryInputs = () => {
+    if (email.includes("@") && email.includes(".")) {
+      setshowAlertEmail(false);
+      setbtnRegisterGuide(false);
+    } else {
+      if (email === "") {
+        setshowAlertEmail(false);
+      } else {
+        setshowAlertEmail(true);
+      }
+    }
+    if (
+      ci === "" ||
+      nombre === "" ||
+      apellido === "" ||
+      tipoId === "" ||
+      provincia === "" ||
+      canton === "" ||
+      parroquia === "" ||
+      direccion === "" ||
+      email === "" ||
+      referencia === "" ||
+      telefono === "" ||
+      nroItems === "" ||
+      valor === "" ||
+      descripcion === ""
+    ) {
+      setbtnRegisterGuide(true);
+    } else {
+      setbtnRegisterGuide(false);
+    }
+  };
+  useEffect(() => {
+    checkDestinataryInputs();
+  }, [
+    ci,
+    nombre,
+    apellido,
+    tipoId,
+    provincia,
+    canton,
+    parroquia,
+    direccion,
+    email,
+    referencia,
+    telefono,
+    nroItems,
+    valor,
+    descripcion,
+  ]);
+
   return (
-    <Modal show={props.show} onHide={props.close} backdrop="static" size="lg">
+    <Modal show={props.show} onHide={props.closeNoConfirm} backdrop="static" size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Nuevo Paquete</Modal.Title>
       </Modal.Header>
@@ -139,21 +203,21 @@ export default function ModalPreAlert(props) {
               </Col>
             </Row>
             <Form.Group>
-                  <Form.Control
-                    placeholder="Nombre"
-                    onChange={(e) => {
-                      setnombre(e.target.value);
-                    }}
-                  />
-                </Form.Group>
-                <Form.Group>
-                  <Form.Control
-                    placeholder="Apellido"
-                    onChange={(e) => {
-                      setapellido(e.target.value);
-                    }}
-                  />
-                </Form.Group>
+              <Form.Control
+                placeholder="Nombre"
+                onChange={(e) => {
+                  setnombre(e.target.value);
+                }}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Control
+                placeholder="Apellido"
+                onChange={(e) => {
+                  setapellido(e.target.value);
+                }}
+              />
+            </Form.Group>
             <Row>
               <Col>
                 <Form.Group>
@@ -196,12 +260,14 @@ export default function ModalPreAlert(props) {
             </Form.Group>
             <Form.Group>
               <Form.Control
+                type="email"
                 placeholder="Email"
                 onChange={(e) => {
                   setemail(e.target.value);
                 }}
               />
             </Form.Group>
+            {showAlertEmail && <Alert variant='danger'>Email no valido</Alert>}
             <Form.Group>
               <Form.Control
                 placeholder="Referencia"
@@ -250,10 +316,14 @@ export default function ModalPreAlert(props) {
         </Row>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={props.close}>
+        <Button variant="secondary" onClick={props.closeNoConfirm}>
           CANCELAR
         </Button>
-        <Button variant="primary" onClick={registerGuide}>
+        <Button
+          variant="primary"
+          disabled={btnRegisterGuide}
+          onClick={registerGuide}
+        >
           CREAR GUIA
         </Button>
       </Modal.Footer>

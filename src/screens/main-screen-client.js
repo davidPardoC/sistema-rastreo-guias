@@ -16,6 +16,7 @@ import ModalPreAlert from "../components/clientComponets/modal-prealert";
 import ModalViewStates from "../components/clientComponets/modal-view-state";
 import { db, auth } from "../assets/firebase";
 import { useHistory } from "react-router-dom";
+import '../components/clientComponets/modal-guide.css'
 
 export default function MainScreensCustomer() {
   const history = useHistory();
@@ -48,10 +49,27 @@ export default function MainScreensCustomer() {
       });
   };
 
+  useEffect(()=>{
+    
+  },[])
   useEffect(() => {
     getUserGuides()
   }, [cliente])
 
+const formatGuide = (guide) => {
+    var guideArray = Array.from(guide);
+    var aux = 13-guideArray.length 
+    for (let i = 1; i <= aux; i++) {
+        guideArray.splice(2,0,'0')
+    }
+    var lastStringGuide = guideArray.join('')
+    return lastStringGuide;
+  }
+
+const unFormatGuide = (guide) => {
+  var guideUnformated = guide.replace(/0/g, '')
+  return guideUnformated;
+}
 
   useEffect(() => {
     if (guideToFind === "") {
@@ -75,7 +93,8 @@ export default function MainScreensCustomer() {
   }, []);
 
   const searchGuide = () => {
-    var guideF = guides.filter((guide) => guide.id === guideToFind);
+    var guideUnformated = unFormatGuide(guideToFind)
+    var guideF = guides.filter((guide) => guide.id === guideUnformated);
     if (guideF.length !== 0) {
       setGuideFound(guideF);
       setshowAlert(false);
@@ -96,6 +115,10 @@ export default function MainScreensCustomer() {
     setshowLatestGuideModal(false)
   }
 
+  const handleCloseNoConfirm = () => {
+    setShow(false)
+  }
+
 
 
   return (
@@ -107,7 +130,7 @@ export default function MainScreensCustomer() {
         guide={guideToPass}
       />
       {/**Modal pre alerta */}
-      <ModalPreAlert show={show} close={handleClose} cliente={cliente} returnGuideId={setlastAddedGuide}/>
+      <ModalPreAlert show={show} close={handleClose} closeNoConfirm={handleCloseNoConfirm} cliente={cliente} returnGuideId={setlastAddedGuide}/>
       {/**Modal Info Latest Guide */}
       <Modal show={showLatestGuideModal} onHide={closeLatestGuideInfoModal} size="lg">
         <Modal.Body >
@@ -169,7 +192,7 @@ export default function MainScreensCustomer() {
                   className="d-flex justify-content-between"
                   key={guide.id}
                 >
-                  <Col sm={4}>{`Guía: ${guide.id}`}</Col>
+                  <Col sm={4}>Guia: {formatGuide(guide.id)}</Col>
 
                   <Button
                     onClick={() => {
@@ -190,7 +213,7 @@ export default function MainScreensCustomer() {
                   className="d-flex justify-content-between"
                   key={guide.id}
                 >
-                  <Col sm={4}>{`Guía: ${guide.id}`}</Col>
+                  <Col sm={4}>Guia: {formatGuide(guide.id)}</Col>
 
                   <Button
                     onClick={() => {
