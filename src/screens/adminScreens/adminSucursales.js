@@ -7,12 +7,65 @@ import {
   ListGroup,
   Modal,
   Form,
+  Alert
 } from "react-bootstrap";
 import Icon from "@material-ui/core/Icon";
-
+import RegisterSucursal from "../../components/adminComponents/register-sucursal";
+import EditSucursal from '../../components/adminComponents/edit-sucursal'
+import { db } from "../../assets/firebase";
 export default function AdminSucursales() {
   const [showNuevaSucursal, setShowNuevaSucursal] = useState(false);
-  const [showConfirmarBorrar, setShowConfirmarBorrar] = useState(false);
+  const [showEditSucursal, setShowEditSucursal] = useState(false)
+  const [sucursalToFind, setSucursalToFind] = useState("");
+  const [sucursalFound, setSucursalFound] = useState({})
+  const [showLoading, setshowLoading] = useState(false);
+
+  const closeModalRegister = () => {
+    setShowNuevaSucursal(false);
+  };
+  const closeModalEdit = ()=>{
+    setShowEditSucursal(false)
+  }
+
+  const SearchSucursal = () => {
+    setshowLoading(true);
+    db.collection("sucursales")
+      .doc(sucursalToFind)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          setSucursalFound({ id: doc.id, ...doc.data() });
+          setshowLoading(false);
+          console.log(sucursalFound)
+        } else {
+          setSucursalFound(false);
+          setshowLoading(false);
+        }
+      })
+      .catch();
+  };
+  const checkFound = () => {
+    if (Object.keys(sucursalFound).length !== 0) {
+      return (
+        <ListGroup className="mt-5 d-flex justify-content-between">
+          <ListGroup.Item className="d-flex justify-content-between">
+            {`${sucursalFound.agenciado}`}
+            <div>
+              <Button onClick={() => {setShowEditSucursal(true)}}>
+                <Icon>edit</Icon>
+              </Button>
+              <Button variant="danger" className="ml-3" onClick={()=>{}}>
+                <Icon>delete</Icon>
+              </Button>
+            </div>
+          </ListGroup.Item>
+        </ListGroup>
+      );
+    }
+    if (!sucursalFound) {
+      return <Alert variant="danger">Sucursal  no encontrado.</Alert>;
+    }
+  };
   return (
     <div className="mt-5">
       <Container>
@@ -29,83 +82,50 @@ export default function AdminSucursales() {
               <Icon style={{ marginLeft: "1rem" }}>add_circle</Icon>
             </Button>
           </Col>
-        </Row>
-        <Row className="d-flex justify-content-center">
-          <h2>SUCURSALES</h2>
-        </Row>
-        <Row>
-          <Col>
-            <ListGroup>
-              <ListGroup.Item
-                style={{ display: "flex", justifyContent: "space-between" }}
-              >
-                Sucursal n1
-                <div>
-                  <Button onClick={()=>{ setShowNuevaSucursal(true);}}>
-                    <Icon>create</Icon>
-                  </Button>
-                  <Button className="ml-1" variant="danger" onClick={()=>{setShowConfirmarBorrar(true)}}>
-                    <Icon>delete</Icon>
-                  </Button>
-                </div>
-              </ListGroup.Item>
-            </ListGroup>
+          <Col sm={6}>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <Form.Control
+              placeholder='CI Resposable'
+                className="mr-sm-2"
+                type="text"
+                onChange={(e) => {
+                  setSucursalToFind(e.target.value);
+                }}
+              />
+
+              <Button onClick={SearchSucursal}>
+                <Icon>search</Icon>
+              </Button>
+            </div>
           </Col>
         </Row>
+        <Row className="d-flex justify-content-center">
+        {showLoading && (
+          <Col className="d-flex justify-content-center">
+            <img src={require("../../assets/images/loading.gif")} alt='Loading'/>
+          </Col>
+        )}
+        
+      </Row>
+      <Row>
+        <Col>{checkFound()}</Col>
+      </Row>
 
         {/*Modal nueva sucursa*/}
-        <Modal
-          show={showNuevaSucursal}
-          onHide={() => {
-            setShowNuevaSucursal(false);
-          }}
-        >
+        <Modal show={showNuevaSucursal} onHide={closeModalRegister}>
           <Modal.Header closeButton>
-            <Modal.Title>Ingresar Nueva Sucursal</Modal.Title>
+            <Modal.Title>Registro Sucursal</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            {/*Formulario NUeva Sucursal*/}
-            <Form>
-              <Form.Group controlId="formBasicEmail">
-                <Form.Control type="email" placeholder="Usuario" />
-              </Form.Group>
-
-              <Form.Group controlId="formBasicPassword">
-                <Form.Control type="password" placeholder="Contraseña" />
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => {}}>
-              Cerrar
-            </Button>
-            <Button variant="primary" onClick={() => {}}>
-              CONFIRMAR
-            </Button>
-          </Modal.Footer>
+          <RegisterSucursal hide={closeModalRegister} />
         </Modal>
 
-         {/*Modal Confirmar Borrar*/}
-         <Modal
-          show={showConfirmarBorrar}
-          onHide={() => {
-            setShowConfirmarBorrar(false);
-          }}
-        >
+
+        {/*Editar sucursa*/}
+        <Modal show={showEditSucursal} onHide={closeModalEdit}>
           <Modal.Header closeButton>
-            <Modal.Title>Ingresar Nueva Sucursal</Modal.Title>
+            <Modal.Title>Registro Cliente</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-           ¿Estas seguro de eliminar esta sucursal?
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => {}}>
-              Cerrar
-            </Button>
-            <Button variant="danger" onClick={() => {}}>
-              CONFIRMAR
-            </Button>
-          </Modal.Footer>
+          <EditSucursal hide={closeModalEdit} sucursal={sucursalFound}/>
         </Modal>
       </Container>
     </div>

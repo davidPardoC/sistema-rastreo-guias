@@ -5,15 +5,12 @@ import {
   Button,
   Row,
   Alert,
-  Col,
-  DropdownButton,
-  Dropdown,
+  Col
 } from "react-bootstrap";
-import { auth } from "../../assets/firebase";
-import { db } from "../../assets/firebase";
-import { useHistory } from "react-router-dom";
-import provincias from "../../assets/provinciasv2";
-export default function RegisterClientModal() {
+import { db, functions } from "../../assets/firebase";
+
+export default function RegisterClientModal(props) {
+
   //passwords
   const [password, setPassword] = useState("");
   const [passwordConf, setPasswordConf] = useState("");
@@ -21,16 +18,10 @@ export default function RegisterClientModal() {
   const [buttonRegister, setButtonRegister] = useState(true);
   //datos para registro
   const [usertoRegister, setUserToRegister] = useState({});
-  const history = useHistory();
-  const [provinciasArray, setprovincias] = useState(provincias);
-  const [cantones, setCantones] = useState([]);
-  const [selectedProvice, setSelectedProvince] = useState({provincia:"Provincia"});
-  const [selectedCanton, setSelectedCanton] = useState({nombre:'Canton'});
 
-
-  const fillCantones = (index) => {
-    setCantones(provinciasArray[index].cantones)
-  }
+  
+  const [tipoId, settipoId] = useState("C.I");
+  
 
   //Habilita el boton de registro
   useEffect(() => {
@@ -43,7 +34,7 @@ export default function RegisterClientModal() {
         setButtonRegister(false);
       }
     }
-  }, [passwordConf]);
+  }, [passwordConf, password]);
 
   //compara los campos de las Contraseñas
   const comparePasswords = () => {
@@ -60,27 +51,28 @@ export default function RegisterClientModal() {
     }
   };
 
-  //Registrar nuevo usuario
+  //Registrar nuevo usuario con Custom Claim
   const RegisterUser = () => {
-    auth
-      .createUserWithEmailAndPassword(
-        usertoRegister.email,
-        usertoRegister.password
-      )
-      .then((res) => {
-        db.collection("users").add({
-          ...usertoRegister,
-          admin: false,
-          uid: res.user.uid,
-          provincia: selectedProvice.provincia,
-          canton: selectedCanton.canton
-        });
-        history.push("/");
+    const addUser = functions.httpsCallable("addUser");
+    addUser({
+      email: usertoRegister.email,
+      password: usertoRegister.password,
+      role: "client",
+    })
+      .then((data) => {
+          db.collection('users').doc(usertoRegister.id).set({
+            ...usertoRegister,
+            tipoId: tipoId,
+            uid:data.data.uid
+          }).catch((err)=>{alert(err)})
+      
       })
-      .catch((err) => {
-        alert(err);
+      .catch((e) => {
+        alert(e);
       });
+    props.hide()
   };
+
   return (
     <>
       <Container>
@@ -97,6 +89,35 @@ export default function RegisterClientModal() {
               }}
             />
           </Form.Group>
+
+          <Row>
+            <Col>
+              <Form.Group controlId="id">
+                <Form.Control
+                  type="number"
+                  placeholder={tipoId}
+                  onChange={(e) => {
+                    setUserToRegister(
+                      {
+                        ...usertoRegister,
+                        id:e.target.value
+                      }
+                    )
+                  }}
+                />
+              </Form.Group>
+            </Col>
+            <Col>
+             <select style={{border:'solid 1px black', padding:'0.5rem' , borderRadius:'1rem'}} onChange={(e)=>settipoId(e.target.value)}>
+                <option>TIPO</option>
+               <option value='RUC'>RUC</option>
+               <option value='CI'>CI</option>
+               <option value='RUP'>RUP</option>
+               <option value='RISE'>RISE</option>
+             </select>
+            </Col>
+          </Row>
+
           <Form.Group controlId="nombre">
             <Form.Control
               type="text"
@@ -136,26 +157,72 @@ export default function RegisterClientModal() {
           </Form.Group>
           <Row className="mb-3">
             <Col>
-              <DropdownButton id="Provincia" title={selectedProvice.provincia}>
-                {provinciasArray.map((provincia) => (
-                  <Dropdown.Item key={provincia.key}
-                  onSelect={()=>{setSelectedProvince(provincia); fillCantones(provincia.key)}}
-                  onClick={()=>{setSelectedCanton({nombre:'Canton'})}}>
-                    {provincia.provincia}
-                  </Dropdown.Item>
-                ))}
-              </DropdownButton>
+            <Form.Group controlId="provincia">
+                <Form.Control
+                  type="text"
+                  placeholder="Provincia"
+                  onChange={(e) => {
+                    setUserToRegister({
+                      ...usertoRegister,
+                      provincia: e.target.value,
+                    });
+                  }}
+                />
+              </Form.Group>
             </Col>
             <Col>
-              <DropdownButton id="Canton" title={selectedCanton.nombre}>
-                {cantones.map((canton) => (
-                  <Dropdown.Item key={canton.key} onSelect={()=>{setSelectedCanton(canton)}}>
-                    {canton.nombre}
-                  </Dropdown.Item>
-                ))}
-              </DropdownButton>
+            <Form.Group controlId="canton">
+                <Form.Control
+                  type="text"
+                  placeholder="Canton"
+                  onChange={(e) => {
+                    setUserToRegister({
+                      ...usertoRegister,
+                      canton: e.target.value,
+                    });
+                  }}
+                />
+              </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group controlId="parroquia">
+                <Form.Control
+                  type="text"
+                  placeholder="Parroquia"
+                  onChange={(e) => {
+                    setUserToRegister({
+                      ...usertoRegister,
+                      parroquia: e.target.value,
+                    });
+                  }}
+                />
+              </Form.Group>
             </Col>
           </Row>
+          <Form.Group controlId="direccion">
+            <Form.Control
+              type="text"
+              placeholder="Dirección"
+              onChange={(e) => {
+                setUserToRegister({
+                  ...usertoRegister,
+                  direccion: e.target.value,
+                });
+              }}
+            />
+          </Form.Group>
+          <Form.Group controlId="referencia">
+            <Form.Control
+              type="text"
+              placeholder="Referencia"
+              onChange={(e) => {
+                setUserToRegister({
+                  ...usertoRegister,
+                  referencia: e.target.value,
+                });
+              }}
+            />
+          </Form.Group>
           <Form.Group controlId="email">
             <Form.Control
               type="email"

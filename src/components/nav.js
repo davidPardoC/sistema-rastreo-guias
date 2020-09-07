@@ -6,7 +6,6 @@ import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import Dropdown from "react-bootstrap/Dropdown";
 //Icon Imports
 import Icon from "@material-ui/core/Icon";
 
@@ -15,38 +14,53 @@ import { useHistory } from "react-router-dom";
 import { Row, Col, Container, Alert } from "react-bootstrap";
 
 //Firebase Imports
-import { auth, db } from "../assets/firebase";
+import { auth } from "../assets/firebase";
 
 export default function NavBarComponent() {
-
   //Alerta Credenciales
   const [alert, setAlert] = useState(false);
   //estado Modal
   const [show, setShow] = useState(false);
   //inputs SignIn
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   //signIn button
-  const [signInButton, setSignInButton] = useState(true)
+  const [signInButton, setSignInButton] = useState(true);
 
   //Inicializacion Navegacion
   const history = useHistory();
 
-  //Checck Inputs
+  //init
   useEffect(() => {
-    CheckInputs();
-  }, [email])
-  useEffect(() => {
-    CheckInputs();
-  }, [password])
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        user.getIdTokenResult().then((tokenResult) => {
+          if (tokenResult.claims.role === "admin") {
+            history.push("/admin");
+          } else {
+            if (tokenResult.claims.role === "client") {
+              history.push("/client");
+            } else {
+              if (tokenResult.claims.role === "sucursal") {
+                history.push("/sucursal");
+              }
+            }
+          }
+        });
+      } else {
+      }
+    });
+  },[]);
 
-  const CheckInputs = () =>{
-    if(email  &&  password ){
-      setSignInButton(false)
-    }else{
-      setSignInButton(true)
+  const CheckInputs = () => {
+    if (email && password) {
+      setSignInButton(false);
+    } else {
+      setSignInButton(true);
     }
-  }
+  };
+  //Checck Inputs
+  useEffect(CheckInputs, [email, password]);
   //Modal
   const handleClose = () => {
     setShow(false);
@@ -57,23 +71,10 @@ export default function NavBarComponent() {
   const signIn = () => {
     auth
       .signInWithEmailAndPassword(email, password)
-      .then((e) => {
-        console.log(e.user.uid)
-        localStorage.setItem('userToken',e.user.uid)
-        db.collection('users').where('uid','==',e.user.uid).get().then((collection)=>{
-          collection.forEach(
-            (doc) => {
-              if(doc.data().admin){
-                history.push('/admin')
-              }else{
-                history.push('/client')
-              }
-            }
-          )
-        })
-      })
-      .catch(()=>{
-        setAlert(true)
+      .then(() => {})
+      .catch((e) => {
+        console.log(e);
+        setAlert(true);
       });
   };
   return (
@@ -134,19 +135,13 @@ export default function NavBarComponent() {
         <Container style={{ padding: "1rem" }}>
           <Row>
             <Col>
-              <Button ml={2} variant="primary" onClick={signIn} disabled={signInButton}>
-                INICIAR SESIÓN
-              </Button>
-            </Col>
-            <Col>
               <Button
-                variant="outline-primary"
-                onClick={() => {
-                  handleClose();
-                  history.push("/register");
-                }}
+                ml={2}
+                variant="primary"
+                onClick={signIn}
+                disabled={signInButton}
               >
-                REGISTRARSE
+                INICIAR SESIÓN
               </Button>
             </Col>
           </Row>

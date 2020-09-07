@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, ListGroup, Button } from "react-bootstrap";
 import { useHistory, useRouteMatch } from "react-router-dom";
+import { auth } from "../../assets/firebase";
 export default function AdminSettings() {
   const history = useHistory();
   const match = useRouteMatch();
@@ -29,6 +30,7 @@ export default function AdminSettings() {
           <ListGroup.Item >
             <Button
             variant='danger'
+            onClick={()=>{auth.signOut(); history.push('/')}}
             >
               Cerrar Sesión
             </Button>

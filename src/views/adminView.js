@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 
 //componentes
-import CreateOrder from "../screens/create-order";
+import MainScreenAdmin from "../screens/adminScreens/main-screen-admin";
 import AdminSettings from "../screens/adminScreens/settingsAdmin";
 import AdminSucursales from "../screens/adminScreens/adminSucursales";
 import AdminClients from "../screens/adminScreens/adminClient";
@@ -11,33 +11,36 @@ import AdminClients from "../screens/adminScreens/adminClient";
 import { Switch, Route, useRouteMatch, useHistory } from "react-router-dom";
 
 //Firebase Import
-import { db } from "../assets/firebase";
+import { auth} from "../assets/firebase";
 
 export default function AdminView() {
   const [router, setRouter] = useState(false);
   const history = useHistory();
   useEffect(() => {
-    var userToken = localStorage.getItem("userToken");
-    db.collection("users")
-      .where("uid", "==", userToken)
-      .get()
-      .then((collection) => {
-        collection.forEach((doc) => {
-          console.log(doc.data());
-          if (doc.data().admin === false) {
-            history.push("/");
-          } else {
-            setRouter(true);
+    auth.onAuthStateChanged((user)=>{
+      if(user){
+        console.log(user)
+        user.getIdTokenResult().then(
+          (tokenResult)=>{
+            if(tokenResult.claims.role==='admin'){
+              setRouter(true)
+            }else{
+              history.push('/')
+            }
           }
-        });
-      });
-  }, []);
+        )
+        
+      }else{
+        history.push('/')
+      }
+    })
+  },[]);
   const match = useRouteMatch();
   return (
     <div>
       {router && (
         <Container>
-          <CreateOrder />
+          <MainScreenAdmin />
           <Switch>
             <Route
               path={`${match.path}/settings/adminClients`}
