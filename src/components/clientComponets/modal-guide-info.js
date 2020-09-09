@@ -3,7 +3,9 @@ import { Container, Col, Row, Button, Spinner } from 'react-bootstrap';
 import './modal-guide.css'
 import Icon from "@material-ui/core/Icon";
 import Barcode from 'react-barcode';
-import {db} from '../../assets/firebase'
+import {db} from '../../assets/firebase';
+import Pdf from 'react-to-pdf';
+const ref = React.createRef();
 export default function GuideInfo(props) {
     
     const [guide, setguide] = useState({});
@@ -42,15 +44,15 @@ useEffect(() => {
     return (
         <Container className='modal-guide'>
            { charging && <Spinner animation="border" variant="primary" />}
-            {charged && <> <Button variant='success' className='d-flex'>DESCARGAR <Icon className='ml-2'> save_alt</Icon></Button>
+    {charged && <><Pdf targetRef={ref} filename={formatGuide(guide.id)}>{({toPdf})=><Button variant='success' className='d-flex' onClick={toPdf}>DESCARGAR <Icon className='ml-2'> save_alt</Icon></Button>}</Pdf>
             <div>
-                <Container className='mt-3'>
+                <Container className='mt-3' ref={ref}>
                     <Row style={{border:'1px solid black'}}><Col>GUIA DE ENVIOS</Col></Row>
                     <Row style={{borderRight:'1px solid black', borderLeft:'1px solid black'}}>
                         <Col style={{borderRight:'1px solid'}} ><img className='mt-3' src={require('../../assets/images/logo.svg')} width='130'/></Col>
-                        <Col style={{borderRight:'1px solid'}}><div >Servicio: Corporativo</div><div>Usuario: Victor Lopez</div></Col>
-                        <Col style={{borderRight:'1px solid'}}><div >Fecha: mm/ddd/aa </div><div >Orden de trabajo: NA </div></Col>
-                        <Col style={{borderRight:'1px solid'}}><div >HORA: 12 AM</div><div >Id: Local</div></Col>
+                        <Col style={{borderRight:'1px solid'}}><div ><p style={{fontWeight:'900'}}>Servicio:</p> Corporativo</div><div>Usuario: Victor Lopez</div></Col>
+                        <Col style={{borderRight:'1px solid'}}><div >Fecha: {new Date().toLocaleDateString()} </div><div >Orden de trabajo: NA </div></Col>
+                        <Col style={{borderRight:'1px solid'}}><div >HORA: {`${new Date().getHours()}:${new Date().getMinutes()}`}</div><div >Id: Local</div></Col>
     <Col style={{border:''}}><Barcode value={formatGuide(guide.id)} height={20} width={1} format="CODE128"/></Col>
                     </Row>
                     <Row style={{border:'1px solid black'}}>
@@ -63,62 +65,62 @@ useEffect(() => {
     <Row style={{borderRight:'1px solid black', borderLeft:'1px solid black'}} ><Col>Nombre: {`${guide.remitente.nombre} ${guide.remitente.apellido}`}</Col></Row>
                             <Row style={{border:'1px solid black'}}>
                                 <Col style={{borderRight:'1px solid'}}>
-                                    Numero de identificacion: 095710255
+                                    Numero de identificacion: {`${guide.remitente.id}`}
                                 </Col>
                                 <Col style={{border:''}}>
-                                    Tipo de identificacion: RUC
+                                    Tipo de identificacion: {`${guide.remitente.tipoId}`}
                                 </Col>
                             </Row>
                             <Row style={{borderRight:'1px solid black', borderLeft:'1px solid black'}}>
-                                <Col style={{borderRight:'1px solid'}}>Provincia: Loja</Col>
-                                <Col style={{borderRight:'1px solid'}}>Canton: Loja</Col>
-                                <Col style={{border:''}}>Parroquia: Loja</Col>
+                                <Col style={{borderRight:'1px solid'}}>Provincia:{`${guide.remitente.provincia}`}</Col>
+                                <Col style={{borderRight:'1px solid'}}>Canton: {`${guide.remitente.canton}`}</Col>
+                                <Col style={{border:''}}>Parroquia: {`${guide.remitente.parroquia}`}</Col>
                             </Row>
                             <Row style={{border:'1px solid black'}}>
-                                <Col style={{border:''}}>Direccion</Col>
+                                <Col style={{border:''}}>Direccion: {`${guide.remitente.direccion}`}</Col>
                             </Row>
                             <Row style={{borderRight:'1px solid black', borderLeft:'1px solid black'}}>
-                                <Col style={{border:''}}>Referencia</Col>
+                                <Col style={{border:''}}>Referencia: {`${guide.remitente.referencia}`}</Col>
                             </Row>
                             <Row style={{border:'1px solid black'}}>
-                                <Col style={{border:''}}>Telefono</Col>
-                                <Col style={{border:''}}>Email</Col>
+                                <Col style={{border:''}}>Telefono: {`${guide.remitente.telefono}`}</Col>
+                                <Col style={{border:''}}>Email: {`${guide.remitente.email}`}</Col>
                             </Row>
                             <Row style={{borderRight:'1px solid black', borderLeft:'1px solid black', borderBottom:'1px solid black'}}>
-                                <Col style={{border:''}} sm={8}><Row style={{borderBottom:'1px solid', borderRight:'1px solid'}}><Col style={{borderRight:'1px solid'}}>Nro. Items</Col><Col style={{border:''}}>Peso en Gramos</Col><Col style={{borderTop:'1px solid'}}>Valor declarado</Col></Row><Row style={{border:''}}><Col style={{borderRight:'1px solid'}}>Descripcion</Col></Row></Col>
+                                <Col style={{border:''}} sm={8}><Row style={{borderBottom:'1px solid', borderRight:'1px solid'}}><Col style={{borderRight:'1px solid'}}>Nro. Items: {`${guide.contenido.nroItems}`}</Col><Col style={{border:''}}>Peso en Gramos: {`${guide.contenido.peso}`}</Col><Col style={{borderTop:'1px solid'}}>Valor declarado: {`${guide.contenido.valorDeclarado}`}</Col></Row><Row style={{border:''}}><Col style={{borderRight:'1px solid'}}>Descripcion: {`${guide.contenido.descripcion}`}</Col></Row></Col>
                                 <Col sm={4}>
                                     Firma
                                 </Col>
                             </Row>
                         </Col>
                         <Col>
-                            <Row style={{borderBottom:'1px solid', borderRight:'1px solid'}}><Col style={{border:''}}>Nombre: Destinatario Prueba</Col></Row>
+                            <Row style={{borderBottom:'1px solid', borderRight:'1px solid'}}><Col style={{border:''}}>Nombre: {`${guide.destinatario.nombre} ${guide.destinatario.apellido}`}</Col></Row>
                             <Row style={{borderBottom:'1px solid', borderRight:'1px solid'}}>
                                 <Col style={{borderRight:'1px solid'}}>
-                                    Numero de identificacion: 095710255
+                                    Numero de identificacion: {`${guide.destinatario.ci}`}
                                 </Col >
                                 <Col style={{border:''}}>
-                                    Tipo de identificacion: RUC
+                                    Tipo de identificacion: {`${guide.destinatario.tipoId}`}
                                 </Col>
                             </Row>
                             <Row style={{borderBottom:'1px solid', borderRight:'1px solid'}}>
-                                <Col style={{borderRight:'1px solid'}}>Provincia: Loja</Col>
-                                <Col style={{borderRight:'1px solid'}}>Canton: Loja</Col>
-                                <Col style={{border:''}}>Parroquia: Loja</Col>
+                                <Col style={{borderRight:'1px solid'}}>Provincia: {`${guide.destinatario.provincia}`}</Col>
+                                <Col style={{borderRight:'1px solid'}}>Canton: {`${guide.destinatario.canton}`}</Col>
+                                <Col style={{border:''}}>Parroquia: {`${guide.destinatario.parroquia}`}</Col>
                             </Row>
                             <Row style={{borderBottom:'1px solid', borderRight:'1px solid'}}>
-                                <Col style={{border:''}}>Direccion</Col>
+                                <Col style={{border:''}}>Direccion: {`${guide.destinatario.direccion}`}</Col>
                             </Row>
                             <Row style={{borderBottom:'1px solid', borderRight:'1px solid'}}>
-                                <Col style={{border:''}}>Referencia</Col>
+                                <Col style={{border:''}}>Referencia: {`${guide.destinatario.referencia}`}</Col>
                             </Row>
                             <Row style={{borderBottom:'1px solid', borderRight:'1px solid'}}>
-                                <Col style={{border:''}}>Telefono</Col>
-                                <Col style={{border:''}}>Email</Col>
+                                <Col style={{border:''}}>Telefono: {`${guide.destinatario.telefono}`}</Col>
+                                <Col style={{border:''}}>Email: {`${guide.destinatario.email}`}</Col>
                             </Row>
                             <Row style={{borderBottom:'1px solid', borderRight:'1px solid'}}>
-                                <Col style={{border:''}}><Row style={{borderBottom:'1px solid', borderRight:'1px solid'}} ><Col>Nombres</Col></Row><Row style={{borderRight:'1px solid'}}><Col style={{borderRight:'1px solid'}} >Fecha:</Col><Col style={{border:''}}>Hora:</Col><Col style={{borderTop:'1px solid'}}>CI:</Col></Row></Col>
-                                <Col style={{border:''}}>Firma:</Col>
+                                <Col style={{border:'', padding:'1.7rem'}}><Row style={{borderBottom:'1px solid', borderRight:'1px solid'}} ><Col>Nombres</Col></Row><Row style={{borderRight:'1px solid'}}><Col style={{borderRight:'1px solid'}} >Fecha:</Col><Col style={{border:''}}>Hora:</Col><Col style={{borderTop:'1px solid'}}>CI:</Col></Row></Col>
+                                <Col style={{border:'', padding:'1.7rem'}}>Firma:</Col>
                             </Row>
                         </Col>
                     </Row>
@@ -128,8 +130,4 @@ useEffect(() => {
     )
 }
 
-const border = { borderBottom: '1px soild', borderRight: '1px solid', borderLeft: '1px solid', borderTop: '1px solid' };
-const rowStyle = { borderBottom: 'none', borderRight: '1px solid', borderLeft: '1px solid', borderTop: '1px solid' };
-const lastRow = { borderBottom: '1px solid', borderRight: '1px solid', borderLeft: '1px solid', borderTop: '1px solid' };
-const innnerRow = {borderBottom: '1px solid', borderRight: 'none', borderLeft: 'none', borderTop: '1px solid'}
-const row = {borderBottom: '1px solid', borderRight: 'none', borderLeft: '1px solid', borderTop: '1px solid'}
+const border = {fontWeigth:'900'};

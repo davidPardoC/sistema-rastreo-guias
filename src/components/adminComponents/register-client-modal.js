@@ -73,6 +73,28 @@ export default function RegisterClientModal(props) {
     props.hide()
   };
 
+  const checkInputs = () => {
+    if(!usertoRegister.institucion ||
+      !usertoRegister.id || 
+      !usertoRegister.nombre ||
+      !usertoRegister.apellido ||
+      !usertoRegister.telefono ||
+      !usertoRegister.provincia ||
+      !usertoRegister.canton ||
+      !usertoRegister.parroquia ||
+      !usertoRegister.direccion ||
+      !usertoRegister.referencia ||
+      !usertoRegister.email ||
+      !usertoRegister.password){
+        console.log('no pass')
+      }else{
+        console.log('pass')
+      }
+  }
+
+  useEffect(() => {
+    checkInputs()
+  }, [usertoRegister]);
   return (
     <>
       <Container>
