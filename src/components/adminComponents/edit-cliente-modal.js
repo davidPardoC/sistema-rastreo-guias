@@ -8,6 +8,7 @@ import {
   Col,
 } from "react-bootstrap";
 import { db, functions } from "../../assets/firebase";
+import Icon from "@material-ui/core/Icon";
 export default function EditClientModal(props) {
   const [institucion, setinstitucion] = useState(props.cliente.institucion);
   const [id, setid] = useState(props.cliente.id);
@@ -24,6 +25,7 @@ export default function EditClientModal(props) {
   const [password, setpassword] = useState(props.cliente.password)
   const [confPassword, setConfPassword] = useState(props.cliente.password)
   const [buttonRegister, setButtonRegister] = useState(true);
+  const [passwordType, setPasswordType] = useState('password');
 
   const updateCustomer = ()=>{
     const updateUser = functions.httpsCallable('updateUser');
@@ -76,6 +78,13 @@ export default function EditClientModal(props) {
       }
     }
   };
+  const changePasswordType = ()=>{
+    if(passwordType === 'password'){
+      setPasswordType('text')
+    }else{
+      setPasswordType('password')
+    }
+  }
   return (
     <>
       <Container>
@@ -209,14 +218,22 @@ export default function EditClientModal(props) {
               />
             </Form.Group>
             <Form.Group>
+            <div className="d-flex align-items-center">
               <Form.Control
-              type='password'
+              type={passwordType}
                 placeholder="Contraseña"
                 value={password}
                 onChange={(e) => {
                   setpassword(e.target.value);
                 }}
               />
+              <Button
+              className="d-flex align-items-center ml-1"
+              onClick={() => {changePasswordType()}}
+            >
+              <Icon>visibility</Icon>
+            </Button>
+              </div>
             </Form.Group>
             <Form.Group>
               <Form.Control

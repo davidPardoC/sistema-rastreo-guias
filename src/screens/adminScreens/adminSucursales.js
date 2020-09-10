@@ -12,7 +12,7 @@ import {
 import Icon from "@material-ui/core/Icon";
 import RegisterSucursal from "../../components/adminComponents/register-sucursal";
 import EditSucursal from '../../components/adminComponents/edit-sucursal'
-import { db } from "../../assets/firebase";
+import { db, functions } from "../../assets/firebase";
 export default function AdminSucursales() {
   const [showNuevaSucursal, setShowNuevaSucursal] = useState(false);
   const [showEditSucursal, setShowEditSucursal] = useState(false)
@@ -44,6 +44,15 @@ export default function AdminSucursales() {
       })
       .catch();
   };
+  const deleteUser = () => {
+    const deleteUser = functions.httpsCallable('deleteUser');
+    deleteUser({uid:sucursalFound.uid}).then((res)=>{
+      console.log(res)
+      db.collection('sucursales').doc(sucursalFound.id).delete().then(()=>{
+        setSucursalFound({})
+      })
+    })
+  };
   const checkFound = () => {
     if (Object.keys(sucursalFound).length !== 0) {
       return (
@@ -54,7 +63,7 @@ export default function AdminSucursales() {
               <Button onClick={() => {setShowEditSucursal(true)}}>
                 <Icon>edit</Icon>
               </Button>
-              <Button variant="danger" className="ml-3" onClick={()=>{}}>
+              <Button variant="danger" className="ml-3" onClick={deleteUser}>
                 <Icon>delete</Icon>
               </Button>
             </div>
