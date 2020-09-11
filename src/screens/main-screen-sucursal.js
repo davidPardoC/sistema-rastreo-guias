@@ -15,6 +15,7 @@ import { useHistory } from "react-router-dom";
 import { auth, db } from "../assets/firebase";
 import EditGuide from '../components/sucursalComponents/modal-edit-guia'
 import ModalEstados from '../components/sucursalComponents/modal-estados'
+import ModalAddGuide from '../components/sucursalComponents/modal-add-guide'
 export default function MainSucursal(props) {
   const [showLoading, setshowLoading] = useState(false);
   const [guideToFind, setguideToFind] = useState("");
@@ -22,6 +23,7 @@ export default function MainSucursal(props) {
   const [showEditGuide, setshowEditGuide] = useState(false)
   const [showUpdateStates, setshowUpdateStates] = useState(false)
   const [guideToPass, setGuideToPass] = useState({})
+  const [showAddGuide, setshowAddGuide] = useState(false);
 
   //inicializacion de importaciones
   const history = useHistory();
@@ -79,8 +81,19 @@ export default function MainSucursal(props) {
   const closUpdateEstados = () => {
     setshowUpdateStates(false)
   }
+
+  const hideAddGuide = () =>{
+    setshowAddGuide(false)
+  }
   return (
     <Container style={{ marginTop: "2rem" }}>
+      {/**Modal Para agregar Guias */}
+      <Modal show={showAddGuide} onHide={hideAddGuide} size='lg'>
+      <Modal.Header closeButton>
+        NUEVA GUIA
+      </Modal.Header>
+      <ModalAddGuide close={hideAddGuide}/>
+      </Modal>
       {/** Modal para agregar los estados */}
       <ModalEstados show={showUpdateStates} close={closUpdateEstados} guide={guideFound} />
 
@@ -95,7 +108,7 @@ export default function MainSucursal(props) {
           <Button
             variant="primary"
             style={{ display: "flex" }}
-            onClick={() => { }}
+            onClick={() => {setshowAddGuide(true)}}
           >
             NUEVO PAQUETE <Icon style={{ marginLeft: "1rem" }}>add_circle</Icon>
           </Button>
