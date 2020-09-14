@@ -11,36 +11,32 @@ import AdminClients from "../screens/adminScreens/adminClient";
 import { Switch, Route, useRouteMatch, useHistory } from "react-router-dom";
 
 //Firebase Import
-import { auth} from "../assets/firebase";
+import { auth } from "../assets/firebase";
 
 export default function AdminView() {
   const [router, setRouter] = useState(false);
   const history = useHistory();
   useEffect(() => {
-    auth.onAuthStateChanged((user)=>{
-      if(user){
-        console.log(user)
-        user.getIdTokenResult().then(
-          (tokenResult)=>{
-            if(tokenResult.claims.role==='admin'){
-              setRouter(true)
-            }else{
-              history.push('/')
-            }
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log(user);
+        user.getIdTokenResult().then((tokenResult) => {
+          if (tokenResult.claims.role === "admin") {
+            setRouter(true);
+          } else {
+            history.push("/");
           }
-        )
-        
-      }else{
-        history.push('/')
+        });
+      } else {
+        history.push("/");
       }
-    })
-  },[]);
+    });
+  }, []);
   const match = useRouteMatch();
   return (
     <div>
       {router && (
         <Container>
-          <MainScreenAdmin />
           <Switch>
             <Route
               path={`${match.path}/settings/adminClients`}
@@ -51,6 +47,7 @@ export default function AdminView() {
               component={AdminSucursales}
             />
             <Route path={`${match.path}/settings`} component={AdminSettings} />
+            <Route path="" component={MainScreenAdmin} />
           </Switch>
         </Container>
       )}

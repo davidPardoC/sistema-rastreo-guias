@@ -47,6 +47,7 @@ export default function ModalPreAlert(props) {
         db.collection("guias")
           .doc(`RF${doc.data().count}EC`)
           .set({
+            createdBy:'Cliente',
             remitente: cliente,
             destinatario: {
               ci: ci,
@@ -172,7 +173,6 @@ export default function ModalPreAlert(props) {
               </ListGroup.Item>
             </ListGroup>
           </Col>
-
           <Col>
             <h3>Destinatario</h3>
             <Row>

@@ -53,6 +53,7 @@ export default function ModalAddGuide(props) {
           .doc(`RF${doc.data().count}EC`)
           .set({
             remitente: cliente,
+            createdBy: props.sucursal,
             destinatario: {
               ci: ci,
               nombre: nombre,

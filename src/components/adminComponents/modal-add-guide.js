@@ -52,6 +52,7 @@ export default function ModalAddGuide(props) {
         db.collection("guias")
           .doc(`RF${doc.data().count}EC`)
           .set({
+            createdBy:'Administrador',
             remitente: cliente,
             destinatario: {
               ci: ci,

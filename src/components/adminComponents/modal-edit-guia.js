@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Form, Row, Col, Button, Container, InputGroup } from "react-bootstrap";
 import { Icon } from "@material-ui/core";
-import { db } from '../../assets/firebase'
+import { db } from "../../assets/firebase";
 export default function ModalEditGuide(props) {
-
   //Toggle to edit
   const [togleEditRemitente, setTogleEditRemitente] = useState(true);
   const [togleEditRemitenteColor, setTogleEditRemitenteColor] = useState(
@@ -18,37 +17,77 @@ export default function ModalEditGuide(props) {
     "primary"
   );
 
-
   //Remitente
   const [id, setid] = useState(props.guide.remitente.id);
-  const [nombreRemitente, setNombreRemitente] = useState(props.guide.remitente.nombre)
-  const [apellidoRemitente, setApellidoRemitente] = useState(props.guide.remitente.apellido)
-  const [emailRemitente, setemailRemitente] = useState(props.guide.remitente.email);
-  const [provinciaRemitente, setprovinciaRemitente] = useState(props.guide.remitente.provincia);
-  const [cantonRemitente, setcantonRemitente] = useState(props.guide.remitente.canton);
-  const [parroquiaRemitente, setparroquiaRemitente] = useState(props.guide.remitente.parroquia);
-  const [referenciaRemitente, setreferenciaRemitente] = useState(props.guide.remitente.referencia);
-  const [telefonoRemitente, settelefonoRemitente] = useState(props.guide.remitente.telefono);
-  const [direccionRemitente, setDireccionRemitente] = useState(props.guide.remitente.direccion);
+  const [nombreRemitente, setNombreRemitente] = useState(
+    props.guide.remitente.nombre
+  );
+  const [apellidoRemitente, setApellidoRemitente] = useState(
+    props.guide.remitente.apellido
+  );
+  const [emailRemitente, setemailRemitente] = useState(
+    props.guide.remitente.email
+  );
+  const [provinciaRemitente, setprovinciaRemitente] = useState(
+    props.guide.remitente.provincia
+  );
+  const [cantonRemitente, setcantonRemitente] = useState(
+    props.guide.remitente.canton
+  );
+  const [parroquiaRemitente, setparroquiaRemitente] = useState(
+    props.guide.remitente.parroquia
+  );
+  const [referenciaRemitente, setreferenciaRemitente] = useState(
+    props.guide.remitente.referencia
+  );
+  const [telefonoRemitente, settelefonoRemitente] = useState(
+    props.guide.remitente.telefono
+  );
+  const [direccionRemitente, setDireccionRemitente] = useState(
+    props.guide.remitente.direccion
+  );
 
   //Destinatario
-  const [ciDestinatario, setCiDestinatario] = useState(props.guide.destinatario.ci);
-  const [nombreDestinatario, setNombreDestinatario] = useState(props.guide.destinatario.nombre)
-  const [apellidoDestinatario, setApellidoDestinatario] = useState(props.guide.destinatario.apellido)
-  const [emailDestinatario, setemailDestinatario] = useState(props.guide.destinatario.email);
-  const [provinciaDestinatario, setprovinciaDestinatario] = useState(props.guide.destinatario.provincia);
-  const [cantonDestinatario, setcantonDestinatario] = useState(props.guide.destinatario.canton);
-  const [parroquiaDestinatario, setparroquiaDestinatario] = useState(props.guide.destinatario.parroquia);
-  const [referenciaDestinatario, setreferenciaDestinatario] = useState(props.guide.destinatario.referencia);
-  const [telefonoDestinatario, settelefonoDestinatario] = useState(props.guide.destinatario.telefono);
-  const [direccionDestinatario, setDireccionDestinatario] = useState(props.guide.destinatario.direccion);
+  const [ciDestinatario, setCiDestinatario] = useState(
+    props.guide.destinatario.ci
+  );
+  const [nombreDestinatario, setNombreDestinatario] = useState(
+    props.guide.destinatario.nombre
+  );
+  const [apellidoDestinatario, setApellidoDestinatario] = useState(
+    props.guide.destinatario.apellido
+  );
+  const [emailDestinatario, setemailDestinatario] = useState(
+    props.guide.destinatario.email
+  );
+  const [provinciaDestinatario, setprovinciaDestinatario] = useState(
+    props.guide.destinatario.provincia
+  );
+  const [cantonDestinatario, setcantonDestinatario] = useState(
+    props.guide.destinatario.canton
+  );
+  const [parroquiaDestinatario, setparroquiaDestinatario] = useState(
+    props.guide.destinatario.parroquia
+  );
+  const [referenciaDestinatario, setreferenciaDestinatario] = useState(
+    props.guide.destinatario.referencia
+  );
+  const [telefonoDestinatario, settelefonoDestinatario] = useState(
+    props.guide.destinatario.telefono
+  );
+  const [direccionDestinatario, setDireccionDestinatario] = useState(
+    props.guide.destinatario.direccion
+  );
 
   //Contenido
-  const [descripcionContenido, setDescripcionContenido] = useState(props.guide.contenido.descripcion);
-  const [pesoContenido, setPesoContenido] = useState(props.guide.contenido.peso);
+  const [descripcionContenido, setDescripcionContenido] = useState(
+    props.guide.contenido.descripcion
+  );
+  const [pesoContenido, setPesoContenido] = useState(
+    props.guide.contenido.peso
+  );
   const [valor, setValor] = useState(props.guide.contenido.valorDeclarado);
   const [nroItems, setNroItems] = useState(props.guide.contenido.nroItems);
-
 
   //Able and disable inputs colors
   const togleRemitente = () => {
@@ -75,42 +114,65 @@ export default function ModalEditGuide(props) {
 
   //update guide
   const updateGuide = () => {
-    db.collection('guias').doc(`${props.guide.id}`).set({
-      remitente: {
-        apellido: apellidoRemitente,
-        canton: cantonRemitente,
-        email: emailRemitente,
-        id: id,
-        nombre: nombreRemitente,
-        parroquia: parroquiaRemitente,
-        provincia: provinciaRemitente,
-        referencia: referenciaRemitente,
-        telefono: telefonoRemitente,
-        direccion: direccionRemitente
-      },
-      destinatario: {
-        ci: ciDestinatario,
-        nombre: nombreDestinatario,
-        apellido: apellidoDestinatario,
-        provincia: provinciaDestinatario,
-        canton: cantonDestinatario,
-        parroquia: parroquiaDestinatario,
-        email: emailDestinatario,
-        referencia: referenciaDestinatario,
-        telefono: telefonoDestinatario,
-        direccion: direccionDestinatario
-      },
-      contenido: {
-        peso: pesoContenido,
-        valorDeclarado: valor,
-        descripcion: descripcionContenido,
-        nroItems: nroItems
-      }
-    }).then(() => { props.refresh(); props.close() })
+    db.collection("guias")
+      .doc(`${props.guide.id}`)
+      .set({
+        remitente: {
+          apellido: apellidoRemitente,
+          canton: cantonRemitente,
+          email: emailRemitente,
+          id: id,
+          nombre: nombreRemitente,
+          parroquia: parroquiaRemitente,
+          provincia: provinciaRemitente,
+          referencia: referenciaRemitente,
+          telefono: telefonoRemitente,
+          direccion: direccionRemitente,
+        },
+        destinatario: {
+          ci: ciDestinatario,
+          nombre: nombreDestinatario,
+          apellido: apellidoDestinatario,
+          provincia: provinciaDestinatario,
+          canton: cantonDestinatario,
+          parroquia: parroquiaDestinatario,
+          email: emailDestinatario,
+          referencia: referenciaDestinatario,
+          telefono: telefonoDestinatario,
+          direccion: direccionDestinatario,
+        },
+        contenido: {
+          peso: pesoContenido,
+          valorDeclarado: valor,
+          descripcion: descripcionContenido,
+          nroItems: nroItems,
+        },
+      })
+      .then(() => {
+        props.refresh();
+        props.close();
+      });
+  };
+  const formatGuide = (guide) => {
+    var guideArray = Array.from(guide);
+    var aux = 13 - guideArray.length;
+    for (let i = 1; i <= aux; i++) {
+      guideArray.splice(2, 0, "0");
+    }
+    var lastStringGuide = guideArray.join("");
+    return lastStringGuide;
+  };
+  const checkOrigin = () =>{
+    if(props.guide.createdBy.agenciado){
+      return (<h5>Creado por Agenciado: {props.guide.createdBy.agenciado}</h5>)
+    }else{
+      return (<h5>Creado por Remitente</h5>)
+    }
   }
   return (
     <Container>
-      <h3>{props.guide.id}</h3>
+      <h3>{formatGuide(props.guide.id)}</h3>
+      {checkOrigin()}
       <Row>
         <Col>
           <div className="d-flex">
@@ -138,8 +200,9 @@ export default function ModalEditGuide(props) {
                   placeholder="CI"
                   disabled={togleEditRemitente}
                   value={id}
-                  onChange={(e) => { setid(e.target.value) }}
-
+                  onChange={(e) => {
+                    setid(e.target.value);
+                  }}
                 />
               </InputGroup>
             </Form.Group>
@@ -153,59 +216,63 @@ export default function ModalEditGuide(props) {
                   placeholder="Nombres"
                   disabled={togleEditRemitente}
                   value={nombreRemitente}
-                  onChange={(e) => { setNombreRemitente(e.target.value) }}
+                  onChange={(e) => {
+                    setNombreRemitente(e.target.value);
+                  }}
                 />
               </InputGroup>
             </Form.Group>
 
             <Form.Group>
-            <InputGroup>
+              <InputGroup>
                 <InputGroup.Prepend>
-                  <InputGroup.Text id="basic-addon1">Apellidos:</InputGroup.Text>
+                  <InputGroup.Text id="basic-addon1">
+                    Apellidos:
+                  </InputGroup.Text>
                 </InputGroup.Prepend>
-              <Form.Control
-                type="text"
-                placeholder="Apellidos"
-                disabled={togleEditRemitente}
-                value={apellidoRemitente}
-                onChange={(e) => { setApellidoRemitente(e.target.value) }}
-              />
+                <Form.Control
+                  type="text"
+                  placeholder="Apellidos"
+                  disabled={togleEditRemitente}
+                  value={apellidoRemitente}
+                  onChange={(e) => {
+                    setApellidoRemitente(e.target.value);
+                  }}
+                />
               </InputGroup>
             </Form.Group>
-            
+
             <Form.Group>
-            <InputGroup>
+              <InputGroup>
                 <InputGroup.Prepend>
                   <InputGroup.Text id="basic-addon1">Email:</InputGroup.Text>
                 </InputGroup.Prepend>
-              <Form.Control
-                type="text"
-                placeholder="Email"
-                disabled={togleEditRemitente}
-                value={emailRemitente}
-
-              />
+                <Form.Control
+                  type="text"
+                  placeholder="Email"
+                  disabled={togleEditRemitente}
+                  value={emailRemitente}
+                />
               </InputGroup>
             </Form.Group>
 
-
             <Form.Group>
-            <InputGroup>
+              <InputGroup>
                 <InputGroup.Prepend>
-                  <InputGroup.Text id="basic-addon1">Provincia:</InputGroup.Text>
+                  <InputGroup.Text id="basic-addon1">
+                    Provincia:
+                  </InputGroup.Text>
                 </InputGroup.Prepend>
-              <Form.Control
-                type="text"
-                placeholder="Provincia"
-                disabled={togleEditRemitente}
-                value={provinciaRemitente}
-                onChange={(e) => { setprovinciaRemitente(e.target.value) }}
-
-              />
+                <Form.Control
+                  type="text"
+                  placeholder="Provincia"
+                  disabled={togleEditRemitente}
+                  value={provinciaRemitente}
+                  onChange={(e) => {
+                    setprovinciaRemitente(e.target.value);
+                  }}
+                />
               </InputGroup>
-
-
-
             </Form.Group>
             <Form.Group>
               <Form.Control
@@ -213,8 +280,9 @@ export default function ModalEditGuide(props) {
                 placeholder="Canton"
                 disabled={togleEditRemitente}
                 value={cantonRemitente}
-                onChange={(e) => { setcantonRemitente(e.target.value) }}
-
+                onChange={(e) => {
+                  setcantonRemitente(e.target.value);
+                }}
               />
             </Form.Group>
             <Form.Group>
@@ -223,7 +291,9 @@ export default function ModalEditGuide(props) {
                 placeholder="Parroquia"
                 disabled={togleEditRemitente}
                 value={parroquiaRemitente}
-                onChange={(e) => { setparroquiaRemitente(e.target.value) }}
+                onChange={(e) => {
+                  setparroquiaRemitente(e.target.value);
+                }}
               />
             </Form.Group>
             <Form.Group>
@@ -232,7 +302,9 @@ export default function ModalEditGuide(props) {
                 placeholder="Referencia"
                 disabled={togleEditRemitente}
                 value={referenciaRemitente}
-                onChange={(e) => { setreferenciaRemitente(e.target.value) }}
+                onChange={(e) => {
+                  setreferenciaRemitente(e.target.value);
+                }}
               />
             </Form.Group>
             <Form.Group>
@@ -241,7 +313,9 @@ export default function ModalEditGuide(props) {
                 placeholder="Telefono"
                 disabled={togleEditRemitente}
                 value={telefonoRemitente}
-                onChange={(e) => { settelefonoRemitente(e.target.value) }}
+                onChange={(e) => {
+                  settelefonoRemitente(e.target.value);
+                }}
               />
             </Form.Group>
             <Form.Group>
@@ -250,7 +324,9 @@ export default function ModalEditGuide(props) {
                 placeholder="Direccion"
                 disabled={togleEditRemitente}
                 value={direccionRemitente}
-                onChange={(e) => { setDireccionRemitente(e.target.value) }}
+                onChange={(e) => {
+                  setDireccionRemitente(e.target.value);
+                }}
               />
             </Form.Group>
           </Form>
@@ -276,8 +352,9 @@ export default function ModalEditGuide(props) {
                 placeholder="CI"
                 disabled={togleEditDestinatario}
                 value={ciDestinatario}
-                onChange={(e) => { setCiDestinatario(e.target.value) }}
-
+                onChange={(e) => {
+                  setCiDestinatario(e.target.value);
+                }}
               />
             </Form.Group>
             <Form.Group>
@@ -286,7 +363,9 @@ export default function ModalEditGuide(props) {
                 placeholder="Nombres"
                 disabled={togleEditDestinatario}
                 value={nombreDestinatario}
-                onChange={(e) => { setNombreDestinatario(e.target.value) }}
+                onChange={(e) => {
+                  setNombreDestinatario(e.target.value);
+                }}
               />
             </Form.Group>
             <Form.Group>
@@ -295,7 +374,9 @@ export default function ModalEditGuide(props) {
                 placeholder="Apellidos"
                 disabled={togleEditDestinatario}
                 value={apellidoDestinatario}
-                onChange={(e) => { setApellidoDestinatario(e.target.value) }}
+                onChange={(e) => {
+                  setApellidoDestinatario(e.target.value);
+                }}
               />
             </Form.Group>
             <Form.Group>
@@ -304,7 +385,9 @@ export default function ModalEditGuide(props) {
                 placeholder="Email"
                 disabled={togleEditDestinatario}
                 value={emailDestinatario}
-                onChange={(e) => { setemailDestinatario(e.target.value) }}
+                onChange={(e) => {
+                  setemailDestinatario(e.target.value);
+                }}
               />
             </Form.Group>
             <Form.Group>
@@ -313,7 +396,9 @@ export default function ModalEditGuide(props) {
                 placeholder="Provincia"
                 disabled={togleEditDestinatario}
                 value={provinciaDestinatario}
-                onChange={(e) => { setprovinciaDestinatario(e.target.value) }}
+                onChange={(e) => {
+                  setprovinciaDestinatario(e.target.value);
+                }}
               />
             </Form.Group>
             <Form.Group>
@@ -322,7 +407,9 @@ export default function ModalEditGuide(props) {
                 placeholder="Canton"
                 disabled={togleEditDestinatario}
                 value={cantonDestinatario}
-                onChange={(e) => { setcantonDestinatario(e.target.value) }}
+                onChange={(e) => {
+                  setcantonDestinatario(e.target.value);
+                }}
               />
             </Form.Group>
             <Form.Group>
@@ -331,7 +418,9 @@ export default function ModalEditGuide(props) {
                 placeholder="Parroquia"
                 disabled={togleEditDestinatario}
                 value={parroquiaDestinatario}
-                onChange={(e) => { setApellidoDestinatario(e.target.value) }}
+                onChange={(e) => {
+                  setApellidoDestinatario(e.target.value);
+                }}
               />
             </Form.Group>
             <Form.Group>
@@ -340,7 +429,9 @@ export default function ModalEditGuide(props) {
                 placeholder="Referencia"
                 disabled={togleEditDestinatario}
                 value={referenciaDestinatario}
-                onChange={(e) => { setreferenciaDestinatario(e.target.value) }}
+                onChange={(e) => {
+                  setreferenciaDestinatario(e.target.value);
+                }}
               />
             </Form.Group>
             <Form.Group>
@@ -349,7 +440,9 @@ export default function ModalEditGuide(props) {
                 placeholder="Telefono"
                 disabled={togleEditDestinatario}
                 value={telefonoDestinatario}
-                onChange={(e) => { settelefonoDestinatario(e.target.value) }}
+                onChange={(e) => {
+                  settelefonoDestinatario(e.target.value);
+                }}
               />
             </Form.Group>
             <Form.Group>
@@ -358,7 +451,9 @@ export default function ModalEditGuide(props) {
                 placeholder="Direccion"
                 disabled={togleEditDestinatario}
                 value={direccionDestinatario}
-                onChange={(e) => { setDireccionRemitente(e.target.value) }}
+                onChange={(e) => {
+                  setDireccionRemitente(e.target.value);
+                }}
               />
             </Form.Group>
           </Form>
@@ -386,7 +481,9 @@ export default function ModalEditGuide(props) {
               placeholder="Descripción"
               disabled={togleEditContenido}
               value={descripcionContenido}
-              onChange={(e) => { setDescripcionContenido(e.target.value) }}
+              onChange={(e) => {
+                setDescripcionContenido(e.target.value);
+              }}
             />
           </Form.Group>
         </Col>
@@ -397,7 +494,9 @@ export default function ModalEditGuide(props) {
               placeholder="Peso"
               disabled={togleEditContenido}
               value={pesoContenido}
-              onChange={(e) => { setPesoContenido(e.target.value) }}
+              onChange={(e) => {
+                setPesoContenido(e.target.value);
+              }}
             />
           </Form.Group>
         </Col>
@@ -408,7 +507,9 @@ export default function ModalEditGuide(props) {
               placeholder="Valor"
               disabled={togleEditContenido}
               value={valor}
-              onChange={(e) => { setValor(e.target.value) }}
+              onChange={(e) => {
+                setValor(e.target.value);
+              }}
             />
           </Form.Group>
         </Col>
@@ -419,14 +520,23 @@ export default function ModalEditGuide(props) {
               placeholder="Nro Items"
               disabled={togleEditContenido}
               value={nroItems}
-              onChange={(e) => { setNroItems(e.target.value) }}
+              onChange={(e) => {
+                setNroItems(e.target.value);
+              }}
             />
           </Form.Group>
         </Col>
       </Row>
-      <Row className='mt-3'>
+      <Row className="mt-3">
         <Col></Col>
-        <Col><Button variant='outline-primary' onClick={props.close}>Cancelar</Button><Button variant='success' className='ml-2' onClick={updateGuide}>Guardar</Button></Col>
+        <Col>
+          <Button variant="outline-primary" onClick={props.close}>
+            Cancelar
+          </Button>
+          <Button variant="success" className="ml-2" onClick={updateGuide}>
+            Guardar
+          </Button>
+        </Col>
       </Row>
     </Container>
   );
