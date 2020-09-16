@@ -16,6 +16,7 @@ import { auth, db } from "../assets/firebase";
 import EditGuide from "../components/sucursalComponents/modal-edit-guia";
 import ModalEstados from "../components/sucursalComponents/modal-estados";
 import ModalAddGuide from "../components/sucursalComponents/modal-add-guide";
+import GuideInfo from "../components/sucursalComponents/modal-guide-info";
 export default function MainSucursal(props) {
   const [showLoading, setshowLoading] = useState(false);
   const [guideToFind, setguideToFind] = useState("");
@@ -25,7 +26,9 @@ export default function MainSucursal(props) {
   const [guideToPass, setGuideToPass] = useState({});
   const [showAddGuide, setshowAddGuide] = useState(false);
   const [sucursal, setSucursal] = useState({});
-  const [btnSearch, setBtnSearch] = useState(true)
+  const [btnSearch, setBtnSearch] = useState(true);
+  const [showLatestGuideModal, setshowLatestGuideModal] = useState(false);
+  const [lastAddedGuide, setlastAddedGuide] = useState("");
   //inicializacion de importaciones
   const history = useHistory();
 
@@ -37,15 +40,14 @@ export default function MainSucursal(props) {
           .get()
           .then((users) => {
             users.forEach((user) => {
-              setSucursal({ id: user.id, ...user.data() })
-              console.log(user.data())
+              setSucursal({ id: user.id, ...user.data() });
+              console.log(user.data());
             });
-          })
+          });
       }
     });
-    console.log(sucursal)
+    console.log(sucursal);
   }, []);
-
 
   const searchGuide = async () => {
     setshowLoading(true);
@@ -69,13 +71,13 @@ export default function MainSucursal(props) {
   };
   const formatGuide = (guide) => {
     var guideArray = Array.from(guide);
-    var aux = 13-guideArray.length 
+    var aux = 13 - guideArray.length;
     for (let i = 1; i <= aux; i++) {
-        guideArray.splice(2,0,'0')
+      guideArray.splice(2, 0, "0");
     }
-    var lastStringGuide = guideArray.join('')
+    var lastStringGuide = guideArray.join("");
     return lastStringGuide;
-  }
+  };
   const checkFound = () => {
     if (Object.keys(guideFound).length !== 0) {
       return (
@@ -124,24 +126,43 @@ export default function MainSucursal(props) {
 
   const hideAddGuide = () => {
     setshowAddGuide(false);
+    setshowLatestGuideModal(true);
   };
- 
-  const checkInputs = ()=>{
-    if(guideToFind){
-      setBtnSearch(false)
-    }else{
-      setBtnSearch(true)
+
+  const checkInputs = () => {
+    if (guideToFind) {
+      setBtnSearch(false);
+    } else {
+      setBtnSearch(true);
     }
   };
   useEffect(() => {
-    checkInputs()
-  }, [guideToFind])
+    checkInputs();
+  }, [guideToFind]);
+
+  const closeLatestGuideInfoModal = () => {
+    setshowLatestGuideModal(false);
+  };
   return (
     <Container style={{ marginTop: "2rem" }}>
+      {/**Innfo Guide */}
+      <Modal
+        show={showLatestGuideModal}
+        onHide={closeLatestGuideInfoModal}
+        size="lg"
+      >
+        <Modal.Body>
+          <GuideInfo guide={lastAddedGuide} />
+        </Modal.Body>
+      </Modal>
       {/**Modal Para agregar Guias */}
       <Modal show={showAddGuide} onHide={hideAddGuide} size="lg">
         <Modal.Header closeButton>NUEVA GUIA</Modal.Header>
-        <ModalAddGuide close={hideAddGuide} sucursal={sucursal} />
+        <ModalAddGuide
+          close={hideAddGuide}
+          sucursal={sucursal}
+          returnGuideId={setlastAddedGuide}
+        />
       </Modal>
       {/** Modal para agregar los estados */}
       <ModalEstados
@@ -182,7 +203,11 @@ export default function MainSucursal(props) {
                 setguideToFind(e.target.value);
               }}
             />
-            <Button variant="outline-success" onClick={searchGuide} disabled={btnSearch}>
+            <Button
+              variant="outline-success"
+              onClick={searchGuide}
+              disabled={btnSearch}
+            >
               BUSCAR
             </Button>
             <Dropdown className="ml-2 d-flex align-items-center">

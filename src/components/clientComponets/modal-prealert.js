@@ -191,7 +191,7 @@ export default function ModalPreAlert(props) {
                 <select
                   placeholder="TIPO"
                   defaultValue="CI"
-                  onSelect={(e) => {
+                  onChange={(e) => {
                     settipoId(e.target.value);
                   }}
                 >

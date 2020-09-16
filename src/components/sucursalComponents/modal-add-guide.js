@@ -75,7 +75,7 @@ export default function ModalAddGuide(props) {
             },
           })
           .then((res) => {
-            //props.returnGuideId(`RF${doc.data().count}EC`);
+            props.returnGuideId(`RF${doc.data().count}EC`);
             db.collection("guias")
               .doc(`RF${doc.data().count}EC`)
               .collection("estados")
@@ -90,6 +90,7 @@ export default function ModalAddGuide(props) {
               });
           });
       });
+      props.close()
   };
 
   const searchUser = () => {
