@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Icon from "@material-ui/core/Icon";
 import Container from "react-bootstrap/Container";
@@ -26,6 +26,8 @@ export default function MainScreenAdmin() {
   const [guideToPass, setGuideToPass] = useState({});
   const [showLoading, setshowLoading] = useState(false);
   const [guideToFind, setguideToFind] = useState("");
+  //btnSearch
+  const [btnSearch, setBtnSearch] = useState(true)
   //inicializacion de importaciones
   const history = useHistory();
   const match = useRouteMatch();
@@ -64,7 +66,16 @@ export default function MainScreenAdmin() {
         }
       });
   };
-
+const checkInputs = ()=>{
+  if(guideToFind){
+    setBtnSearch(false)
+  }else{
+    setBtnSearch(true)
+  }
+};
+useEffect(() => {
+  checkInputs()
+}, [guideToFind])
   const checkFound = () => {
     if (Object.keys(guideFound).length !== 0) {
       return (
@@ -155,7 +166,7 @@ export default function MainScreenAdmin() {
                 setguideToFind(e.target.value);
               }}
             />
-            <Button variant="outline-success" onClick={searchGuide}>
+            <Button variant="outline-success" onClick={searchGuide} disabled={btnSearch}>
               BUSCAR
             </Button>
 

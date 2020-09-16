@@ -25,7 +25,7 @@ export default function MainSucursal(props) {
   const [guideToPass, setGuideToPass] = useState({});
   const [showAddGuide, setshowAddGuide] = useState(false);
   const [sucursal, setSucursal] = useState({});
-
+  const [btnSearch, setBtnSearch] = useState(true)
   //inicializacion de importaciones
   const history = useHistory();
 
@@ -125,6 +125,17 @@ export default function MainSucursal(props) {
   const hideAddGuide = () => {
     setshowAddGuide(false);
   };
+ 
+  const checkInputs = ()=>{
+    if(guideToFind){
+      setBtnSearch(false)
+    }else{
+      setBtnSearch(true)
+    }
+  };
+  useEffect(() => {
+    checkInputs()
+  }, [guideToFind])
   return (
     <Container style={{ marginTop: "2rem" }}>
       {/**Modal Para agregar Guias */}
@@ -171,7 +182,7 @@ export default function MainSucursal(props) {
                 setguideToFind(e.target.value);
               }}
             />
-            <Button variant="outline-success" onClick={searchGuide}>
+            <Button variant="outline-success" onClick={searchGuide} disabled={btnSearch}>
               BUSCAR
             </Button>
             <Dropdown className="ml-2 d-flex align-items-center">

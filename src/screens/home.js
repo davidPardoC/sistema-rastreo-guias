@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import NavBarComponent from "../components/nav";
 import './styles/home.css'
 import {
@@ -19,6 +19,9 @@ const [guideToFind, setGuideToFind] = useState('');
 const [guideFound, setGuideFound] = useState({id:''});
 const [showModalFound, setShowModalFound] = useState(false);
 const [estados, setEstados] = useState([]);
+ //btnSearch
+ const [btnSearch, setBtnSearch] = useState(true)
+
   const searchGuide = () =>{
     var guide = unFormatGuide(guideToFind)
     db.collection('guias').doc(guide).get().then((doc)=>{
@@ -48,6 +51,16 @@ const [estados, setEstados] = useState([]);
     var lastStringGuide = guideArray.join('')
     return lastStringGuide;
   }
+  const checkInputs = ()=>{
+    if(guideToFind){
+      setBtnSearch(false)
+    }else{
+      setBtnSearch(true)
+    }
+  };
+  useEffect(() => {
+    checkInputs()
+  }, [guideToFind])
   return (
     <>
     <Modal show={showModalFound} onHide={()=>{setShowModalFound(false)}} size="lg">
@@ -121,7 +134,7 @@ const [estados, setEstados] = useState([]);
                         onChange={(e)=>{setGuideToFind(e.target.value)}}
                       />
                     </Form>
-                    <Button variant="outline-success" className="ml-2" onClick={searchGuide}>
+                    <Button variant="outline-success" className="ml-2" onClick={searchGuide} disabled={btnSearch}>
                       RASTREAR GUÍA
                     </Button>
                   </div>

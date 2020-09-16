@@ -36,6 +36,7 @@ export default function MainScreensCustomer() {
   const [guides, setguides] = useState([]);
   const [lastAddedGuide, setlastAddedGuide] = useState('');
   const [showLatestGuideModal, setshowLatestGuideModal] = useState(false);
+  const [btnSearch, setBtnSearch] = useState(true)
 
   const getUserGuides = async () => {
     db.collection("guias").where('remitente.id', '==', `${cliente.id}`)
@@ -55,7 +56,17 @@ export default function MainScreensCustomer() {
   useEffect(() => {
     getUserGuides()
   }, [cliente])
-
+  
+  const checkInputs = ()=>{
+    if(guideToFind){
+      setBtnSearch(false)
+    }else{
+      setBtnSearch(true)
+    }
+  };
+  useEffect(() => {
+    checkInputs()
+  }, [guideToFind])
 const formatGuide = (guide) => {
     var guideArray = Array.from(guide);
     var aux = 13-guideArray.length 
@@ -160,7 +171,7 @@ const unFormatGuide = (guide) => {
                 setGuideToFind(e.target.value);
               }}
             />
-            <Button variant="outline-success" onClick={searchGuide}>
+            <Button variant="outline-success" onClick={searchGuide} disabled={btnSearch}>
               BUSCAR
             </Button>
             <Dropdown className="ml-2 d-flex align-items-center">
