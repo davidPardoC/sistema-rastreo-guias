@@ -1,3 +1,4 @@
+import { Icon } from "@material-ui/core";
 import React from "react";
 import { Container, ListGroup, Button } from "react-bootstrap";
 import { useHistory, useRouteMatch } from "react-router-dom";
@@ -8,7 +9,9 @@ export default function AdminSettings() {
   return (
     <div className='mt-5'>
       <Container>
-        <ListGroup>
+      <Button variant="outline-dark" className='d-flex align-items-center' onClick={()=>{history.goBack()}}><Icon >arrow_back</Icon></Button>
+        
+        <ListGroup className="mt-2">
           <ListGroup.Item >
             <Button
               onClick={() => {

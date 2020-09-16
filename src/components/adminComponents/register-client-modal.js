@@ -8,7 +8,7 @@ import {
   Col
 } from "react-bootstrap";
 import { db, functions } from "../../assets/firebase";
-
+import Icon from "@material-ui/core/Icon";
 export default function RegisterClientModal(props) {
 
   //passwords
@@ -17,9 +17,9 @@ export default function RegisterClientModal(props) {
   //estdo del boton registro
   const [buttonRegister, setButtonRegister] = useState(true);
   //datos para registro
-  const [usertoRegister, setUserToRegister] = useState({});
-
-  
+  const [usertoRegister, setUserToRegister] = useState({email:''});
+  const [showAlertEmail, setshowAlertEmail] = useState(false);
+  const [passwordType, setPasswordType] = useState('password');
   const [tipoId, settipoId] = useState("C.I");
   
 
@@ -73,6 +73,48 @@ export default function RegisterClientModal(props) {
     props.hide()
   };
 
+  const checkInputs = () => {
+    if (usertoRegister.email.includes("@") && usertoRegister.email.includes(".")) {
+      setshowAlertEmail(false);
+      setButtonRegister(false);
+    } else {
+      if (usertoRegister.email === "") {
+        setshowAlertEmail(false);
+      } else {
+        setshowAlertEmail(true);
+      }
+    }
+    if(!usertoRegister.institucion ||
+      !usertoRegister.id || 
+      !usertoRegister.nombre ||
+      !usertoRegister.apellido ||
+      !usertoRegister.telefono ||
+      !usertoRegister.provincia ||
+      !usertoRegister.canton ||
+      !usertoRegister.parroquia ||
+      !usertoRegister.direccion ||
+      !usertoRegister.referencia ||
+      !usertoRegister.email ||
+      !usertoRegister.password){
+        console.log('no pass')
+        setButtonRegister(true)
+      }else{
+        console.log('pass')
+        setButtonRegister(false)
+      }
+  }
+
+  useEffect(() => {
+    checkInputs()
+  }, [usertoRegister, passwordConf]);
+
+  const changePasswordType = ()=>{
+    if(passwordType === 'password'){
+      setPasswordType('text')
+    }else{
+      setPasswordType('password')
+    }
+  }
   return (
     <>
       <Container>
@@ -108,7 +150,7 @@ export default function RegisterClientModal(props) {
               </Form.Group>
             </Col>
             <Col>
-             <select style={{border:'solid 1px black', padding:'0.5rem' , borderRadius:'1rem'}} onChange={(e)=>settipoId(e.target.value)}>
+             <select style={{border:'solid 1px black', padding:'0.5rem' , borderRadius:'1rem'}} onChange={(e)=>{settipoId(e.target.value) ; console.log(e.target.value)}}>
                 <option>TIPO</option>
                <option value='RUC'>RUC</option>
                <option value='CI'>CI</option>
@@ -235,9 +277,11 @@ export default function RegisterClientModal(props) {
               }}
             />
           </Form.Group>
+          {showAlertEmail && <Alert variant="danger">Email no valido.</Alert>}
           <Form.Group controlId="password">
+          <div className="d-flex align-items-center">
             <Form.Control
-              type="password"
+              type={passwordType}
               placeholder="Contraseña"
               onChange={(e) => {
                 setPassword(e.target.value);
@@ -247,6 +291,13 @@ export default function RegisterClientModal(props) {
                 });
               }}
             />
+            <Button
+              className="d-flex align-items-center ml-1"
+              onClick={() => {changePasswordType()}}
+            >
+              <Icon>visibility</Icon>
+            </Button>
+            </div>
           </Form.Group>
 
           <Form.Group controlId="confPassword">

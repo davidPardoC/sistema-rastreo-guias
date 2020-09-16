@@ -69,7 +69,7 @@ export default function ModalViewStates(props) {
                 {
                   states.map((state)=>(
                     <tr key={state.id}>
-                      <td>{new Date(state.date.seconds*1000).toDateString()}</td>
+                      <td>{`${new Date(state.date.seconds * 1000).getFullYear()}/${new Date(state.date.seconds * 1000).getMonth()}/${new Date(state.date.seconds * 1000).getDate()}  ${new Date(state.date.seconds * 1000).getHours()}:${new Date(state.date.seconds * 1000).getMinutes()}`}</td>
                       <td>{state.descripcion}</td>
                     </tr>
                   ))

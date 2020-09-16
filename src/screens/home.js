@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import NavBarComponent from "../components/nav";
 import './styles/home.css'
 import {
@@ -10,10 +10,54 @@ import {
   Button,
   ListGroup,
   Carousel,
+  Modal
 } from "react-bootstrap";
+import {db} from '../assets/firebase'
+import GuideInfo from '../components/modal-search-guide'
 export default function Home() {
+const [guideToFind, setGuideToFind] = useState('');
+const [guideFound, setGuideFound] = useState({id:''});
+const [showModalFound, setShowModalFound] = useState(false);
+const [estados, setEstados] = useState([]);
+  const searchGuide = () =>{
+    var guide = unFormatGuide(guideToFind)
+    db.collection('guias').doc(guide).get().then((doc)=>{
+      setGuideFound({id:doc.id, ...doc.data()})
+    }).then(()=>{
+      db.collection('guias').doc(guide).collection('estados').get().then((collection)=>{
+        var aux = []
+        collection.forEach(
+          (doc)=>{
+            aux.push(doc.data())
+          }
+        )
+        setEstados(aux);
+      }).then(()=>{setShowModalFound(true)})
+    })
+  }
+  const unFormatGuide = (guide) => {
+    var guideUnformated = guide.replace(/0/g, '')
+    return guideUnformated;
+  }
+  const formatGuide = (guide) => {
+    var guideArray = Array.from(guide);
+    var aux = 13-guideArray.length 
+    for (let i = 1; i <= aux; i++) {
+        guideArray.splice(2,0,'0')
+    }
+    var lastStringGuide = guideArray.join('')
+    return lastStringGuide;
+  }
   return (
     <>
+    <Modal show={showModalFound} onHide={()=>{setShowModalFound(false)}} size="lg">
+    <Modal.Header closeButton>
+  <h2>{formatGuide(guideFound.id)} </h2>
+    </Modal.Header>
+    <Modal.Body>
+    <GuideInfo guide={guideFound} estados={estados}/>
+    </Modal.Body>
+    </Modal>
       <NavBarComponent />
       <Container>
         <Row>
@@ -74,9 +118,10 @@ export default function Home() {
                         type="text"
                         placeholder="Ingresar número de guía"
                         className="mr-sm-2"
+                        onChange={(e)=>{setGuideToFind(e.target.value)}}
                       />
                     </Form>
-                    <Button variant="outline-success" className="ml-2">
+                    <Button variant="outline-success" className="ml-2" onClick={searchGuide}>
                       RASTREAR GUÍA
                     </Button>
                   </div>
