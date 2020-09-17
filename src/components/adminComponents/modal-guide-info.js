@@ -312,7 +312,7 @@ export default function GuideInfo(props) {
                         <Col>Hora:</Col>
                       </Row>
                     </Col>
-                    <Col style={{ border: "", height: "1rem" }}>Firma:</Col>
+                    <Col style={{ border: "", height: "0.8rem" }}>Firma:</Col>
                   </Row>
                 </Col>
               </Row>

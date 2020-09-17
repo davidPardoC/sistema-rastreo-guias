@@ -128,7 +128,9 @@ export default function MainSucursal(props) {
     setshowAddGuide(false);
     setshowLatestGuideModal(true);
   };
-
+  const handleCloseNoConfirm = () => {
+    setshowAddGuide(false)
+  }
   const checkInputs = () => {
     if (guideToFind) {
       setBtnSearch(false);
@@ -156,12 +158,13 @@ export default function MainSucursal(props) {
         </Modal.Body>
       </Modal>
       {/**Modal Para agregar Guias */}
-      <Modal show={showAddGuide} onHide={hideAddGuide} size="lg">
+      <Modal show={showAddGuide} onHide={handleCloseNoConfirm} size="lg">
         <Modal.Header closeButton>NUEVA GUIA</Modal.Header>
         <ModalAddGuide
           close={hideAddGuide}
           sucursal={sucursal}
           returnGuideId={setlastAddedGuide}
+          closeNoConfirm={handleCloseNoConfirm}
         />
       </Modal>
       {/** Modal para agregar los estados */}

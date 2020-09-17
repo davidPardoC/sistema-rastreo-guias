@@ -11,12 +11,12 @@ import {
   Dropdown,
   Modal,
 } from "react-bootstrap";
-import GuideInfo from '../components/clientComponets/modal-guide-info'
+import GuideInfo from "../components/clientComponets/modal-guide-info";
 import ModalPreAlert from "../components/clientComponets/modal-prealert";
 import ModalViewStates from "../components/clientComponets/modal-view-state";
 import { db, auth } from "../assets/firebase";
 import { useHistory } from "react-router-dom";
-import '../components/clientComponets/modal-guide.css'
+import "../components/clientComponets/modal-guide.css";
 
 export default function MainScreensCustomer() {
   const history = useHistory();
@@ -34,53 +34,51 @@ export default function MainScreensCustomer() {
   });
 
   const [guides, setguides] = useState([]);
-  const [lastAddedGuide, setlastAddedGuide] = useState('');
+  const [lastAddedGuide, setlastAddedGuide] = useState("");
   const [showLatestGuideModal, setshowLatestGuideModal] = useState(false);
-  const [btnSearch, setBtnSearch] = useState(true)
+  const [btnSearch, setBtnSearch] = useState(true);
 
   const getUserGuides = async () => {
-    db.collection("guias").where('remitente.id', '==', `${cliente.id}`)
+    db.collection("guias")
+      .where("remitente.id", "==", `${cliente.id}`)
       .onSnapshot((querySnapshot) => {
-        var aux = []
+        var aux = [];
         querySnapshot.forEach((doc) => {
-
           aux.push({ id: doc.id, ...doc.data() });
         });
-        setguides(aux)
+        setguides(aux);
       });
   };
 
-  useEffect(()=>{
-    
-  },[])
+  useEffect(() => {}, []);
   useEffect(() => {
-    getUserGuides()
-  }, [cliente])
-  
-  const checkInputs = ()=>{
-    if(guideToFind){
-      setBtnSearch(false)
-    }else{
-      setBtnSearch(true)
+    getUserGuides();
+  }, [cliente]);
+
+  const checkInputs = () => {
+    if (guideToFind) {
+      setBtnSearch(false);
+    } else {
+      setBtnSearch(true);
     }
   };
   useEffect(() => {
-    checkInputs()
-  }, [guideToFind])
-const formatGuide = (guide) => {
+    checkInputs();
+  }, [guideToFind]);
+  const formatGuide = (guide) => {
     var guideArray = Array.from(guide);
-    var aux = 13-guideArray.length 
+    var aux = 13 - guideArray.length;
     for (let i = 1; i <= aux; i++) {
-        guideArray.splice(2,0,'0')
+      guideArray.splice(2, 0, "0");
     }
-    var lastStringGuide = guideArray.join('')
+    var lastStringGuide = guideArray.join("");
     return lastStringGuide;
-  }
+  };
 
-const unFormatGuide = (guide) => {
-  var guideUnformated = guide.replace(/0/g, '')
-  return guideUnformated;
-}
+  const unFormatGuide = (guide) => {
+    var guideUnformated = guide.replace(/0/g, "");
+    return guideUnformated;
+  };
 
   useEffect(() => {
     if (guideToFind === "") {
@@ -96,15 +94,15 @@ const unFormatGuide = (guide) => {
           .get()
           .then((users) => {
             users.forEach((user) => {
-              setCliente({ id: user.id, ...user.data() })
+              setCliente({ id: user.id, ...user.data() });
             });
-          })
+          });
       }
     });
   }, []);
 
   const searchGuide = () => {
-    var guideUnformated = unFormatGuide(guideToFind)
+    var guideUnformated = unFormatGuide(guideToFind);
     var guideF = guides.filter((guide) => guide.id === guideUnformated);
     if (guideF.length !== 0) {
       setGuideFound(guideF);
@@ -118,19 +116,17 @@ const unFormatGuide = (guide) => {
 
   //cerrar modal
   const handleClose = () => {
-    setShow(false)
-    setshowLatestGuideModal(true)
+    setShow(false);
+    setshowLatestGuideModal(true);
   };
   const closeInfoModal = () => setshowGuideInfo(false);
-  const closeLatestGuideInfoModal = () =>{
-    setshowLatestGuideModal(false)
-  }
+  const closeLatestGuideInfoModal = () => {
+    setshowLatestGuideModal(false);
+  };
 
   const handleCloseNoConfirm = () => {
-    setShow(false)
-  }
-
-
+    setShow(false);
+  };
 
   return (
     <Container style={{ marginTop: "2rem" }}>
@@ -141,13 +137,27 @@ const unFormatGuide = (guide) => {
         guide={guideToPass}
       />
       {/**Modal pre alerta */}
-      <ModalPreAlert show={show} close={handleClose} closeNoConfirm={handleCloseNoConfirm} cliente={cliente} returnGuideId={setlastAddedGuide}/>
+      <ModalPreAlert
+        show={show}
+        close={handleClose}
+        closeNoConfirm={handleCloseNoConfirm}
+        cliente={cliente}
+        returnGuideId={setlastAddedGuide}
+      />
+
+      
       {/**Modal Info Latest Guide */}
-      <Modal show={showLatestGuideModal} onHide={closeLatestGuideInfoModal} size="lg">
-        <Modal.Body >
-        <GuideInfo guide={lastAddedGuide}/>
+      <Modal
+        show={showLatestGuideModal}
+        onHide={closeLatestGuideInfoModal}
+        size="lg"
+      >
+        <Modal.Body>
+          <GuideInfo guide={lastAddedGuide} />
         </Modal.Body>
       </Modal>
+
+
       <Row>
         <Col sm={6}>
           <Button
@@ -171,7 +181,11 @@ const unFormatGuide = (guide) => {
                 setGuideToFind(e.target.value);
               }}
             />
-            <Button variant="outline-success" onClick={searchGuide} disabled={btnSearch}>
+            <Button
+              variant="outline-success"
+              onClick={searchGuide}
+              disabled={btnSearch}
+            >
               BUSCAR
             </Button>
             <Dropdown className="ml-2 d-flex align-items-center">

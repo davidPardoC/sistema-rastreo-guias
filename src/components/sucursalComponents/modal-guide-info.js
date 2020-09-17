@@ -277,19 +277,39 @@ export default function GuideInfo(props) {
                       borderRight: "1px solid",
                     }}
                   >
-                    <Col style={{ border: "" }}>
+                    <Col>
+                      <Row
+                        style={{
+                          borderBottom: "1px solid",
+                          borderRight: "1px solid",
+                          padding: "0.3rem",
+                        }}
+                      >
+                        <Col>Nombres:</Col>
+                      </Row>
                       <Row
                         style={{
                           borderBottom: "1px solid",
                           borderRight: "1px solid",
                         }}
                       >
-                    <Col style={{padding:'1rem'}}>Nombres:</Col>
+                        <Col>CI:</Col>
                       </Row>
-                      <Row style={{ borderRight: "1px solid" }}>
-                        <Col style={{ borderRight: "1px solid" }}>Fecha:</Col>
-                        <Col style={{ border: "" }}>Hora:</Col>
-                        <Col style={{ borderTop: "1px solid" ,padding:'0.8rem' }}>CI:</Col>
+                      <Row
+                        style={{
+                          borderBottom: "1px solid",
+                          borderRight: "1px solid",
+                          padding: "0.3rem",
+                        }}
+                      >
+                        <Col>Fecha:</Col>
+                      </Row>
+                      <Row
+                        style={{
+                          borderRight: "1px solid",
+                        }}
+                      >
+                        <Col>Hora:</Col>
                       </Row>
                     </Col>
                     <Col style={{ border: "", height: "1rem" }}>Firma:</Col>

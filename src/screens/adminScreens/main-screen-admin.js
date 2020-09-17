@@ -17,6 +17,7 @@ import ModalAddGuide from "../../components/adminComponents/modal-add-guide";
 import EditGuide from "../../components/adminComponents/modal-edit-guia";
 import ModalEstados from "../../components/adminComponents/modal-estados";
 import "./style.css";
+import GuideInfo from '../../components/adminComponents/modal-guide-info';
 export default function MainScreenAdmin() {
   //state
   const [showAddGuide, setshowAddGuide] = useState(false);
@@ -26,6 +27,8 @@ export default function MainScreenAdmin() {
   const [guideToPass, setGuideToPass] = useState({});
   const [showLoading, setshowLoading] = useState(false);
   const [guideToFind, setguideToFind] = useState("");
+  const [showLatestGuideModal, setshowLatestGuideModal] = useState(false);
+  const [lastAddedGuide, setlastAddedGuide] = useState("");
   //btnSearch
   const [btnSearch, setBtnSearch] = useState(true)
   //inicializacion de importaciones
@@ -48,7 +51,9 @@ export default function MainScreenAdmin() {
 
   const hideAddGuide = () => {
     setshowAddGuide(false);
+    setshowLatestGuideModal(true);
   };
+
   const searchGuide = async () => {
     history.push("/admin");
     setshowLoading(true);
@@ -119,12 +124,30 @@ useEffect(() => {
   const closUpdateEstados = () => {
     setshowUpdateStates(false);
   };
+  const closeLatestGuideInfoModal = () => {
+    setshowLatestGuideModal(false);
+  };
+  const handleCloseNoConfirm = () => {
+    setshowAddGuide(false);
+  };
   return (
     <Container style={{ marginTop: "2rem" }}>
+
+      {/**Modal para descargar la guía */}
+      <Modal
+      show={showLatestGuideModal}
+      onHide={closeLatestGuideInfoModal}
+      size="lg"
+      >
+        <Modal.Body>
+          <GuideInfo guide={lastAddedGuide}/>
+        </Modal.Body>
+      </Modal>
+
       {/**Modal Para agregar Guias */}
-      <Modal show={showAddGuide} onHide={hideAddGuide} size="lg">
+      <Modal show={showAddGuide} onHide={handleCloseNoConfirm} size="lg">
         <Modal.Header closeButton>NUEVA GUIA</Modal.Header>
-        <ModalAddGuide close={hideAddGuide} />
+        <ModalAddGuide close={hideAddGuide} closeNoConfirm={handleCloseNoConfirm} returnGuideId={setlastAddedGuide}/>
       </Modal>
 
       {/*Modal [ara editar la informacion de la guia */}

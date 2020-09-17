@@ -364,7 +364,7 @@ export default function ModalAddGuide(props) {
           </Button>
         </div>
         <div className="p-2 bd-highlight">
-          <Button variant="secondary" onClick={props.close}>
+          <Button variant="secondary" onClick={props.closeNoConfirm}>
             CANCELAR
           </Button>
         </div>
