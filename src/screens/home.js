@@ -90,7 +90,6 @@ export default function Home() {
       <Container fluid>
         <img
           src={require("../assets/images/main.svg")}
-          style={{ width: "102.25%", marginLeft: "-1rem", marginTop: "-2rem" , overflow:'hidden'}}
         ></img>
 
         <footer
