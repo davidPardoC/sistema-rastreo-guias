@@ -58,33 +58,6 @@ export default function MisionVision() {
             </Carousel.Item>
           </Carousel>
         </Row>
-        <footer
-          style={{ position: "fixed", left: 0, bottom: 20, width: "100%" }}
-        >
-          <ListGroup className="mt-5">
-            <ListGroup.Item>
-              <Row>
-                <Col>
-                  <div
-                    style={{ display: "flex", alignItems: "center" }}
-                    className="d-flex justify-content-end"
-                  >
-                    <Form className="ml-3">
-                      <FormControl
-                        type="text"
-                        placeholder="Ingresar número de guía"
-                        className="mr-sm-2"
-                      />
-                    </Form>
-                    <Button variant="outline-success" className="ml-2">
-                      RASTREAR GUÍA
-                    </Button>
-                  </div>
-                </Col>
-              </Row>
-            </ListGroup.Item>
-          </ListGroup>
-        </footer>
       </Container>
     </>
   );

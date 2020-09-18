@@ -80,25 +80,19 @@ export default function NavBarComponent() {
   return (
     <>
       <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="/">
-          <img
-            alt=""
-            src={require("../assets/images/logo.svg")}
-            width="50"
-            height="30"
-            className="d-inline-block align-top"
-          />{" "}
-          Rapifas Courier
-        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="/">INICIO</Nav.Link>
-            <Nav.Link href="/mision-vision">MISION Y VISION</Nav.Link>
+            <Nav.Link href="/"><a style={{color:'#384F77'}}>INICIO</a></Nav.Link>
+            <Nav.Link href="/mision-vision"><a style={{color:'#384F77'}}>MISION Y VISION</a></Nav.Link>
+            <Nav.Link href="/mision-vision"><a style={{color:'#384F77'}}>LA EMPRESA</a></Nav.Link>
           </Nav>
 
-          <Button style={{ display: "flex" }} onClick={handleShow}>
-            <Icon>supervisor_account</Icon>INGRESAR
+          <Button style={{ display: "flex", backgroundColor:'#384F77'}} onClick={handleShow}>
+            MODO EMPRESA
+          </Button>
+          <Button className='ml-1' style={{backgroundColor:'#384F77', fontSize:'0.6rem'}} onClick={handleShow}>
+            <div>CLIENTES</div> CORPORATIVOS
           </Button>
         </Navbar.Collapse>
       </Navbar>
