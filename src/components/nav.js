@@ -10,7 +10,7 @@ import Form from "react-bootstrap/Form";
 import Icon from "@material-ui/core/Icon";
 
 //Navigatin imports
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { Row, Col, Container, Alert } from "react-bootstrap";
 
 //Firebase Imports
@@ -83,9 +83,9 @@ export default function NavBarComponent() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="/"><a style={{color:'#384F77'}}>INICIO</a></Nav.Link>
-            <Nav.Link href="/servicio"><a style={{color:'#384F77'}}>SERVICIO</a></Nav.Link>
-            <Nav.Link href="/empresa"><a style={{color:'#384F77'}}>LA EMPRESA</a></Nav.Link>
+            <Nav.Link><Link style={{color:'#384F77'}} to='/'>INICIO</Link></Nav.Link>
+            <Nav.Link><Link style={{color:'#384F77'}}  to='/servicio'>SERVICIO</Link></Nav.Link>
+            <Nav.Link><Link style={{color:'#384F77'}}  to='/empresa'>LA EMPRESA</Link></Nav.Link>
           </Nav>
 
           <Button style={{ display: "flex", backgroundColor:'#384F77'}} onClick={handleShow}>
