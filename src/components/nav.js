@@ -84,8 +84,8 @@ export default function NavBarComponent() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link href="/"><a style={{color:'#384F77'}}>INICIO</a></Nav.Link>
-            <Nav.Link href="/mision-vision"><a style={{color:'#384F77'}}>MISION Y VISION</a></Nav.Link>
-            <Nav.Link href="/mision-vision"><a style={{color:'#384F77'}}>LA EMPRESA</a></Nav.Link>
+            <Nav.Link href="/servicio"><a style={{color:'#384F77'}}>SERVICIO</a></Nav.Link>
+            <Nav.Link href="/empresa"><a style={{color:'#384F77'}}>LA EMPRESA</a></Nav.Link>
           </Nav>
 
           <Button style={{ display: "flex", backgroundColor:'#384F77'}} onClick={handleShow}>

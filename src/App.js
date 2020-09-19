@@ -5,6 +5,7 @@ import MisionVision from "./screens/mision-vision";
 import AdminView from "./views/adminView";
 import ClientView from "./views/clienteView"
 import SucursalView from './views/sucursalView';
+import Empresa from './screens/empresa'
 export default function App() {
 
   return (
@@ -13,7 +14,8 @@ export default function App() {
         <Route path="/sucursal" component={SucursalView} />
         <Route path="/client" component={ClientView} />
         <Route path="/admin" component={AdminView} />
-        <Route path="/mision-vision" component={MisionVision} />
+        <Route path="/empresa" component={Empresa} />
+        <Route path="/servicio" component={MisionVision} />
         <Route path="/" component={Home} />
       </Switch>
     </Router>

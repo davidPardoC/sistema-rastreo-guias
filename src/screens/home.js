@@ -89,7 +89,7 @@ export default function Home() {
       <NavBarComponent />
      
         <img src={require("../assets/images/main.svg")} style={{width:'100%'}}></img>
-        <img src={require('../assets/images/artboard.jpg')} style={{width:'100%', marginBottom:'4.3rem'}}></img>
+        <img src={require('../assets/images/artboard.jpg')} style={{width:'100%', marginBottom:'3.9rem'}}></img>
         <footer
           style={{
             position: "fixed",
@@ -97,7 +97,7 @@ export default function Home() {
             bottom: 0,
             width: "100%",
             backgroundColor: "#384F77",
-            padding:'1rem'
+            padding:'0.5rem'
           }}
         >
            <Container fluid>
