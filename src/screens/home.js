@@ -87,54 +87,57 @@ export default function Home() {
         </Modal.Body>
       </Modal>
       <NavBarComponent />
-      <Container fluid>
-        <img
-          src={require("../assets/images/main.svg")}
-        ></img>
-
-        <footer
-          style={{ position: "fixed", left: 0, bottom: 20, width: "100%", backgroundColor: "#384F77", }}
-        >
-          
-            
-              <Row>
-                <Col>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <Button
-                      style={{
-                        backgroundColor: "#384F77",
-                        borderRadius: "0px",
-                        border: "none",
-                        borderRight: "4px solid white",
-                      }}
-                      className="ml-2"
-                      onClick={searchGuide}
-                      disabled={btnSearch}
-                    >
-                      <a style={{ color: "white" }}>RASTREAR GUÍA</a>
-                    </Button>
-
-                    <Form className="ml-3">
-                      <FormControl
-                        style={{ width: "17rem" }}
-                        type="text"
-                        placeholder="INGRESAR NÚMERO DE GUÍA"
-                        className="mr-sm-2"
-                        onChange={(e) => {
-                          setGuideToFind(e.target.value);
-                        }}
-                      />
-                    </Form>
-                  </div>
-                </Col>
-                <Col className="d-flex justify-content-end">
-                  <h2 style={{ color: "#fff" }}>Fácil, Rápido y Seguro</h2>
-                </Col>
-              </Row>
-   
      
+        <img src={require("../assets/images/main.svg")} style={{width:'100%'}}></img>
+        <img src={require('../assets/images/artboard.jpg')} style={{width:'100%', marginBottom:'4.3rem'}}></img>
+        <footer
+          style={{
+            position: "fixed",
+            left: 0,
+            bottom: 0,
+            width: "100%",
+            backgroundColor: "#384F77",
+            padding:'1rem'
+          }}
+        >
+           <Container fluid>
+          <Row>
+            <Col>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <Button
+                  style={{
+                    backgroundColor: "#384F77",
+                    borderRadius: "0px",
+                    border: "none",
+                    borderRight: "4px solid white",
+                  }}
+                  className="ml-2"
+                  onClick={searchGuide}
+                  disabled={btnSearch}
+                >
+                  <a style={{ color: "white" }}>RASTREAR GUÍA</a>
+                </Button>
+
+                <Form className="ml-3">
+                  <FormControl
+                    style={{ width: "17rem" }}
+                    type="text"
+                    placeholder="INGRESAR NÚMERO DE GUÍA"
+                    className="mr-sm-2"
+                    onChange={(e) => {
+                      setGuideToFind(e.target.value);
+                    }}
+                  />
+                </Form>
+              </div>
+            </Col>
+            <Col className="d-flex justify-content-end">
+              <h2 style={{ color: "#fff" }}>Fácil, Rápido y Seguro</h2>
+            </Col>
+          </Row>
+          </Container>
         </footer>
-      </Container>
+     
     </>
   );
 }
