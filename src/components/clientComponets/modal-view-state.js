@@ -14,9 +14,7 @@ export default function ModalViewStates(props) {
       setstates(aux)
     })
   }
-  useEffect(()=>{
-    getStates()
-  },[props.show]);
+  useEffect(getStates,[props.show]);
   
   return (
     <Modal show={props.show} onHide={props.close} backdrop="static" size="lg">

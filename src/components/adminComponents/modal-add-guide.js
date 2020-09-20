@@ -69,7 +69,7 @@ export default function ModalAddGuide(props) {
             },
             contenido: {
               nroItems: nroItems,
-              peso: 0,
+              peso: peso,
               valorDeclarado: valor,
               descripcion: descripcion,
             },
@@ -112,7 +112,7 @@ export default function ModalAddGuide(props) {
       });
   };
   const checkDestinataryInputs = () => {
-    if(customerToFind==''){
+    if(customerToFind ===''){
       setToggleSearch(true)
     }else{
       setToggleSearch(false)
@@ -153,9 +153,8 @@ export default function ModalAddGuide(props) {
       setbtnRegisterGuide(false);
     }
   };
-  useEffect(() => {
-    checkDestinataryInputs();
-  }, [
+  useEffect(
+    checkDestinataryInputs, [
     ci,
     nombre,
     apellido,
@@ -332,7 +331,15 @@ export default function ModalAddGuide(props) {
               }}
             />
           </Form.Group>
-
+          <Form.Group>
+            <Form.Control
+              placeholder="Peso"
+              type="number"
+              onChange={(e) => {
+                setpeso(e.target.value);
+              }}
+            />
+          </Form.Group>
           <Form.Group>
             <Form.Control
               placeholder="Valor declarado (USD)"

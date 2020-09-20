@@ -106,7 +106,7 @@ export default function RegisterClientModal(props) {
 
   useEffect(() => {
     checkInputs()
-  }, [usertoRegister, passwordConf]);
+  }, [usertoRegister, passwordConf, checkInputs]);
 
   const changePasswordType = ()=>{
     if(passwordType === 'password'){

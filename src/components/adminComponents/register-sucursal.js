@@ -138,6 +138,7 @@ export default function RegisterSucursal(props) {
     telefonoCelular,
     password,
     confPassword,
+    checkDestinataryInputs
   ]);
   return (
     <>

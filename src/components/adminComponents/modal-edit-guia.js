@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Form, Row, Col, Button, Container, InputGroup } from "react-bootstrap";
 import { Icon } from "@material-ui/core";
 import { db } from "../../assets/firebase";
@@ -252,6 +252,7 @@ export default function ModalEditGuide(props) {
                   placeholder="Email"
                   disabled={togleEditRemitente}
                   value={emailRemitente}
+                  onChange={(e)=>{setemailRemitente(e.target.value)}}
                 />
               </InputGroup>
             </Form.Group>

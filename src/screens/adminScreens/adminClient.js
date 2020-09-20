@@ -83,6 +83,7 @@ export default function AdminClients() {
     }
   };
   return (
+    <>
     <Container className="mt-3">
 
       {/*Modal Registro*/}
@@ -141,5 +142,7 @@ export default function AdminClients() {
         <Col>{checkFound()}</Col>
       </Row>
     </Container>
+    <img src={require('../../assets/images/background.svg')} width='100%' style={{position:'fixed', bottom:0, zIndex:-1}} alt=""/>
+    </>
   );
 }

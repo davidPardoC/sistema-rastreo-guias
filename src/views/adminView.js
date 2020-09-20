@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Container } from "react-bootstrap";
 
 //componentes
 import MainScreenAdmin from "../screens/adminScreens/main-screen-admin";
@@ -31,7 +30,7 @@ export default function AdminView() {
         history.push("/");
       }
     });
-  }, []);
+  }, [history]);
   const match = useRouteMatch();
   return (
     <div>

@@ -8,8 +8,6 @@ import {
   Col,
   FormControl,
   Button,
-  ListGroup,
-  Carousel,
   Modal,
 } from "react-bootstrap";
 import { db } from "../assets/firebase";

@@ -137,6 +137,7 @@ export default function AdminSucursales() {
           <EditSucursal hide={closeModalEdit} sucursal={sucursalFound}/>
         </Modal>
       </Container>
+      <img src={require('../../assets/images/background.svg')} width='100%' style={{position:'fixed', bottom:0, zIndex:-1}} alt=""/>
     </div>
   );
 }

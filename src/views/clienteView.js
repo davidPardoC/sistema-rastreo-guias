@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { Container } from "react-bootstrap";
 import MainScreensCustomer from "../screens/main-screen-client";
 import { auth} from "../assets/firebase";
 import {useHistory} from 'react-router-dom'

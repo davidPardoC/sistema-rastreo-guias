@@ -19,9 +19,8 @@ export default function ModalEstados(props) {
         setStates(aux);
       });
   };
-  useEffect(() => {
-    getStates();
-  }, [props.show]);
+  useEffect(
+    getStates, [props.show]);
 
   const updateState= ()=>{
     db.collection('guias').doc(`${props.guide.id}`).collection('estados').add({

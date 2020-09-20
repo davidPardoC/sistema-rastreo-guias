@@ -23,7 +23,6 @@ export default function ModalPreAlert(props) {
   const [referencia, setreferencia] = useState("");
   const [telefono, settelefono] = useState("");
   const [nroItems, setnroItems] = useState("");
-  const [peso, setpeso] = useState(0);
   const [valor, setvalor] = useState("");
   const [descripcion, setdescripcion] = useState("");
 
@@ -120,9 +119,8 @@ export default function ModalPreAlert(props) {
       setbtnRegisterGuide(false);
     }
   };
-  useEffect(() => {
-    checkDestinataryInputs();
-  }, [
+  useEffect(
+    checkDestinataryInputs, [
     ci,
     nombre,
     apellido,

@@ -1,5 +1,4 @@
 import React, {useEffect, useState}  from 'react'
-import { Container} from 'react-bootstrap'
 import MainSucursal from '../screens/main-screen-sucursal'
 import {auth} from '../assets/firebase'
 import {useHistory } from "react-router-dom";
@@ -25,7 +24,7 @@ export default function SucursalView(){
           }
         })
         console.log(auth.currentUser)
-      },[]);
+      },[history]);
     return(
         <div>
             {router && <MainSucursal/>}

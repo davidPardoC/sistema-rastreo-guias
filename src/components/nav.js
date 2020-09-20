@@ -6,8 +6,6 @@ import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-//Icon Imports
-import Icon from "@material-ui/core/Icon";
 
 //Navigatin imports
 import { useHistory, Link } from "react-router-dom";

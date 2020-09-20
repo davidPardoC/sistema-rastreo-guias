@@ -12,7 +12,7 @@ import {
   Alert,
   Spinner,
 } from "react-bootstrap";
-import { useHistory, Link, useRouteMatch } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import ModalAddGuide from "../../components/adminComponents/modal-add-guide";
 import EditGuide from "../../components/adminComponents/modal-edit-guia";
 import ModalEstados from "../../components/adminComponents/modal-estados";
