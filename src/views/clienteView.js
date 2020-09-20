@@ -22,8 +22,8 @@ export default function ClientView() {
   });
 
   return (
-    <Container>
+    <div>
       <MainScreensCustomer />
-    </Container>
+    </div>
   );
 }

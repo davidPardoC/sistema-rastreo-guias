@@ -22,30 +22,24 @@ export default function Home() {
   //btnSearch
   const [btnSearch, setBtnSearch] = useState(true);
 
-  const searchGuide = () => {
+  const searchGuide = async() => {
     var guide = unFormatGuide(guideToFind);
-    db.collection("guias")
-      .doc(guide)
-      .get()
-      .then((doc) => {
-        setGuideFound({ id: doc.id, ...doc.data() });
-      })
-      .then(() => {
-        db.collection("guias")
-          .doc(guide)
-          .collection("estados")
-          .get()
-          .then((collection) => {
-            var aux = [];
-            collection.forEach((doc) => {
-              aux.push(doc.data());
-            });
-            setEstados(aux);
+    await db.collection('guias').doc(guide).get().then((doc)=>{
+      if(doc.exists){
+        setGuideFound({id:doc.id, ...doc.data()})
+        db.collection('guias').doc(doc.id).collection('estados').get().then((collection)=>{
+          let aux = [];
+          collection.forEach(doc=>{
+            aux.push(doc.data())
           })
-          .then(() => {
-            setShowModalFound(true);
-          });
-      });
+          setEstados(aux);
+        }).then(()=>{
+          setShowModalFound(true)
+        })
+      }else{
+        return
+      }
+    });
   };
   const unFormatGuide = (guide) => {
     var guideUnformated = guide.replace(/0/g, "");
@@ -70,6 +64,7 @@ export default function Home() {
   useEffect(() => {
     checkInputs();
   }, [guideToFind]);
+
   return (
     <>
       <Modal
@@ -88,8 +83,8 @@ export default function Home() {
       </Modal>
       <NavBarComponent />
      
-        <img src={require("../assets/images/main.svg")} style={{width:'100%'}}></img>
-        <img src={require('../assets/images/artboard.jpg')} style={{width:'100%', marginBottom:'3.9rem'}}></img>
+        <img src={require("../assets/images/main.svg")} style={{width:'100%',marginTop:'-2.3rem'}}></img>
+        <img src={require('../assets/images/artboard.jpg')} style={{width:'100%', marginBottom:'3rem'}}></img>
         <footer
           style={{
             position: "fixed",
@@ -97,7 +92,7 @@ export default function Home() {
             bottom: 0,
             width: "100%",
             backgroundColor: "#384F77",
-            padding:'0.5rem'
+            paddingTop:'0.5rem'
           }}
         >
            <Container fluid>

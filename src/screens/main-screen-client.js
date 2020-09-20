@@ -17,7 +17,7 @@ import ModalViewStates from "../components/clientComponets/modal-view-state";
 import { db, auth } from "../assets/firebase";
 import { useHistory } from "react-router-dom";
 import "../components/clientComponets/modal-guide.css";
-
+import './main.css'
 export default function MainScreensCustomer() {
   const history = useHistory();
   //state

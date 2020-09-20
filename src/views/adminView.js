@@ -36,7 +36,7 @@ export default function AdminView() {
   return (
     <div>
       {router && (
-        <Container>
+ 
           <Switch>
             <Route
               path={`${match.path}/settings/adminClients`}
@@ -49,7 +49,7 @@ export default function AdminView() {
             <Route path={`${match.path}/settings`} component={AdminSettings} />
             <Route path="" component={MainScreenAdmin} />
           </Switch>
-        </Container>
+
       )}
     </div>
   );

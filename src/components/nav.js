@@ -83,9 +83,9 @@ export default function NavBarComponent() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link><Link style={{color:'#384F77'}} to='/'>INICIO</Link></Nav.Link>
-            <Nav.Link><Link style={{color:'#384F77'}}  to='/servicio'>SERVICIO</Link></Nav.Link>
-            <Nav.Link><Link style={{color:'#384F77'}}  to='/empresa'>LA EMPRESA</Link></Nav.Link>
+            <div className='ml-3'><Link style={{color:'#384F77'}} to='/'>INICIO</Link></div>
+            <div  className='ml-3'><Link style={{color:'#384F77'}}  to='/servicio'>SERVICIO</Link></div>
+            <div  className='ml-3'><Link style={{color:'#384F77'}}  to='/empresa'>LA EMPRESA</Link></div>
           </Nav>
 
           <Button style={{ display: "flex", backgroundColor:'#384F77'}} onClick={handleShow}>
