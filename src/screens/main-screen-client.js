@@ -129,6 +129,7 @@ export default function MainScreensCustomer() {
   };
 
   return (
+    <>
     <Container style={{ marginTop: "2rem" }}>
       {/*Modales*/}
       <ModalViewStates
@@ -255,5 +256,7 @@ export default function MainScreensCustomer() {
         </Col>
       </Row>
     </Container>
+    <img src={require('../assets/images/background.svg')} width='100%' style={{position:'fixed', bottom:0, zIndex:-1}} alt=""/>
+    </>
   );
 }

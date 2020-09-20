@@ -1,3 +1,5 @@
-.background_container{
-    background-image: url(../assets/images/background.svg);
+.bcd{
+    position: fixed !important;
+    background-image: url(../assets/images/background.svg) !important;
+    background-color: black !important;
 }

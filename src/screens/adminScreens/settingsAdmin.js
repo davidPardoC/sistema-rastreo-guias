@@ -40,6 +40,7 @@ export default function AdminSettings() {
           </ListGroup.Item>
         </ListGroup>
       </Container>
+      <img src={require('../../assets/images/background.svg')} width='100%' style={{position:'fixed', bottom:0, zIndex:-1}} alt=""/>
     </div>
   );
 }

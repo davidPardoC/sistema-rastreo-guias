@@ -146,6 +146,7 @@ export default function MainSucursal(props) {
     setshowLatestGuideModal(false);
   };
   return (
+    <>
     <Container style={{ marginTop: "2rem" }}>
       {/**Innfo Guide */}
       <Modal
@@ -243,5 +244,7 @@ export default function MainSucursal(props) {
         )}
       </Row>
     </Container>
+    <img src={require('../assets/images/background.svg')} width='100%' style={{position:'fixed', bottom:0, zIndex:-1}} alt=""/>
+    </>
   );
 }

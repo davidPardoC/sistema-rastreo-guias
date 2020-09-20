@@ -27,8 +27,8 @@ export default function SucursalView(){
         console.log(auth.currentUser)
       },[]);
     return(
-        <Container>
+        <div>
             {router && <MainSucursal/>}
-        </Container>
+        </div>
     )
 }

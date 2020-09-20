@@ -131,6 +131,7 @@ useEffect(() => {
     setshowAddGuide(false);
   };
   return (
+    <>
     <Container style={{ marginTop: "2rem" }}>
 
       {/**Modal para descargar la guía */}
@@ -217,5 +218,7 @@ useEffect(() => {
         )}
       </Row>
     </Container>
+    <img src={require('../../assets/images/background.svg')} width='100%' style={{position:'fixed', bottom:0, zIndex:-1}} alt=""/>
+    </>
   );
 }
