@@ -29,6 +29,7 @@ export default function MainSucursal(props) {
   const [btnSearch, setBtnSearch] = useState(true);
   const [showLatestGuideModal, setshowLatestGuideModal] = useState(false);
   const [lastAddedGuide, setlastAddedGuide] = useState("");
+  const [showModalElimar, setShowModalElimar] = useState(false)
   //inicializacion de importaciones
   const history = useHistory();
 
@@ -103,7 +104,7 @@ export default function MainSucursal(props) {
               >
                 <Icon>update</Icon>
               </Button>
-              <Button variant="danger" className="ml-1">
+              <Button variant="danger" className="ml-1" onClick={deleteGuide}>
                 <Icon>delete</Icon>
               </Button>
             </div>
@@ -145,9 +146,40 @@ export default function MainSucursal(props) {
   const closeLatestGuideInfoModal = () => {
     setshowLatestGuideModal(false);
   };
+
+
+  //Borrar Guia
+  const deleteGuide = ()=>{
+    setShowModalElimar(true)
+  };
+  const closeModaleliminar = ()=>{
+    setShowModalElimar(false)
+  }
+  const confirDeleteUser = ()=>{
+    db.collection('guias').doc(guideFound.id).delete().then(()=>{setShowModalElimar(false); searchGuide()})
+  }
   return (
     <>
     <Container style={{ marginTop: "2rem" }}>
+
+       {/* Modal de confrimacion de borrado */}
+       <Modal show={showModalElimar} onHide={closeModaleliminar}>
+          <Modal.Header closeButton>Confirmar eliminación del sucursal.</Modal.Header>
+          <Modal.Body>
+            <Container>
+              <Row>
+                <Col>
+                  <Button variant='outline-dark' onClick={closeModaleliminar}>No, Cancelar</Button>
+                </Col>
+                <Col>
+                  <Button variant='danger' onClick={confirDeleteUser}>Si, Eliminar</Button>
+                </Col>
+              </Row>
+            </Container>
+          </Modal.Body>
+        </Modal>
+        {/* Modal de confrimacion de borrado */}
+
       {/**Innfo Guide */}
       <Modal
         show={showLatestGuideModal}

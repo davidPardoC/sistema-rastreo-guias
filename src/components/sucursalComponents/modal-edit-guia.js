@@ -188,7 +188,6 @@ export default function ModalEditGuide(props) {
               </InputGroup>
             </Form.Group>
 
-
             <Form.Group>
             <InputGroup>
                 <InputGroup.Prepend>
@@ -200,24 +199,32 @@ export default function ModalEditGuide(props) {
                 disabled={togleEditRemitente}
                 value={provinciaRemitente}
                 onChange={(e) => { setprovinciaRemitente(e.target.value) }}
-
               />
               </InputGroup>
-
-
-
             </Form.Group>
+
+
             <Form.Group>
+              <InputGroup>
+              <InputGroup.Prepend>
+                  <InputGroup.Text id="basic-addon1">Cantón:</InputGroup.Text>
+                </InputGroup.Prepend>
               <Form.Control
                 type="text"
                 placeholder="Canton"
                 disabled={togleEditRemitente}
                 value={cantonRemitente}
                 onChange={(e) => { setcantonRemitente(e.target.value) }}
-
               />
+              </InputGroup>
             </Form.Group>
+
+
             <Form.Group>
+              <InputGroup>
+              <InputGroup.Prepend>
+                  <InputGroup.Text id="basic-addon1">Parroquia:</InputGroup.Text>
+                </InputGroup.Prepend>
               <Form.Control
                 type="text"
                 placeholder="Parroquia"
@@ -225,8 +232,15 @@ export default function ModalEditGuide(props) {
                 value={parroquiaRemitente}
                 onChange={(e) => { setparroquiaRemitente(e.target.value) }}
               />
+              </InputGroup>
             </Form.Group>
+
+
             <Form.Group>
+              <InputGroup>
+              <InputGroup.Prepend>
+                  <InputGroup.Text id="basic-addon1">Referencia:</InputGroup.Text>
+                </InputGroup.Prepend>
               <Form.Control
                 type="text"
                 placeholder="Referencia"
@@ -234,25 +248,41 @@ export default function ModalEditGuide(props) {
                 value={referenciaRemitente}
                 onChange={(e) => { setreferenciaRemitente(e.target.value) }}
               />
+              </InputGroup>
             </Form.Group>
+
+
             <Form.Group>
+              <InputGroup>
+              <InputGroup.Prepend>
+                  <InputGroup.Text id="basic-addon1">Teléfono:</InputGroup.Text>
+                </InputGroup.Prepend>
               <Form.Control
                 type="text"
-                placeholder="Telefono"
+                placeholder="Teléfono"
                 disabled={togleEditRemitente}
                 value={telefonoRemitente}
                 onChange={(e) => { settelefonoRemitente(e.target.value) }}
               />
+              </InputGroup>
             </Form.Group>
+
+
             <Form.Group>
+              <InputGroup>
+              <InputGroup.Prepend>
+                  <InputGroup.Text id="basic-addon1">Dirección:</InputGroup.Text>
+                </InputGroup.Prepend>
               <Form.Control
                 type="text"
-                placeholder="Direccion"
+                placeholder="Dirección"
                 disabled={togleEditRemitente}
                 value={direccionRemitente}
                 onChange={(e) => { setDireccionRemitente(e.target.value) }}
               />
+              </InputGroup>
             </Form.Group>
+
           </Form>
         </Col>
         <Col>
