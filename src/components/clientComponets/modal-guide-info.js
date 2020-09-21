@@ -271,6 +271,7 @@ export default function GuideInfo(props) {
                         borderBottom: "1px solid",
                         borderRight: "1px solid",
                         borderBottom: "1px solid",
+                        borderBottom: "1px solid",
                       }}
                     >
                       <Col style={{ border: "" }}>

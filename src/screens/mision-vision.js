@@ -1,18 +1,9 @@
 import React, { useEffect } from "react";
 import NavBarComponent from "../components/nav";
 import './styles/home.css'
-import {
-  Container,
-  Row,
-  Form,
-  Col,
-  FormControl,
-  Button,
-  ListGroup,
-  Carousel,
-} from "react-bootstrap";
-export default function MisionVision() {
-  useEffect(()=>{window.scroll({top:700, behavior:'smooth'})},[])
+
+export default function MisionVision(props) {
+  useEffect(()=>{window.scroll({top:700, behavior:'smooth'})})
   
   return (
     <div>

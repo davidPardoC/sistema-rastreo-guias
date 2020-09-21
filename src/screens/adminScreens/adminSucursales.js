@@ -7,25 +7,25 @@ import {
   ListGroup,
   Modal,
   Form,
-  Alert
+  Alert,
 } from "react-bootstrap";
 import Icon from "@material-ui/core/Icon";
 import RegisterSucursal from "../../components/adminComponents/register-sucursal";
-import EditSucursal from '../../components/adminComponents/edit-sucursal'
+import EditSucursal from "../../components/adminComponents/edit-sucursal";
 import { db, functions } from "../../assets/firebase";
 export default function AdminSucursales() {
   const [showNuevaSucursal, setShowNuevaSucursal] = useState(false);
-  const [showEditSucursal, setShowEditSucursal] = useState(false)
+  const [showEditSucursal, setShowEditSucursal] = useState(false);
   const [sucursalToFind, setSucursalToFind] = useState("");
-  const [sucursalFound, setSucursalFound] = useState({})
+  const [sucursalFound, setSucursalFound] = useState({});
   const [showLoading, setshowLoading] = useState(false);
-
+const [showModalElimar, setShowModalElimar] = useState(false)
   const closeModalRegister = () => {
     setShowNuevaSucursal(false);
   };
-  const closeModalEdit = ()=>{
-    setShowEditSucursal(false)
-  }
+  const closeModalEdit = () => {
+    setShowEditSucursal(false);
+  };
 
   const SearchSucursal = () => {
     setshowLoading(true);
@@ -36,7 +36,7 @@ export default function AdminSucursales() {
         if (doc.exists) {
           setSucursalFound({ id: doc.id, ...doc.data() });
           setshowLoading(false);
-          console.log(sucursalFound)
+          console.log(sucursalFound);
         } else {
           setSucursalFound(false);
           setshowLoading(false);
@@ -45,14 +45,24 @@ export default function AdminSucursales() {
       .catch();
   };
   const deleteUser = () => {
-    const deleteUser = functions.httpsCallable('deleteUser');
-    deleteUser({uid:sucursalFound.uid}).then((res)=>{
-      console.log(res)
-      db.collection('sucursales').doc(sucursalFound.id).delete().then(()=>{
-        setSucursalFound({})
-      })
-    })
+    setShowModalElimar(true);
   };
+const confirDeleteUser = () =>{
+  const deleteUser = functions.httpsCallable("deleteUser");
+  deleteUser({ uid: sucursalFound.uid }).then((res) => {
+    console.log(res);
+    db.collection("sucursales")
+      .doc(sucursalFound.id)
+      .delete()
+      .then(() => {
+        setSucursalFound({});
+        setShowModalElimar(false);
+      });
+  });
+}
+  const closeModaleliminar = ()=>{
+    setShowModalElimar(false)
+  }
   const checkFound = () => {
     if (Object.keys(sucursalFound).length !== 0) {
       return (
@@ -60,7 +70,11 @@ export default function AdminSucursales() {
           <ListGroup.Item className="d-flex justify-content-between">
             {`${sucursalFound.agenciado}`}
             <div>
-              <Button onClick={() => {setShowEditSucursal(true)}}>
+              <Button
+                onClick={() => {
+                  setShowEditSucursal(true);
+                }}
+              >
                 <Icon>edit</Icon>
               </Button>
               <Button variant="danger" className="ml-3" onClick={deleteUser}>
@@ -72,12 +86,31 @@ export default function AdminSucursales() {
       );
     }
     if (!sucursalFound) {
-      return <Alert variant="danger">Sucursal  no encontrado.</Alert>;
+      return <Alert variant="danger">Sucursal no encontrado.</Alert>;
     }
   };
   return (
     <div className="mt-5">
       <Container>
+
+        {/* Modal de confrimacion de borrado */}
+        <Modal show={showModalElimar} onHide={closeModaleliminar}>
+          <Modal.Header closeButton>Confirmar eliminación del sucursal.</Modal.Header>
+          <Modal.Body>
+            <Container>
+              <Row>
+                <Col>
+                  <Button variant='outline-dark' onClick={closeModaleliminar}>No, Cancelar</Button>
+                </Col>
+                <Col>
+                  <Button variant='danger' onClick={confirDeleteUser}>Si, Eliminar</Button>
+                </Col>
+              </Row>
+            </Container>
+          </Modal.Body>
+        </Modal>
+        {/* Modal de confrimacion de borrado */}
+
         <Row>
           <Col>
             <Button
@@ -94,7 +127,7 @@ export default function AdminSucursales() {
           <Col sm={6}>
             <div style={{ display: "flex", alignItems: "center" }}>
               <Form.Control
-              placeholder='CI Resposable'
+                placeholder="CI Resposable"
                 className="mr-sm-2"
                 type="text"
                 onChange={(e) => {
@@ -109,16 +142,18 @@ export default function AdminSucursales() {
           </Col>
         </Row>
         <Row className="d-flex justify-content-center">
-        {showLoading && (
-          <Col className="d-flex justify-content-center">
-            <img src={require("../../assets/images/loading.gif")} alt='Loading'/>
-          </Col>
-        )}
-        
-      </Row>
-      <Row>
-        <Col>{checkFound()}</Col>
-      </Row>
+          {showLoading && (
+            <Col className="d-flex justify-content-center">
+              <img
+                src={require("../../assets/images/loading.gif")}
+                alt="Loading"
+              />
+            </Col>
+          )}
+        </Row>
+        <Row>
+          <Col>{checkFound()}</Col>
+        </Row>
 
         {/*Modal nueva sucursa*/}
         <Modal show={showNuevaSucursal} onHide={closeModalRegister}>
@@ -128,16 +163,20 @@ export default function AdminSucursales() {
           <RegisterSucursal hide={closeModalRegister} />
         </Modal>
 
-
         {/*Editar sucursa*/}
         <Modal show={showEditSucursal} onHide={closeModalEdit}>
           <Modal.Header closeButton>
             <Modal.Title>Registro Cliente</Modal.Title>
           </Modal.Header>
-          <EditSucursal hide={closeModalEdit} sucursal={sucursalFound}/>
+          <EditSucursal hide={closeModalEdit} sucursal={sucursalFound} />
         </Modal>
       </Container>
-      <img src={require('../../assets/images/background.svg')} width='100%' style={{position:'fixed', bottom:0, zIndex:-1}} alt=""/>
+      <img
+        src={require("../../assets/images/background.svg")}
+        width="100%"
+        style={{ position: "fixed", bottom: 0, zIndex: -1 }}
+        alt=""
+      />
     </div>
   );
 }

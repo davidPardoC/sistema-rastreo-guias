@@ -81,16 +81,17 @@ export default function Home() {
       </Modal>
       <NavBarComponent />
      
-        <img src={require("../assets/images/main.svg")} style={{width:'100%'}} className='mt-4'></img>
-        <img src={require('../assets/images/artboard.jpg')} style={{width:'100%', marginBottom:'3rem'}}></img>
+        <img src={require("../assets/images/main.jpg")} style={{width:'100%',}}></img>
+        <img src={require('../assets/images/artboard.jpg')} style={{width:'100%'}}></img>
         <footer
           style={{
             position: "fixed",
             left: 0,
             bottom: 0,
-            width: "100%",
-            backgroundColor: "#384F77",
-            paddingTop:'0.5rem'
+            width: "33rem",
+            backgroundColor:'rgba(56,79,119,0.50)',
+            paddingTop:'0.5rem',
+            borderTopRightRadius:'1rem'
           }}
         >
            <Container fluid>
@@ -123,9 +124,6 @@ export default function Home() {
                   />
                 </Form>
               </div>
-            </Col>
-            <Col className="d-flex justify-content-end">
-              <h2 style={{ color: "#fff" }}>Fácil, Rápido y Seguro</h2>
             </Col>
           </Row>
           </Container>
