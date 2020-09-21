@@ -163,7 +163,7 @@ export default function RegisterClientModal(props) {
           <Form.Group controlId="nombre">
             <Form.Control
               type="text"
-              placeholder="Nombre"
+              placeholder="Nombre del Responsable"
               onChange={(e) => {
                 setUserToRegister({
                   ...usertoRegister,
@@ -175,7 +175,7 @@ export default function RegisterClientModal(props) {
           <Form.Group controlId="apellido">
             <Form.Control
               type="text"
-              placeholder="Apellido"
+              placeholder="Apellido del Responsable"
               onChange={(e) => {
                 setUserToRegister({
                   ...usertoRegister,

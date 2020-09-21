@@ -51,7 +51,7 @@ export default function ModalViewStates(props) {
                   <td>
                     {`Valor declarado: USD ${props.guide.contenido.valorDeclarado}`}
                   </td>
-                  <td>{`Peso: ${props.guide.contenido.peso}g`}</td>
+                  {/* <td>{`Peso: `}</td> */}
                 </tr>
               </tbody>
             </Table>

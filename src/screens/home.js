@@ -81,7 +81,7 @@ export default function Home() {
       </Modal>
       <NavBarComponent />
      
-        <img src={require("../assets/images/main.svg")} style={{width:'100%',marginTop:'-2.3rem'}}></img>
+        <img src={require("../assets/images/main.svg")} style={{width:'100%'}} className='mt-4'></img>
         <img src={require('../assets/images/artboard.jpg')} style={{width:'100%', marginBottom:'3rem'}}></img>
         <footer
           style={{

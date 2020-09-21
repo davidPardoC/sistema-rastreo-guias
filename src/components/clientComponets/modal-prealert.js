@@ -46,7 +46,7 @@ export default function ModalPreAlert(props) {
         db.collection("guias")
           .doc(`RF${doc.data().count}EC`)
           .set({
-            createdBy:'Cliente',
+            createdBy: "Cliente",
             remitente: cliente,
             destinatario: {
               ci: ci,
@@ -107,7 +107,6 @@ export default function ModalPreAlert(props) {
       canton === "" ||
       parroquia === "" ||
       direccion === "" ||
-      email === "" ||
       referencia === "" ||
       telefono === "" ||
       nroItems === "" ||
@@ -119,8 +118,7 @@ export default function ModalPreAlert(props) {
       setbtnRegisterGuide(false);
     }
   };
-  useEffect(
-    checkDestinataryInputs, [
+  useEffect(checkDestinataryInputs, [
     ci,
     nombre,
     apellido,
@@ -138,7 +136,12 @@ export default function ModalPreAlert(props) {
   ]);
 
   return (
-    <Modal show={props.show} onHide={props.closeNoConfirm} backdrop="static" size="lg">
+    <Modal
+      show={props.show}
+      onHide={props.closeNoConfirm}
+      backdrop="static"
+      size="lg"
+    >
       <Modal.Header closeButton>
         <Modal.Title>Nuevo Paquete</Modal.Title>
       </Modal.Header>
@@ -146,6 +149,7 @@ export default function ModalPreAlert(props) {
         <Row>
           <Col>
             <h3>Remitente</h3>
+            <ListGroup.Item>{`${props.cliente.institucion}`}</ListGroup.Item>
             <ListGroup>
               <ListGroup.Item>
                 {`${props.cliente.nombre} ${props.cliente.apellido}`}
@@ -230,7 +234,7 @@ export default function ModalPreAlert(props) {
               <Col>
                 <Form.Group>
                   <Form.Control
-                    placeholder="Canton"
+                    placeholder="Cantón"
                     onChange={(e) => {
                       setcanton(e.target.value);
                     }}
@@ -258,16 +262,6 @@ export default function ModalPreAlert(props) {
             </Form.Group>
             <Form.Group>
               <Form.Control
-                type="email"
-                placeholder="Email"
-                onChange={(e) => {
-                  setemail(e.target.value);
-                }}
-              />
-            </Form.Group>
-            {showAlertEmail && <Alert variant='danger'>Email no valido</Alert>}
-            <Form.Group>
-              <Form.Control
                 placeholder="Referencia"
                 onChange={(e) => {
                   setreferencia(e.target.value);
@@ -276,13 +270,31 @@ export default function ModalPreAlert(props) {
             </Form.Group>
             <Form.Group>
               <Form.Control
-                placeholder="Telefono"
+                placeholder="Teléfono"
                 onChange={(e) => {
                   settelefono(e.target.value);
                 }}
               />
             </Form.Group>
-            <hr></hr>
+            <Form.Group>
+              <Form.Control
+                type="email"
+                placeholder="Email"
+                onChange={(e) => {
+                  setemail(e.target.value);
+                }}
+              />
+            </Form.Group>
+            {showAlertEmail && <Alert variant="danger">Email no valido</Alert>}
+            <h5>Envío</h5>
+            <Form.Group>
+              <Form.Control
+                placeholder="Descripción"
+                onChange={(e) => {
+                  setdescripcion(e.target.value);
+                }}
+              />
+            </Form.Group>
             <Form.Group>
               <Form.Control
                 placeholder="Nro Items"
@@ -299,14 +311,6 @@ export default function ModalPreAlert(props) {
                 type="number"
                 onChange={(e) => {
                   setvalor(e.target.value);
-                }}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Control
-                placeholder="Descripcion"
-                onChange={(e) => {
-                  setdescripcion(e.target.value);
                 }}
               />
             </Form.Group>
