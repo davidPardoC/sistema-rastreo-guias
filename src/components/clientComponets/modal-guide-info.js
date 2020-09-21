@@ -162,7 +162,12 @@ export default function GuideInfo(props) {
                       <Col style={{ border: "" }}>
                         Telefono: {`${guide.remitente.telefono}`}
                       </Col>
-                      <Col style={{ border: "" }}>
+                    </Row>
+                    <Row style={{
+                        borderRight: "1px solid black",
+                        borderLeft: "1px solid black",
+                      }}>
+                    <Col style={{ border: "" }}>
                         Email: {`${guide.remitente.email}`}
                       </Col>
                     </Row>
@@ -265,13 +270,19 @@ export default function GuideInfo(props) {
                       style={{
                         borderBottom: "1px solid",
                         borderRight: "1px solid",
+                        borderBottom: "1px solid",
                       }}
                     >
                       <Col style={{ border: "" }}>
-                        Telefono: {`${guide.destinatario.telefono}`}
-                      </Col>
-                      <Col style={{ border: "" }}>
                         Email: {`${guide.destinatario.email}`}
+                      </Col>
+                    </Row>
+                    <Row style={{
+                        borderBottom: "1px solid",
+                        borderRight: "1px solid",
+                      }}>
+                    <Col style={{ border: "" }}>
+                        Telefono: {`${guide.destinatario.telefono}`}
                       </Col>
                     </Row>
                     <Row
