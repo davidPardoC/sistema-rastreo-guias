@@ -51,7 +51,7 @@ export default function GuideInfo(props) {
       {charging && <Spinner animation="border" variant="primary" />}
       {charged && (
         <>
-          <Pdf targetRef={ref} filename={formatGuide(guide.id)} scale={0.85}>
+          <Pdf targetRef={ref} filename={formatGuide(guide.id)} scale={0.82}>
             {({ toPdf }) => (
               <Button variant="success" className="d-flex" onClick={toPdf}>
                 DESCARGAR <Icon className="ml-2"> save_alt</Icon>

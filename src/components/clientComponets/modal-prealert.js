@@ -68,94 +68,14 @@ export default function ModalPreAlert(props) {
               descripcion: descripcion,
             }
           })
+          props.returnGuideId(`RF${count.data().count}EC`);
           var increment = count.data().count+1;
-          transaction.update(countRef, {count:increment})
+          transaction.update(countRef, {count:increment});
         }
-      })
+      }).then(props.close());
     })
-    /* let random = Math.floor(Math.random() * (999999999 - 0))
-    db.collection("guias")
-      .doc(`RF${random}EC`)
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          registerGuide()
-        }else{
-          db.collection('guias').doc(`RF${random}EC`).set({
-            createdBy: "Cliente",
-            remitente: cliente,
-            destinatario: {
-              ci: ci,
-              nombre: nombre,
-              apellido: apellido,
-              tipoId: tipoId,
-              provincia: provincia,
-              canton: canton,
-              parroquia: parroquia,
-              direccion: direccion,
-              email: email,
-              referencia: referencia,
-              telefono: telefono,
-            },
-            contenido: {
-              nroItems: nroItems,
-              peso: 0,
-              valorDeclarado: valor,
-              descripcion: descripcion,
-            }
-          })
-        }
-      }).then(props.close()); */
   };
-  /* const registerGuide = () => {
-    db.collection("stats")
-      .doc("guiasRecords")
-      .get()
-      .then((doc) => {
-        db.collection("guias")
-          .doc(`RF${doc.data().count}EC`)
-          .set({
-            createdBy: "Cliente",
-            remitente: cliente,
-            destinatario: {
-              ci: ci,
-              nombre: nombre,
-              apellido: apellido,
-              tipoId: tipoId,
-              provincia: provincia,
-              canton: canton,
-              parroquia: parroquia,
-              direccion: direccion,
-              email: email,
-              referencia: referencia,
-              telefono: telefono,
-            },
-            contenido: {
-              nroItems: nroItems,
-              peso: 0,
-              valorDeclarado: valor,
-              descripcion: descripcion,
-            },
-          })
-          .then((res) => {
-            props.returnGuideId(`RF${doc.data().count}EC`);
-            db.collection("guias")
-              .doc(`RF${doc.data().count}EC`)
-              .collection("estados")
-              .add({
-                descripcion: "prealertado",
-                date: new Date(),
-              });
-            db.collection("stats")
-              .doc("guiasRecords")
-              .set({
-                count: doc.data().count + 1,
-              });
-          });
-      });
-    props.close();
-  }; */
-
+  
   const checkDestinataryInputs = () => {
     if (email.includes("@") && email.includes(".")) {
       setshowAlertEmail(false);

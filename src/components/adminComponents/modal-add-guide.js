@@ -45,14 +45,14 @@ export default function ModalAddGuide(props) {
   const registerGuide = () => {
     delete cliente.password;
     delete cliente.uid;
-    db.collection("stats")
-      .doc("guiasRecords")
-      .get()
-      .then((doc) => {
-        db.collection("guias")
-          .doc(`RF${doc.data().count}EC`)
-          .set({
-            createdBy:'Administrador',
+    var countRef = db.collection('stats').doc('guiasRecords');
+    db.runTransaction((transaction)=>{
+      return transaction.get(countRef).then((count)=>{
+        if(!count.exists){
+          return
+        }else{
+          db.collection('guias').doc(`RF${count.data().count}EC`).set({
+            createdBy: "Administrador",
             remitente: cliente,
             destinatario: {
               ci: ci,
@@ -72,25 +72,14 @@ export default function ModalAddGuide(props) {
               peso: peso,
               valorDeclarado: valor,
               descripcion: descripcion,
-            },
+            }
           })
-          .then((res) => {
-            props.returnGuideId(`RF${doc.data().count}EC`);
-            db.collection("guias")
-              .doc(`RF${doc.data().count}EC`)
-              .collection("estados")
-              .add({
-                descripcion: "prealertado",
-                date: new Date(),
-              });
-            db.collection("stats")
-              .doc("guiasRecords")
-              .set({
-                count: doc.data().count + 1,
-              });
-          });
-      });
-      props.close()
+          props.returnGuideId(`RF${count.data().count}EC`);
+          var increment = count.data().count+1;
+          transaction.update(countRef, {count:increment});
+        }
+      }).then(props.close());
+    })
   };
 
   const searchUser = () => {
@@ -141,7 +130,6 @@ export default function ModalAddGuide(props) {
       canton === "" ||
       parroquia === "" ||
       direccion === "" ||
-      email === "" ||
       referencia === "" ||
       telefono === "" ||
       nroItems === "" ||
