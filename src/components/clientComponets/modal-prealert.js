@@ -39,6 +39,75 @@ export default function ModalPreAlert(props) {
   }, [props]);
 
   const registerGuide = () => {
+    var countRef = db.collection('stats').doc('guiasRecords');
+    db.runTransaction((transaction)=>{
+      return transaction.get(countRef).then((count)=>{
+        if(!count.exists){
+          return
+        }else{
+          db.collection('guias').doc(`RF${count.data().count}EC`).set({
+            createdBy: "Cliente",
+            remitente: cliente,
+            destinatario: {
+              ci: ci,
+              nombre: nombre,
+              apellido: apellido,
+              tipoId: tipoId,
+              provincia: provincia,
+              canton: canton,
+              parroquia: parroquia,
+              direccion: direccion,
+              email: email,
+              referencia: referencia,
+              telefono: telefono,
+            },
+            contenido: {
+              nroItems: nroItems,
+              peso: 0,
+              valorDeclarado: valor,
+              descripcion: descripcion,
+            }
+          })
+          var increment = count.data().count+1;
+          transaction.update(countRef, {count:increment})
+        }
+      })
+    })
+    /* let random = Math.floor(Math.random() * (999999999 - 0))
+    db.collection("guias")
+      .doc(`RF${random}EC`)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          registerGuide()
+        }else{
+          db.collection('guias').doc(`RF${random}EC`).set({
+            createdBy: "Cliente",
+            remitente: cliente,
+            destinatario: {
+              ci: ci,
+              nombre: nombre,
+              apellido: apellido,
+              tipoId: tipoId,
+              provincia: provincia,
+              canton: canton,
+              parroquia: parroquia,
+              direccion: direccion,
+              email: email,
+              referencia: referencia,
+              telefono: telefono,
+            },
+            contenido: {
+              nroItems: nroItems,
+              peso: 0,
+              valorDeclarado: valor,
+              descripcion: descripcion,
+            }
+          })
+        }
+      }).then(props.close()); */
+  };
+  /* const registerGuide = () => {
     db.collection("stats")
       .doc("guiasRecords")
       .get()
@@ -85,7 +154,7 @@ export default function ModalPreAlert(props) {
           });
       });
     props.close();
-  };
+  }; */
 
   const checkDestinataryInputs = () => {
     if (email.includes("@") && email.includes(".")) {
