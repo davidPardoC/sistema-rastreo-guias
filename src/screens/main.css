@@ -3,3 +3,6 @@
     background-image: url(../assets/images/background.svg) !important;
     background-color: black !important;
 }
+.social:hover{
+    cursor: pointer;
+}

@@ -20,24 +20,33 @@ export default function Home() {
   //btnSearch
   const [btnSearch, setBtnSearch] = useState(true);
 
-  const searchGuide = async() => {
+  const searchGuide = async () => {
     var guide = unFormatGuide(guideToFind);
-    await db.collection('guias').doc(guide).get().then((doc)=>{
-      if(doc.exists){
-        setGuideFound({id:doc.id, ...doc.data()})
-        db.collection('guias').doc(doc.id).collection('estados').get().then((collection)=>{
-          let aux = [];
-          collection.forEach(doc=>{
-            aux.push(doc.data())
-          })
-          setEstados(aux);
-        }).then(()=>{
-          setShowModalFound(true)
-        })
-      }else{
-        return
-      }
-    });
+    await db
+      .collection("guias")
+      .doc(guide)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          setGuideFound({ id: doc.id, ...doc.data() });
+          db.collection("guias")
+            .doc(doc.id)
+            .collection("estados")
+            .get()
+            .then((collection) => {
+              let aux = [];
+              collection.forEach((doc) => {
+                aux.push(doc.data());
+              });
+              setEstados(aux);
+            })
+            .then(() => {
+              setShowModalFound(true);
+            });
+        } else {
+          return;
+        }
+      });
   };
   const unFormatGuide = (guide) => {
     var guideUnformated = guide.replace(/0/g, "");
@@ -80,21 +89,42 @@ export default function Home() {
         </Modal.Body>
       </Modal>
       <NavBarComponent />
-     
-        <img src={require("../assets/images/main.jpg")} style={{width:'100%',}}></img>
-        <img src={require('../assets/images/artboard.jpg')} style={{width:'100%'}}></img>
-        <footer
-          style={{
-            position: "fixed",
-            left: 0,
-            bottom: 0,
-            width: "33rem",
-            backgroundColor:'rgba(56,79,119,0.50)',
-            paddingTop:'0.5rem',
-            borderTopRightRadius:'1rem'
-          }}
-        >
-           <Container fluid>
+
+      <img
+        src={require("../assets/images/main.jpg")}
+        style={{ width: "100%" }}
+      ></img>
+      <img
+        src={require("../assets/images/artboard.jpg")}
+        style={{ width: "100%" }}
+      ></img>
+      <Container>
+        <Row>
+          <Col>
+            <div className='d-flex justify-content-center'>
+              <img src={require("../assets/images/facebook.svg")} alt="" style={{width:'5rem'}} className='ml-5 social' onClick={()=>{window.location.href = 'https://www.facebook.com/Rapifas-Courier-101854448344615/'}}/>
+              <img src={require("../assets/images/instagram.svg")} alt="" style={{width:'5rem'}} className='ml-5 social' onClick={()=>{window.location.href = 'https://www.instagram.com/invites/contact/?i=zkg9h47j6bmb&utm_content=c12rell'}}/>
+              <img src={require("../assets/images/twitter.svg")} alt="" style={{width:'5rem'}} className='ml-5 social'onClick={()=>{window.location.href = 'https://twitter.com/RapifasCourier'}}/>
+            </div>
+            <div className='d-flex justify-content-center mt-2'>
+            <a style={{fontWeight:'bolder', fontSize:'1.5rem'}}>RAPIFAS COURIER CIA. LTDA.</a> 
+            </div>
+            
+          </Col>
+        </Row>
+      </Container>
+      <footer
+        style={{
+          position: "fixed",
+          left: 0,
+          bottom: 0,
+          width: "33rem",
+          backgroundColor: "rgba(56,79,119,0.50)",
+          paddingTop: "0.5rem",
+          borderTopRightRadius: "1rem",
+        }}
+      >
+        <Container fluid>
           <Row>
             <Col>
               <div style={{ display: "flex", alignItems: "center" }}>
@@ -126,9 +156,8 @@ export default function Home() {
               </div>
             </Col>
           </Row>
-          </Container>
-        </footer>
-     
+        </Container>
+      </footer>
     </>
   );
 }
