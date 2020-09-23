@@ -51,7 +51,7 @@ export default function GuideInfo(props) {
       {charging && <Spinner animation="border" variant="primary" />}
       {charged && (
         <>
-          <Pdf targetRef={ref} filename={formatGuide(guide.id)} scale={0.82}>
+          <Pdf targetRef={ref} filename={formatGuide(guide.id)} scale={0.825}>
             {({ toPdf }) => (
               <Button variant="success" className="d-flex" onClick={toPdf}>
                 DESCARGAR <Icon className="ml-2"> save_alt</Icon>
@@ -163,10 +163,11 @@ export default function GuideInfo(props) {
                         Telefono: {`${guide.remitente.telefono}`}
                       </Col>
                     </Row>
-                    <Row style={{
-                        borderRight: "1px solid black",
-                        borderLeft: "1px solid black",
-                      }}>
+                    <Row  style={{
+                        borderBottom: "1px solid",
+                        borderRight: "1px solid",
+                        borderLeft:'1px solid',
+                        padding:'0.25rem'}}>
                     <Col style={{ border: "" }}>
                         Email: {`${guide.remitente.email}`}
                       </Col>
@@ -189,7 +190,7 @@ export default function GuideInfo(props) {
                             Nro. Items: {`${guide.contenido.nroItems}`}
                           </Col>
                           <Col style={{ border: "" }}>
-                            Peso en Gramos: {`${guide.contenido.peso}`}
+                            Peso(g): {`${guide.contenido.peso}`}
                           </Col>
                           <Col style={{ borderTop: "1px solid" }}>
                             Valor declarado:{" "}
@@ -224,7 +225,7 @@ export default function GuideInfo(props) {
                       }}
                     >
                       <Col style={{ borderRight: "1px solid" }}>
-                        Numero de identificacion: {`${guide.destinatario.ci}`}
+                        Identificación: {`${guide.destinatario.ci}`}
                       </Col>
                       <Col style={{ border: "" }}>
                         Tipo de identificacion: {`${guide.destinatario.tipoId}`}
@@ -272,9 +273,10 @@ export default function GuideInfo(props) {
                         borderRight: "1px solid",
                         borderBottom: "1px solid",
                         borderBottom: "1px solid",
+                        padding:'0.25rem'
                       }}
                     >
-                      <Col style={{ border: "" }}>
+                      <Col >
                         Email: {`${guide.destinatario.email}`}
                       </Col>
                     </Row>
@@ -320,6 +322,7 @@ export default function GuideInfo(props) {
                         <Row
                           style={{
                             borderRight: "1px solid",
+                            padding:'0.30rem'
                           }}
                         >
                           <Col>Hora:</Col>

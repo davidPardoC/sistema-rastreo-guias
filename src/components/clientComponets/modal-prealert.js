@@ -88,7 +88,6 @@ export default function ModalPreAlert(props) {
       }
     }
     if (
-      ci === "" ||
       nombre === "" ||
       apellido === "" ||
       tipoId === "" ||
@@ -170,7 +169,7 @@ export default function ModalPreAlert(props) {
               <Col>
                 <Form.Group>
                   <Form.Control
-                    placeholder="CI Destinatario"
+                    placeholder="CI Destinatario *"
                     onChange={(e) => {
                       setci(e.target.value);
                     }}
@@ -195,7 +194,7 @@ export default function ModalPreAlert(props) {
             </Row>
             <Form.Group>
               <Form.Control
-                placeholder="Nombre"
+                placeholder="Nombre o Razon Social*"
                 onChange={(e) => {
                   setnombre(e.target.value);
                 }}
@@ -203,7 +202,7 @@ export default function ModalPreAlert(props) {
             </Form.Group>
             <Form.Group>
               <Form.Control
-                placeholder="Apellido"
+                placeholder="Apellido*"
                 onChange={(e) => {
                   setapellido(e.target.value);
                 }}
@@ -213,7 +212,7 @@ export default function ModalPreAlert(props) {
               <Col>
                 <Form.Group>
                   <Form.Control
-                    placeholder="Provincia"
+                    placeholder="Provincia*"
                     onChange={(e) => {
                       setprovincia(e.target.value);
                     }}
@@ -223,7 +222,7 @@ export default function ModalPreAlert(props) {
               <Col>
                 <Form.Group>
                   <Form.Control
-                    placeholder="Cantón"
+                    placeholder="Cantón*"
                     onChange={(e) => {
                       setcanton(e.target.value);
                     }}
@@ -233,7 +232,7 @@ export default function ModalPreAlert(props) {
               <Col>
                 <Form.Group>
                   <Form.Control
-                    placeholder="Parroquia"
+                    placeholder="Parroquia*"
                     onChange={(e) => {
                       setparroquia(e.target.value);
                     }}
@@ -243,7 +242,7 @@ export default function ModalPreAlert(props) {
             </Row>
             <Form.Group>
               <Form.Control
-                placeholder="Dirección"
+                placeholder="Dirección*"
                 onChange={(e) => {
                   setdireccion(e.target.value);
                 }}
@@ -251,7 +250,7 @@ export default function ModalPreAlert(props) {
             </Form.Group>
             <Form.Group>
               <Form.Control
-                placeholder="Referencia"
+                placeholder="Referencia*"
                 onChange={(e) => {
                   setreferencia(e.target.value);
                 }}
@@ -259,7 +258,7 @@ export default function ModalPreAlert(props) {
             </Form.Group>
             <Form.Group>
               <Form.Control
-                placeholder="Teléfono"
+                placeholder="Teléfono*"
                 onChange={(e) => {
                   settelefono(e.target.value);
                 }}
@@ -278,7 +277,7 @@ export default function ModalPreAlert(props) {
             <h5>Envío</h5>
             <Form.Group>
               <Form.Control
-                placeholder="Descripción"
+                placeholder="Descripción*"
                 onChange={(e) => {
                   setdescripcion(e.target.value);
                 }}
@@ -286,7 +285,7 @@ export default function ModalPreAlert(props) {
             </Form.Group>
             <Form.Group>
               <Form.Control
-                placeholder="Nro Items"
+                placeholder="Nro Items*"
                 type="number"
                 onChange={(e) => {
                   setnroItems(e.target.value);
@@ -296,7 +295,7 @@ export default function ModalPreAlert(props) {
 
             <Form.Group>
               <Form.Control
-                placeholder="Valor declarado (USD)"
+                placeholder="Valor declarado (USD)*"
                 type="number"
                 onChange={(e) => {
                   setvalor(e.target.value);
