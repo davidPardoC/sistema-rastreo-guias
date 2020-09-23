@@ -58,7 +58,7 @@ export default function GuideInfo(props) {
               </Button>
             )}
           </Pdf>
-          <div ref={ref} style={{width:'85%', paddingLeft:'2rem'}}>
+          <div ref={ref} style={{width:'80%', paddingLeft:'5rem', paddingTop:'0.5rem'}}>
             {times.map(() => (
               <Container className="mt-3 modal-guide">
                 <Row style={{ border: "1px solid black" }}>
