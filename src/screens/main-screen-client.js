@@ -152,7 +152,10 @@ export default function MainScreensCustomer() {
         show={showLatestGuideModal}
         onHide={closeLatestGuideInfoModal}
         size="lg"
+        dialogClassName="custom-dialog"
       >
+        <Modal.Header closeButton>
+        </Modal.Header>
         <Modal.Body>
           <GuideInfo guide={lastAddedGuide} />
         </Modal.Body>

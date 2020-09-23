@@ -2,6 +2,4 @@
     font-size: 0.3rem;
 }
 
-.modal{
-    width: 90%;
-}
+.custom-dialog {max-width: none !important;}

@@ -6,7 +6,7 @@ import Barcode from "react-barcode";
 import { db } from "../../assets/firebase";
 import Pdf from "react-to-pdf";
 const ref = React.createRef();
-export default function GuideInfo(props) {
+export default function DownLoadGuide(props) {
   const [guide, setguide] = useState({});
   const [charging, setcharging] = useState(true);
   const [charged, setcharged] = useState(false);
@@ -58,7 +58,7 @@ export default function GuideInfo(props) {
               </Button>
             )}
           </Pdf>
-          <div ref={ref} style={{width:'85%', paddingLeft:'2rem'}}>
+          <div ref={ref} style={{paddingLeft:'20rem'}}>
             {times.map(() => (
               <Container className="mt-3 modal-guide">
                 <Row style={{ border: "1px solid black" }}>
