@@ -21,7 +21,7 @@ export default function Home() {
   const [btnSearch, setBtnSearch] = useState(true);
 
   const searchGuide = async () => {
-    var guide = unFormatGuide(guideToFind);
+    let guide = unFormatGuide(guideToFind);
     await db
       .collection("guias")
       .doc(guide)
@@ -49,9 +49,18 @@ export default function Home() {
       });
   };
   const unFormatGuide = (guide) => {
-    var guideUnformated = guide.replace(/0/g, "");
-    return guideUnformated;
+    var res = guide.split("");
+    var aux = res.slice(2, 11);
+    let finalNumber;
+    for (let index = 0; index < 9; index++) {
+      if (aux[index] !== "0") {
+        finalNumber = aux.splice(index, 9);
+        break;
+      }
+    }
+    return `RF${finalNumber.join("")}EC`;
   };
+
   const formatGuide = (guide) => {
     var guideArray = Array.from(guide);
     var aux = 13 - guideArray.length;
@@ -62,10 +71,14 @@ export default function Home() {
     return lastStringGuide;
   };
   const checkInputs = () => {
-    if (guideToFind) {
-      setBtnSearch(false);
-    } else {
+    console.log(guideToFind.length);
+    if (guideToFind.length < 13) {
       setBtnSearch(true);
+    } else {
+      setBtnSearch(false);
+      if (guideToFind.length > 13) {
+        setGuideToFind(guideToFind.slice(0, -1));
+      }
     }
   };
   useEffect(() => {
@@ -101,15 +114,42 @@ export default function Home() {
       <Container>
         <Row>
           <Col>
-            <div className='d-flex justify-content-center'>
-              <img src={require("../assets/images/facebook.svg")} alt="" style={{width:'5rem'}} className='ml-5 social' onClick={()=>{window.location.href = 'https://www.facebook.com/Rapifas-Courier-101854448344615/'}}/>
-              <img src={require("../assets/images/instagram.svg")} alt="" style={{width:'5rem'}} className='ml-5 social' onClick={()=>{window.location.href = 'https://www.instagram.com/invites/contact/?i=zkg9h47j6bmb&utm_content=c12rell'}}/>
-              <img src={require("../assets/images/twitter.svg")} alt="" style={{width:'5rem'}} className='ml-5 social'onClick={()=>{window.location.href = 'https://twitter.com/RapifasCourier'}}/>
+            <div className="d-flex justify-content-center">
+              <img
+                src={require("../assets/images/facebook.svg")}
+                alt=""
+                style={{ width: "5rem" }}
+                className="ml-5 social"
+                onClick={() => {
+                  window.location.href =
+                    "https://www.facebook.com/Rapifas-Courier-101854448344615/";
+                }}
+              />
+              <img
+                src={require("../assets/images/instagram.svg")}
+                alt=""
+                style={{ width: "5rem" }}
+                className="ml-5 social"
+                onClick={() => {
+                  window.location.href =
+                    "https://www.instagram.com/invites/contact/?i=zkg9h47j6bmb&utm_content=c12rell";
+                }}
+              />
+              <img
+                src={require("../assets/images/twitter.svg")}
+                alt=""
+                style={{ width: "5rem" }}
+                className="ml-5 social"
+                onClick={() => {
+                  window.location.href = "https://twitter.com/RapifasCourier";
+                }}
+              />
             </div>
-            <div className='d-flex justify-content-center mt-2'>
-            <a style={{fontWeight:'bolder', fontSize:'1.5rem'}}>RAPIFAS COURIER CIA. LTDA.</a> 
+            <div className="d-flex justify-content-center mt-2">
+              <a style={{ fontWeight: "bolder", fontSize: "1.5rem" }}>
+                RAPIFAS COURIER CIA. LTDA.
+              </a>
             </div>
-            
           </Col>
         </Row>
       </Container>
@@ -148,6 +188,7 @@ export default function Home() {
                     type="text"
                     placeholder="INGRESAR NÚMERO DE GUÍA"
                     className="mr-sm-2"
+                    value={guideToFind}
                     onChange={(e) => {
                       setGuideToFind(e.target.value);
                     }}

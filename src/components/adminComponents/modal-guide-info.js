@@ -51,14 +51,14 @@ export default function GuideInfo(props) {
       {charging && <Spinner animation="border" variant="primary" />}
       {charged && (
         <>
-          <Pdf targetRef={ref} filename={formatGuide(guide.id)} scale={0.82}>
+          <Pdf targetRef={ref} filename={formatGuide(guide.id)} scale={0.825}>
             {({ toPdf }) => (
               <Button variant="success" className="d-flex" onClick={toPdf}>
                 DESCARGAR <Icon className="ml-2"> save_alt</Icon>
               </Button>
             )}
           </Pdf>
-          <div ref={ref}>
+          <div ref={ref} style={{width:'80%', paddingLeft:'5rem', paddingTop:'0.5rem'}}>
             {times.map(() => (
               <Container className="mt-3 modal-guide">
                 <Row style={{ border: "1px solid black" }}>

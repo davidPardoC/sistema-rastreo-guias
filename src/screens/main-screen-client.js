@@ -56,12 +56,17 @@ export default function MainScreensCustomer() {
   }, [cliente]);
 
   const checkInputs = () => {
-    if (guideToFind) {
-      setBtnSearch(false);
-    } else {
+    console.log(guideToFind.length);
+    if (guideToFind.length < 13) {
       setBtnSearch(true);
+    } else {
+      setBtnSearch(false);
+      if (guideToFind.length > 13) {
+        setGuideToFind(guideToFind.slice(0, -1));
+      }
     }
   };
+
   useEffect(() => {
     checkInputs();
   }, [guideToFind]);
@@ -76,8 +81,16 @@ export default function MainScreensCustomer() {
   };
 
   const unFormatGuide = (guide) => {
-    var guideUnformated = guide.replace(/0/g, "");
-    return guideUnformated;
+    var res = guide.split("");
+    var aux = res.slice(2, 11);
+    let finalNumber;
+    for (let index = 0; index < 9; index++) {
+      if (aux[index] !== "0") {
+        finalNumber = aux.splice(index, 9);
+        break;
+      }
+    }
+    return `RF${finalNumber.join("")}EC`;
   };
 
   useEffect(() => {
@@ -103,6 +116,7 @@ export default function MainScreensCustomer() {
 
   const searchGuide = () => {
     var guideUnformated = unFormatGuide(guideToFind);
+    console.log(guideUnformated)
     var guideF = guides.filter((guide) => guide.id === guideUnformated);
     if (guideF.length !== 0) {
       setGuideFound(guideF);
@@ -181,6 +195,7 @@ export default function MainScreensCustomer() {
               type="text"
               placeholder="BUSCAR GUÍA"
               className="mr-sm-2"
+              value={guideToFind}
               onChange={(e) => {
                 setGuideToFind(e.target.value);
               }}

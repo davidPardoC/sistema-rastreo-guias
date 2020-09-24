@@ -19,7 +19,7 @@ import ModalAddGuide from "../components/sucursalComponents/modal-add-guide";
 import GuideInfo from "../components/sucursalComponents/modal-guide-info";
 export default function MainSucursal(props) {
   const [showLoading, setshowLoading] = useState(false);
-  const [guideToFind, setguideToFind] = useState("");
+  const [guideToFind, setGuideToFind] = useState("");
   const [guideFound, setguideFound] = useState({});
   const [showEditGuide, setshowEditGuide] = useState(false);
   const [showUpdateStates, setshowUpdateStates] = useState(false);
@@ -50,9 +50,9 @@ export default function MainSucursal(props) {
     console.log(sucursal);
   }, []);
 
-  const searchGuide = async () => {
+  const searchGuide =  () => {
     setshowLoading(true);
-    await db
+     db
       .collection("guias")
       .doc(unFormatGuide(guideToFind))
       .get()
@@ -67,8 +67,16 @@ export default function MainSucursal(props) {
       });
   };
   const unFormatGuide = (guide) => {
-    var guideUnformated = guide.replace(/0/g, "");
-    return guideUnformated;
+    var res = guide.split("");
+    var aux = res.slice(2, 11);
+    let finalNumber;
+    for (let index = 0; index < 9; index++) {
+      if (aux[index] !== "0") {
+        finalNumber = aux.splice(index, 9);
+        break;
+      }
+    }
+    return `RF${finalNumber.join("")}EC`;
   };
   const formatGuide = (guide) => {
     var guideArray = Array.from(guide);
@@ -104,9 +112,9 @@ export default function MainSucursal(props) {
               >
                 <Icon>update</Icon>
               </Button>
-              <Button variant="danger" className="ml-1" onClick={deleteGuide}>
+             {/*  <Button variant="danger" className="ml-1" onClick={deleteGuide}>
                 <Icon>delete</Icon>
-              </Button>
+              </Button> */}
             </div>
           </ListGroup.Item>
         </ListGroup>
@@ -133,10 +141,14 @@ export default function MainSucursal(props) {
     setshowAddGuide(false)
   }
   const checkInputs = () => {
-    if (guideToFind) {
-      setBtnSearch(false);
-    } else {
+    console.log(guideToFind.length);
+    if (guideToFind.length < 13) {
       setBtnSearch(true);
+    } else {
+      setBtnSearch(false);
+      if (guideToFind.length > 13) {
+        setGuideToFind(guideToFind.slice(0, -1));
+      }
     }
   };
   useEffect(() => {
@@ -185,7 +197,11 @@ export default function MainSucursal(props) {
         show={showLatestGuideModal}
         onHide={closeLatestGuideInfoModal}
         size="lg"
+        dialogClassName="custom-dialog"
       >
+        <Modal.Header closeButton>
+
+        </Modal.Header>
         <Modal.Body>
           <GuideInfo guide={lastAddedGuide} />
         </Modal.Body>
@@ -235,8 +251,9 @@ export default function MainSucursal(props) {
               type="text"
               placeholder="BUSCAR GUÍA"
               className="mr-sm-2"
+              value={guideToFind}
               onChange={(e) => {
-                setguideToFind(e.target.value);
+                setGuideToFind(e.target.value);
               }}
             />
             <Button

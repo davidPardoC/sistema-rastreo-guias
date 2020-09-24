@@ -97,8 +97,6 @@ export default function ModalPreAlert(props) {
       direccion === "" ||
       referencia === "" ||
       telefono === "" ||
-      nroItems === "" ||
-      valor === "" ||
       descripcion === ""
     ) {
       setbtnRegisterGuide(true);
@@ -169,7 +167,7 @@ export default function ModalPreAlert(props) {
               <Col>
                 <Form.Group>
                   <Form.Control
-                    placeholder="CI Destinatario *"
+                    placeholder="CI Destinatario"
                     onChange={(e) => {
                       setci(e.target.value);
                     }}
@@ -285,7 +283,7 @@ export default function ModalPreAlert(props) {
             </Form.Group>
             <Form.Group>
               <Form.Control
-                placeholder="Nro Items*"
+                placeholder="Nro Items"
                 type="number"
                 onChange={(e) => {
                   setnroItems(e.target.value);
@@ -295,7 +293,7 @@ export default function ModalPreAlert(props) {
 
             <Form.Group>
               <Form.Control
-                placeholder="Valor declarado (USD)*"
+                placeholder="Valor declarado (USD)"
                 type="number"
                 onChange={(e) => {
                   setvalor(e.target.value);

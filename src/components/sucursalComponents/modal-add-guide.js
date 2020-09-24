@@ -12,6 +12,7 @@ import {
 } from "react-bootstrap";
 import { Icon } from "@material-ui/core";
 import { db } from "../../assets/firebase";
+import NewNaturalCustomer from "../shared/form-new-customer";
 export default function ModalAddGuide(props) {
   //datos destinatario
   const [ci, setci] = useState();
@@ -33,7 +34,7 @@ export default function ModalAddGuide(props) {
 
   //customer to find
   const [customerToFind, setCustomerToFind] = useState("");
-  const [cliente, setcliente] = useState({nombre:'',apellido:''});
+  const [cliente, setcliente] = useState({ nombre: "", apellido: "" });
 
   //check
   const [showAlertEmail, setshowAlertEmail] = useState(false);
@@ -42,69 +43,75 @@ export default function ModalAddGuide(props) {
   const [userNotFoundAlert, setUserNotFoundAlert] = useState(false);
   const [toggleSearch, setToggleSearch] = useState(true);
 
+  //new cliente
+  const [showNewCustomerForm, setShowNewCustomerForm] = useState(false);
   const registerGuide = () => {
     delete cliente.password;
     delete cliente.uid;
-    var countRef = db.collection('stats').doc('guiasRecords');
-    db.runTransaction((transaction)=>{
-      return transaction.get(countRef).then((count)=>{
-        if(!count.exists){
-          return
-        }else{
-          db.collection('guias').doc(`RF${count.data().count}EC`).set({
-            createdBy: props.sucursal,
-            remitente: cliente,
-            destinatario: {
-              ci: ci,
-              nombre: nombre,
-              apellido: apellido,
-              tipoId: tipoId,
-              provincia: provincia,
-              canton: canton,
-              parroquia: parroquia,
-              direccion: direccion,
-              email: email,
-              referencia: referencia,
-              telefono: telefono,
-            },
-            contenido: {
-              nroItems: nroItems,
-              peso: peso,
-              valorDeclarado: valor,
-              descripcion: descripcion,
-            }
-          })
-          props.returnGuideId(`RF${count.data().count}EC`);
-          var increment = count.data().count+1;
-          transaction.update(countRef, {count:increment});
-        }
-      }).then(props.close());
-    })
+    var countRef = db.collection("stats").doc("guiasRecords");
+    db.runTransaction((transaction) => {
+      return transaction
+        .get(countRef)
+        .then((count) => {
+          if (!count.exists) {
+            return;
+          } else {
+            db.collection("guias")
+              .doc(`RF${count.data().count}EC`)
+              .set({
+                createdBy: props.sucursal,
+                remitente: cliente,
+                destinatario: {
+                  ci: ci,
+                  nombre: nombre,
+                  apellido: apellido,
+                  tipoId: tipoId,
+                  provincia: provincia,
+                  canton: canton,
+                  parroquia: parroquia,
+                  direccion: direccion,
+                  email: email,
+                  referencia: referencia,
+                  telefono: telefono,
+                },
+                contenido: {
+                  nroItems: nroItems,
+                  peso: peso,
+                  valorDeclarado: valor,
+                  descripcion: descripcion,
+                },
+              });
+            props.returnGuideId(`RF${count.data().count}EC`);
+            var increment = count.data().count + 1;
+            transaction.update(countRef, { count: increment });
+          }
+        })
+        .then(props.close());
+    });
   };
 
-  const searchUser = () => {
-      setCharging(true)
+  const searchUser = (guideOp) => {
+    setCharging(true);
     db.collection("users")
-      .doc(customerToFind)
+      .doc(guideOp)
       .get()
       .then((user) => {
-        if(user.exists){
-            setUserNotFoundAlert(false)
-            setcliente(user.data());
-            setCharging(false)
-            setCharged(true)
-        }else{
-            setUserNotFoundAlert(true)
-            setCharging(false)
+        if (user.exists) {
+          setUserNotFoundAlert(false);
+          setcliente(user.data());
+          setCharging(false);
+          setCharged(true);
+        } else {
+          setUserNotFoundAlert(true);
+          setCharging(false);
         }
-        
       });
   };
   const checkDestinataryInputs = () => {
-    if(customerToFind ===''){
-      setToggleSearch(true)
-    }else{
-      setToggleSearch(false)
+    if (customerToFind === "") {
+      setToggleSearch(true);
+    } else {
+      setToggleSearch(false);
     }
     if (email.includes("@") && email.includes(".")) {
       setshowAlertEmail(false);
@@ -116,13 +123,7 @@ export default function ModalAddGuide(props) {
         setshowAlertEmail(true);
       }
     }
-    if(!charged){
-        setbtnRegisterGuide(true)
-    }else{
-        setbtnRegisterGuide(false)
-    }
     if (
-      ci === "" ||
       nombre === "" ||
       apellido === "" ||
       tipoId === "" ||
@@ -132,18 +133,19 @@ export default function ModalAddGuide(props) {
       direccion === "" ||
       referencia === "" ||
       telefono === "" ||
-      nroItems === "" ||
-      valor === "" ||
       descripcion === ""
     ) {
       setbtnRegisterGuide(true);
     } else {
       setbtnRegisterGuide(false);
     }
+    if (!charged) {
+      setbtnRegisterGuide(true);
+    } else {
+      setbtnRegisterGuide(false);
+    }
   };
-  useEffect(
-    checkDestinataryInputs
-  , [
+  useEffect(checkDestinataryInputs, [
     ci,
     nombre,
     apellido,
@@ -165,38 +167,62 @@ export default function ModalAddGuide(props) {
     <Container>
       <Row>
         <Col className="mt-1">
-        <h3>Remitente</h3>
+          <h3>Remitente</h3>
           <div className="d-flex align-items-center">
             <FormControl
               placeholder="CI Cliente"
+              value={customerToFind}
               onChange={(e) => {
                 setCustomerToFind(e.target.value);
               }}
             />
-            <Button className="ml-1" onClick={searchUser} disabled={toggleSearch}>
+            <Button
+              className="ml-1"
+              onClick={()=>{searchUser(customerToFind)}}
+              disabled={toggleSearch}
+            >
               <Icon>search</Icon>
             </Button>
           </div>
-          {userNotFoundAlert && <Alert variant='danger'>Usuario no encontrado</Alert>}
-         {charging && <div className='d-flex justify-content-center mt-2'>
-            <Spinner animation="border" role="status">
-              <span className="sr-only">Loading...</span>
-            </Spinner>
-          </div>}
-          {charged && <ListGroup className='mt-3'>
+          {userNotFoundAlert && (
+            <Alert variant="danger">Usuario no encontrado</Alert>
+          )}
+          {charging && (
+            <div className="d-flex justify-content-center mt-2">
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            </div>
+          )}
+          {charged && (
+            <ListGroup className="mt-3">
               <ListGroup.Item>
                 {`${cliente.nombre} ${cliente.apellido}`}
               </ListGroup.Item>
               <ListGroup.Item>
-              {`${cliente.provincia}, ${cliente.canton}, ${cliente.parroquia}`}
+                {`${cliente.provincia}, ${cliente.canton}, ${cliente.parroquia}`}
               </ListGroup.Item>
-              <ListGroup.Item>
-              {`${cliente.telefono}`}
-              </ListGroup.Item>
-              <ListGroup.Item>
-              {`${cliente.email}`}
-              </ListGroup.Item>
-          </ListGroup>}
+              <ListGroup.Item>{`${cliente.telefono}`}</ListGroup.Item>
+              <ListGroup.Item>{`${cliente.email}`}</ListGroup.Item>
+            </ListGroup>
+          )}
+
+          <Button
+            className="mt-2"
+            onClick={() => {
+              setShowNewCustomerForm(!showNewCustomerForm);
+            }}
+          >
+            Nuevo Cliente
+          </Button>
+
+          {showNewCustomerForm && (
+            <NewNaturalCustomer
+              show={setShowNewCustomerForm}
+              search={searchUser}
+              setCi={setCustomerToFind}
+            />
+          )}
         </Col>
 
         <Col>
@@ -230,7 +256,7 @@ export default function ModalAddGuide(props) {
           </Row>
           <Form.Group>
             <Form.Control
-              placeholder="Nombre"
+              placeholder="Nombre o Razon Social*"
               onChange={(e) => {
                 setnombre(e.target.value);
               }}
@@ -238,7 +264,7 @@ export default function ModalAddGuide(props) {
           </Form.Group>
           <Form.Group>
             <Form.Control
-              placeholder="Apellido"
+              placeholder="Apellido*"
               onChange={(e) => {
                 setapellido(e.target.value);
               }}
@@ -248,7 +274,7 @@ export default function ModalAddGuide(props) {
             <Col>
               <Form.Group>
                 <Form.Control
-                  placeholder="Provincia"
+                  placeholder="Provincia*"
                   onChange={(e) => {
                     setprovincia(e.target.value);
                   }}
@@ -258,7 +284,7 @@ export default function ModalAddGuide(props) {
             <Col>
               <Form.Group>
                 <Form.Control
-                  placeholder="Canton"
+                  placeholder="Cantón*"
                   onChange={(e) => {
                     setcanton(e.target.value);
                   }}
@@ -268,7 +294,7 @@ export default function ModalAddGuide(props) {
             <Col>
               <Form.Group>
                 <Form.Control
-                  placeholder="Parroquia"
+                  placeholder="Parroquia*"
                   onChange={(e) => {
                     setparroquia(e.target.value);
                   }}
@@ -278,9 +304,27 @@ export default function ModalAddGuide(props) {
           </Row>
           <Form.Group>
             <Form.Control
-              placeholder="Dirección"
+              placeholder="Dirección*"
               onChange={(e) => {
                 setdireccion(e.target.value);
+              }}
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Control
+              placeholder="Referencia*"
+              onChange={(e) => {
+                setreferencia(e.target.value);
+              }}
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Control
+              placeholder="Teléfono*"
+              onChange={(e) => {
+                settelefono(e.target.value);
               }}
             />
           </Form.Group>
@@ -294,23 +338,16 @@ export default function ModalAddGuide(props) {
             />
           </Form.Group>
           {showAlertEmail && <Alert variant="danger">Email no valido</Alert>}
+
+          <h5>Envío</h5>
           <Form.Group>
             <Form.Control
-              placeholder="Referencia"
+              placeholder="Descripción*"
               onChange={(e) => {
-                setreferencia(e.target.value);
+                setdescripcion(e.target.value);
               }}
             />
           </Form.Group>
-          <Form.Group>
-            <Form.Control
-              placeholder="Telefono"
-              onChange={(e) => {
-                settelefono(e.target.value);
-              }}
-            />
-          </Form.Group>
-          <hr></hr>
           <Form.Group>
             <Form.Control
               placeholder="Nro Items"
@@ -322,16 +359,6 @@ export default function ModalAddGuide(props) {
           </Form.Group>
           <Form.Group>
             <Form.Control
-              placeholder="Peso"
-              type="number"
-              onChange={(e) => {
-                setpeso(e.target.value);
-              }}
-            />
-          </Form.Group>
-
-          <Form.Group>
-            <Form.Control
               placeholder="Valor declarado (USD)"
               type="number"
               onChange={(e) => {
@@ -341,9 +368,10 @@ export default function ModalAddGuide(props) {
           </Form.Group>
           <Form.Group>
             <Form.Control
-              placeholder="Descripcion"
+              placeholder="Peso"
+              type="number"
               onChange={(e) => {
-                setdescripcion(e.target.value);
+                setpeso(e.target.value);
               }}
             />
           </Form.Group>

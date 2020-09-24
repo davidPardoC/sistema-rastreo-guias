@@ -18,6 +18,7 @@ import EditGuide from "../../components/adminComponents/modal-edit-guia";
 import ModalEstados from "../../components/adminComponents/modal-estados";
 import "./style.css";
 import GuideInfo from '../../components/adminComponents/modal-guide-info';
+import './modal-guide.css'
 export default function MainScreenAdmin() {
   //state
   const [showAddGuide, setshowAddGuide] = useState(false);
@@ -169,6 +170,7 @@ const deleteGuide = ()=>{
       show={showLatestGuideModal}
       onHide={closeLatestGuideInfoModal}
       size="lg"
+      dialogClassName="custom-dialog"
       >
         <Modal.Body>
           <GuideInfo guide={lastAddedGuide}/>
